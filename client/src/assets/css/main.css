@@ -1,0 +1,38 @@
+.html{
+    min-height: 100%;
+    font-family: 'Open Sans', sans-serif;
+    color: black;
+}
+.font-extra-bold{
+    font-weight: 800;
+}
+.font-semi-bold{
+    font-weight: 600;
+}
+.font-regular{
+    font-weight: 400;
+}
+.mb-24{
+    margin-bottom: 24px;
+}
+.mr-24{
+    margin-right: 24px;
+}
+.dark-blue{
+    color: #33384E;
+}
+.light-orange{
+    color: #DDA18C;
+}
+.dark-orange{
+    color: #D65A40;
+}
+.border-radius-15{
+    border-radius: 15px;
+}
+.white{
+    color: white;
+}
+.grey{
+    color: #9D9493;
+}

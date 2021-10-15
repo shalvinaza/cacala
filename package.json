@@ -1,0 +1,18 @@
+{
+  "name": "cacala",
+  "version": "0.1.0",
+  "description": "Aplikasi Kampanye Indonesia",
+  "main": "index.js",
+  "scripts": {
+    "client": "npm run serve --prefix client",
+    "server": "npm run server --prefix server",
+    "start": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shalvinaza/cacala"
+  },
+  "dependencies": {
+    "concurrently": "^6.2.0"
+  }
+}
