@@ -3,7 +3,7 @@
       <nav class="container navbar navbar-expand-lg">
         <a class="navbar-brand extra-bold" style="letter-spacing: 0.45em;" href="#">CACALA</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+          <span class="navbar-toggler-icon" style="color:white"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -36,7 +36,7 @@
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'Navbar',
   props: {
     msg: String
   }

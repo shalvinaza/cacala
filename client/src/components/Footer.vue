@@ -1,0 +1,29 @@
+<template>
+    <footer class="d-flex bg-dark-blue fixed-bottom">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-9 pt-2">
+                    <p>&copy; Cacala | Komisi Pemilihan Umum Republik Indonesia</p>
+                </div>
+                <div class="col-lg-3 d-flex justify-content-end align-items-center">
+                    <i class="fab fa-facebook-square me-2"></i>
+                    <i class="fab fa-twitter-square me-2"></i>
+                    <i class="fab fa-instagram-square me-2"></i>
+                    <a href="#">Kontak Pengaduan</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</template>
+
+<script>
+export default {
+    name: 'Footer'
+}
+</script>
+
+<style scoped>
+footer{
+    color: white;
+}
+</style>

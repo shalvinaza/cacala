@@ -1,7 +1,9 @@
-html{
-    min-height: 100%;
+html{    
     font-family: 'Open Sans', sans-serif;
     color: black;
+}
+.content{
+    min-height: 100%;
 }
 .extra-bold{
     font-weight: 800;
@@ -46,6 +48,7 @@ html{
     color: #9D9493;
 }
 a, a:hover{
+    text-decoration: none;
     color: white;
 }
 a:active{
