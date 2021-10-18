@@ -1,15 +1,15 @@
-.html{
+html{
     min-height: 100%;
     font-family: 'Open Sans', sans-serif;
     color: black;
 }
-.font-extra-bold{
+.extra-bold{
     font-weight: 800;
 }
-.font-semi-bold{
+.semi-bold{
     font-weight: 600;
 }
-.font-regular{
+.regular{
     font-weight: 400;
 }
 .mb-24{
@@ -18,21 +18,39 @@
 .mr-24{
     margin-right: 24px;
 }
-.dark-blue{
-    color: #33384E;
+.bg-dark-blue{
+    background-color: #33384E;
 }
-.light-orange{
-    color: #DDA18C;
+.bg-light-orange{
+    background-color: #DDA18C;
 }
-.dark-orange{
-    color: #D65A40;
+.bg-dark-orange{
+    background-color: #D65A40;
 }
-.border-radius-15{
+.bg-light-orange:hover, .bg-light-orange:active{
+    background-color: #D65A40;
+}
+.br-15{
     border-radius: 15px;
 }
-.white{
+.br-10{
+    border-radius: 10px;
+}
+.txt-white {
     color: white;
+}
+.txt-white:hover, .txt-white:active{
+    color: #D65A40;
 }
 .grey{
     color: #9D9493;
+}
+a, a:hover{
+    color: white;
+}
+a:active{
+    color: #D65A40;
+}
+.nav-shadow{
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
