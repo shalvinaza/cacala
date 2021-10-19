@@ -24,6 +24,7 @@ export default {
 
 <style scoped>
 footer{
+    position: relative;
     color: white;
 }
 </style>
