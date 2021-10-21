@@ -2,12 +2,16 @@
   <div class="container">
           <div class="row">
             <div class="col-md left flex-row flex-wrap justify-content-center text-center">
-                <img src="../assets/images/add.png" alt="Masuk">
-                <p class="mt-3">Masuk  dan ikuti akun-akun calon yang Anda inginkan untuk membuat pintasan akses akun-aun Calon ke halaman dashbormu </p>
+                <img src="../assets/images/add.png" alt="Daftar">
+                <p class="mt-3">Daftar  dan ikuti akun-akun calon yang Anda inginkan untuk membuat pintasan akses akun-aun Calon ke halaman dashbormu </p>
             </div>
             <div class="col-md right flex-row d-md-block flex-wrap">
                 <h4 class="bold text-center mb-5">Masuk</h4>
                 <div class="form-data" v-if="!submitted" id="form1">
+                    <div class="forms-inputs mb-4"> 
+                        <span>Nama</span> 
+                        <input id="nama_user" autocomplete="off" type="text" v-model="text" v-bind:class="{'form-control':true}" placeholder="Ketik nama di sini">
+                    </div>
                     <div class="forms-inputs mb-4"> 
                         <span>Email</span> 
                         <input id="email_user" autocomplete="off" type="text" v-model="email" v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(email) && emailBlured}" v-on:blur="emailBlured = true" placeholder="Ketik email di sini">
@@ -18,14 +22,18 @@
                         <input id="pass_user" autocomplete="off" type="password" v-model="password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
                         <div class="invalid-feedback">Password minimal 8 karakter!</div>
                     </div>
+                    <div class="forms-inputs mb-4"> 
+                        <span>Konfirmasi Kata Sandi</span>
+                        <input id="konfirmasi_pass_user" autocomplete="off" type="password" v-model="password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
+                        <div class="invalid-feedback">Password minimal 8 karakter!</div>
+                    </div>                    
                     <div class="mb-3"> 
-                        <button v-on:click.stop.prevent="submit" type="submit" class="btn bg-light-orange w-100 br-10">Masuk</button> 
+                        <button v-on:click.stop.prevent="submit" type="submit" class="btn bg-light-orange w-100 br-10">Daftar</button> 
                     </div>
                 </div>
                 <div class="mb-4">
-                    <span>Belum punya akun?</span> <a style="color:#D65A40" href="/register">Daftar Sekarang</a>
+                    <span>Sudah punya akun?</span> <a style="color:#D65A40" href="/login">Masuk Sekarang</a>
                 </div>
-                <button type="button" @click="goToLoginAdmin()" class="btn btn-outline-orange w-100 br-10">Masuk sebagai admin</button> 
             </div>
           </div>
   </div>
