@@ -6,6 +6,8 @@ import Dpd_ri from '../views/Dpd_ri.vue'
 import Dprd_prov from '../views/Dprd_prov.vue'
 import Dprd_kab_kota from '../views/Dprd_kab.vue'
 import Login from '../views/Login.vue'
+import Register from '../views/Register.vue'
+import Login_admin from '../views/Login_admin.vue'
 
 const routes = [
   {
@@ -42,7 +44,17 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login
-  }
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
+  },
+  {
+    path: '/login_admin',
+    name: 'Login_admin',
+    component: Login_admin
+  }   
   // {
   //   path: '/about',
   //   name: 'About',

@@ -1,7 +1,9 @@
 <template>
-<div class="login justify-content-center">
+<div class="register justify-content-center">
   <Navbar1/>
-  <Form_login style="padding:120px 0 70px 0"/>
+  <div class="content" style="padding:120px 0 70px 0">
+      <h1>register</h1>
+  </div>
   <Footer1/>
 </div>
   
@@ -9,14 +11,12 @@
 
 <script>
 import Navbar1 from '@/components/Navbar1.vue'
-import Form_login from '@/components/Form_login.vue'
 import Footer1 from '@/components/Footer1.vue'
 
 export default {
-    name:'Login',
+    name:'Register',
     components:{
       Navbar1,
-      Form_login,
       Footer1
     }
 }

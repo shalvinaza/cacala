@@ -23,10 +23,9 @@
                 <router-link to="/dprd_kab_kota" class="nav-link">DPRD Kabupaten/Kota</router-link>
             </div>
             <div class="d-flex">
-              <button class="btn bg-light-orange text-white me-2 br-10" type="button">
+              <button class="btn bg-light-orange text-white br-10" type="button">
                 <i class="fas fa-search me-1"></i>
                   Cari</button>
-              <button class="btn bg-light-orange text-white br-10" type="button" @click="goToLogin()">Login</button>
             </div>
         </div>
       </nav>
@@ -36,11 +35,9 @@
 
 <script>
 export default {
-  name: 'Navbar',
+  name: 'Navbar1',
   methods:{
-    goToLogin(){
-      this.$router.push('/login');
-    }
+
   }
   
 }

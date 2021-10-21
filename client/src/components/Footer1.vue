@@ -1,5 +1,5 @@
 <template>
-    <footer class="d-flex bg-dark-blue">
+    <footer class="bg-dark-blue">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-9 pt-2">
@@ -18,13 +18,16 @@
 
 <script>
 export default {
-    name: 'Footer'
+    name: 'Footer1'
 }
 </script>
 
 <style scoped>
 footer{
-    /* position: relative; */
+    position: relative;
+    bottom: 0;
+    width: 100%;
     color: white;
+    margin:auto;
 }
 </style>

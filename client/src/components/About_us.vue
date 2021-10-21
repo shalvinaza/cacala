@@ -7,7 +7,7 @@
                     <p>Cacala merupakan aplikasi berbasis website  yang menghimpun informasi kampanye dari seluruh calon-calon Wakil Rakyat, baik calon Presinden dan Wakil Presiden, DRP RI, DPD RI, DPRD Provinsi, dan DPRD Kabupaten/Kota</p>
                 </div>       
                 <div class="col-md">
-                    <img src="../assets/images/about_us.png" class="img_about_us w-100" alt="About Us"> 
+                    <img src="../assets/images/about_us.png" class="w-100" alt="About Us"> 
                 </div>
             </div>
         </div>

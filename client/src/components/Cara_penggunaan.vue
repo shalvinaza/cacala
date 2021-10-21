@@ -1,8 +1,10 @@
 <template>
     <div class="container-fluid bg-dark-blue">
-        <div class="container d-flex d-md-block align-items-center pt-5">
-            <h2 class="extra-bold mb-5" style="color:white">Cara Penggunaan</h2>
-            <div class="row w-100">
+        <div class="container d-md-block align-items-center pt-5">
+            <div class="row">
+                <h2 class="extra-bold mb-5" style="color:white">Cara Penggunaan</h2>
+            </div>
+            <div class="row">
                 <div class="col-md-3 mb-3">
                     <div class="card">
                         <img src="../assets/images/step_1.png" class="card-img-top p-4" alt="step 1">

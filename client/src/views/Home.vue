@@ -1,11 +1,9 @@
 <template>
   <div class="home">
     <Navbar/>
-    <div class="content">
       <Carousel style="padding:120px 0 70px 0"/>
       <About_us/>
       <Cara_penggunaan/>
-    </div>
     <Footer/>
   </div>
 </template>
