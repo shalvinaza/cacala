@@ -7,31 +7,34 @@
             </div>
             <div class="col-md right flex-row d-md-block flex-wrap">
                 <h4 class="bold text-center mb-5">Daftar</h4>
-                <div class="form-data" v-if="!submitted" id="form1">
+                <!-- <div class="form-data" v-if="!submitted" id="form1"> -->
+                <form @submit.prevent="registerUser">
                     <div class="forms-inputs mb-4">  
                         <span>Nama</span> 
-                        <input id="email_user" autocomplete="off" type="text" v-model="uname" v-bind:class="{'form-control':true, 'is-invalid' : !validUname(uname) && unameBlured}" v-on:blur="unameBlured = true" placeholder="Ketik nama di sini">
+                        <input id="email_user" autocomplete="off" type="text" v-model="register.username" v-bind:class="{'form-control':true, 'is-invalid' : !validUname(uname) && unameBlured}" v-on:blur="unameBlured = true" placeholder="Ketik nama di sini">
                         <div class="invalid-feedback">Nama tidak boleh kosong!</div>
                     </div>
                     <div class="forms-inputs mb-4"> 
                         <span>Email</span> 
-                        <input id="email_user" autocomplete="off" type="text" v-model="email" v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(email) && emailBlured}" v-on:blur="emailBlured = true" placeholder="Ketik email di sini">
+                        <input id="email_user" autocomplete="off" type="text" v-model="register.email" v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(email) && emailBlured}" v-on:blur="emailBlured = true" placeholder="Ketik email di sini">
                         <div class="invalid-feedback">Email harus valid!</div>
                     </div>
                     <div class="forms-inputs mb-4"> 
                         <span>Kata Sandi</span>
-                        <input id="pass_user" autocomplete="off" type="password" v-model="password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
+                        <input id="pass_user" autocomplete="off" type="password" v-model="register.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
                         <div class="invalid-feedback">Password minimal 8 karakter!</div>
                     </div>
-                    <div class="forms-inputs mb-4"> 
+                    <!-- <div class="forms-inputs mb-4"> 
                         <span>Konfirmasi Kata Sandi</span>
                         <input id="konfirmasi_pass_user" autocomplete="off" type="password" v-model="password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
                         <div class="invalid-feedback">Password minimal 8 karakter!</div>
-                    </div>                    
+                    </div>                     -->
                     <div class="mb-3"> 
-                        <button v-on:click.stop.prevent="submit" type="submit" class="btn bg-light-orange w-100 br-10">Daftar</button> 
+                        <!-- <button v-on:click.stop.prevent="submit" type="submit" class="btn bg-light-orange w-100 br-10">Daftar</button>  -->
+                        <button type="submit" class="btn bg-light-orange w-100 br-10">Daftar</button> 
                     </div>
-                </div>
+                </form>
+                <!-- </div> -->
                 <div class="mb-4">
                     <span>Sudah punya akun?</span> <a style="color:#D65A40" href="/login">Masuk Sekarang</a>
                 </div>
@@ -41,6 +44,9 @@
 </template>
 
 <script>
+import axios from 'axios'
+const REGISTER_API_URL = `http://localhost:3000/auth/users/register`
+
 export default {
     name:'Form_login',
     data: function () {
@@ -52,8 +58,13 @@ export default {
             valid : false,
             submitted : false,
             password:"",
-            passwordBlured:false
-            }
+            passwordBlured:false,
+            register: {
+                username: "",
+                email: "",
+                password: ""
+            },
+        }
     },
     methods:{
         validate : function(){
@@ -86,9 +97,23 @@ export default {
                 this.submitted = true;
             }
         },
-        goToLoginAdmin(){
-            this.$router.push('/login_admin');
-        }
+        registerUser(e) {
+      e.preventDefault()
+      if (this.register.password.length > 0){
+        axios.post(REGISTER_API_URL, this.register)
+        .then(response => {
+          localStorage.setItem('token',response.data.token)
+
+          if (localStorage.getItem('token') != null){
+            this.$emit('loggedIn')
+            this.$router.push('/')    
+          }
+        })
+        .catch(error => {
+            console.error(error)
+        })
+      } 
+    },
     }
 }
 </script>

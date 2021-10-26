@@ -44,7 +44,8 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: Login
+    component: Login,
+    meta: {guest: true}
   },
   {
     path: '/register',
@@ -74,6 +75,18 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if(to.matched.some(record => record.meta.guest)){
+    if(localStorage.getItem("token") == null){
+      next()
+    } else{
+      next({ name: "Home" })
+    }
+  }else{
+    next()
+  }
 })
 
 export default router

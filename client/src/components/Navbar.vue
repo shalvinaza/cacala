@@ -26,7 +26,13 @@
               <button class="btn bg-light-orange text-white me-3 br-10" type="button">
                 <i class="fas fa-search me-1"></i>
                   Cari</button>
-              <button class="btn bg-light-orange text-white br-10" type="button" @click="goToLogin()">Login</button>
+              <!-- <button class="btn bg-light-orange text-white br-10" type="button" @click="goToLogin()">Login</button> -->
+              <span v-if="isLoggedIn">
+                <button class="btn bg-light-orange text-white br-10" type="button" @click="logUserOut">Logout</button>
+              </span>
+              <span v-else>
+                <button class="btn bg-light-orange text-white br-10" type="button" @click="goToLogin()">Login</button>
+              </span>
             </div>
         </div>
       </nav>
@@ -37,9 +43,16 @@
 <script>
 export default {
   name: 'Navbar',
+  computed: {
+    isLoggedIn: function() {return localStorage.getItem("token") != null}
+  },
   methods:{
     goToLogin(){
       this.$router.push('/login');
+    },
+    logUserOut(){
+      localStorage.removeItem('token')
+      this.$router.push('/login')
     }
   }
   

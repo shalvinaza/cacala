@@ -7,21 +7,25 @@
             </div>
             <div class="col-md right flex-row d-md-block flex-wrap">
                 <h4 class="bold text-center mb-5">Masuk</h4>
-                <div class="form-data" v-if="!submitted" id="form1">
-                    <div class="forms-inputs mb-4"> 
+                <!-- <div class="form-data" v-if="!submitted" id="form1"> -->
+                <!-- <div class="form-data" @submit.prevent="loginUser" id="form1"> -->
+                <form @submit.prevent="loginUser">
+                    <div class="forms-group mb-4"> 
                         <span>Email</span> 
-                        <input id="email_user" autocomplete="off" type="text" v-model="email" v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(email) && emailBlured}" v-on:blur="emailBlured = true" placeholder="Ketik email di sini">
+                        <input id="email_user" autocomplete="off" type="email" v-model="login.email" v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(email) && emailBlured}" v-on:blur="emailBlured = true" placeholder="Ketik email di sini">
                         <div class="invalid-feedback">Email harus valid!</div>
                     </div>
-                    <div class="forms-inputs mb-4"> 
+                    <div class="forms-group mb-4"> 
                         <span>Kata Sandi</span>
-                        <input id="pass_user" autocomplete="off" type="password" v-model="password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
+                        <input id="pass_user" autocomplete="off" type="password" v-model="login.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
                         <div class="invalid-feedback">Password minimal 8 karakter!</div>
                     </div>
                     <div class="mb-3"> 
-                        <button v-on:click.stop.prevent="submit" type="submit" class="btn bg-light-orange w-100 br-10">Masuk</button> 
+                        <!-- <button v-on:click.stop.prevent="submit" type="submit" class="btn bg-light-orange w-100 br-10">Masuk</button>  -->
+                        <button type="submit" class="btn bg-light-orange w-100 br-10">Masuk</button> 
                     </div>
-                </div>
+                </form>
+                <!-- </div> -->
                 <div class="mb-4">
                     <span>Belum punya akun?</span> <a style="color:#D65A40" href="/register">Daftar Sekarang</a>
                 </div>
@@ -32,6 +36,9 @@
 </template>
 
 <script>
+import axios from 'axios'
+const LOGIN_API_URL = `http://localhost:3000/auth/users/login`
+
 export default {
     name:'Form_login',
     data: function () {
@@ -41,8 +48,12 @@ export default {
             valid : false,
             submitted : false,
             password:"",
-            passwordBlured:false
+            passwordBlured:false,
+            login: {
+                email: "",
+                password: ""
             }
+        }   
     },
     methods:{
         validate : function(){
@@ -71,6 +82,23 @@ export default {
         },
         goToLoginAdmin(){
             this.$router.push('/login_admin');
+        },
+        loginUser(e){
+            e.preventDefault()
+            if (this.login.password.length > 0) {
+                axios.post(LOGIN_API_URL, this.login)
+                .then(response => {
+                    localStorage.setItem('token',response.data.token)
+
+                if (localStorage.getItem('token') != null){
+                    this.$emit('loggedIn')
+                    this.$router.push('/')
+                }
+                })
+                .catch(function (error) {
+                    console.error(error.response);
+                })
+            }
         }
     }
 }
@@ -98,7 +126,6 @@ p{
 .forms-inputs {
     position: relative
 }
-
 .forms-inputs span {
     position: absolute;
     top: -18px;
@@ -106,28 +133,23 @@ p{
     background-color: #fff;
     padding: 5px 10px;
 }
-
 .forms-inputs input {
     height: 50px;
     border: 2px solid #9D9493;
     border-radius:10px;
 }
-
 .forms-inputs input:focus {
     box-shadow: none;
     outline: none;
     border: 2px solid #D65A40;
 }
-
 .btn {
     height: 50px;
 }
-
 .success-data {
     display: flex;
     flex-direction: column;
 }
-
 .bxs-badge-check {
     font-size: 90px
 }
