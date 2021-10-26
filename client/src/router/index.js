@@ -8,6 +8,7 @@ import Dprd_kab_kota from '../views/Dprd_kab.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Login_admin from '../views/Login_admin.vue'
+import Profil_user from '../views/Profil_user.vue'
 
 const routes = [
   {
@@ -54,6 +55,11 @@ const routes = [
     path: '/login_admin',
     name: 'Login_admin',
     component: Login_admin
+  },
+  {
+    path: '/profil_user',
+    name: 'Profil_user',
+    component: Profil_user
   }   
   // {
   //   path: '/about',

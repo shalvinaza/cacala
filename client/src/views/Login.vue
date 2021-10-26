@@ -1,10 +1,9 @@
 <template>
-<div class="login justify-content-center">
-  <Navbar1/>
-  <Form_login style="padding:120px 0 70px 0"/>
-  <Footer1/>
-</div>
-  
+  <div class="login justify-content-center">
+    <Navbar1/>
+    <Form_login style="padding:120px 0 70px 0"/>
+    <Footer1/>
+  </div>
 </template>
 
 <script>

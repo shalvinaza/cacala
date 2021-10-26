@@ -62,6 +62,8 @@ export default {
     border-radius: 15px;
     background-color: #F2F0E1;
     min-height: 21.5rem;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border:none;
 }
 p{
     font-size: 16px;

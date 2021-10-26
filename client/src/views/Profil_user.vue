@@ -1,24 +1,23 @@
 <template>
-  <div class="presiden">
+   <div class="profil_user">
     <Navbar2/>
     <div class="content" style="padding:120px 0 70px 0">
-        <All_capres/>
+        <h1>Profil user</h1>
     </div>
     <Footer1/>
-  </div>
+  </div> 
 </template>
 
 <script>
 import Navbar2 from '@/components/Navbar2.vue'
-import All_capres from '@/components/All_capres.vue'
 import Footer1 from '@/components/Footer.vue'
 
+
 export default {
-    name:'Presiden',
+    name:'Profil_user',
     components:{
-      Navbar2,
-      All_capres,
-      Footer1
+        Navbar2,
+        Footer1
     }
 }
 </script>
