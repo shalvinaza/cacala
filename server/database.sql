@@ -68,3 +68,37 @@ select calon.id_calon, calon.nama, calon.foto, calon.slogan, admins.username, ja
       JOIN kota on calon.id_dapil_kota = kota.id_kota
       JOIN provinsi on kota.id_provinsi = provinsi.id_provinsi
 ;
+
+--TABEL PARTAI
+CREATE TABLE partai(
+   id_partai uuid PRIMARY KEY DEFAULT
+   uuid_generate_v4(),
+   nama_partai VARCHAR(100) NOT NULL
+);
+
+INSERT INTO partai (nama_partai) VALUES ('Partai Uhuy');
+
+--TABEL POST
+CREATE TABLE post(
+   id_post uuid PRIMARY KEY DEFAULT
+   uuid_generate_v4(),
+   id_admin uuid REFERENCES admins(id_admin),
+   judul VARCHAR(100),
+   teks TEXT,
+   foto TEXT,
+   video TEXT,
+   waktu TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO post(
+      id_admin, 
+      judul,
+      teks,
+      foto
+   ) 
+   VALUES(
+      '6bf8043e-1015-435a-89e0-a753427ba45a', 
+      'JUDUL POST',
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      'https://upload.wikimedia.org/wikipedia/id/thumb/5/55/Barack_Obama_Hope_poster.jpg/220px-Barack_Obama_Hope_poster.jpg'
+   );
