@@ -94,11 +94,35 @@ INSERT INTO post(
       id_admin, 
       judul,
       teks,
-      foto
+      foto,
+      video
    ) 
    VALUES(
       '6bf8043e-1015-435a-89e0-a753427ba45a', 
-      'JUDUL POST',
+      'JUDUL POST 2',
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      'https://upload.wikimedia.org/wikipedia/id/thumb/5/55/Barack_Obama_Hope_poster.jpg/220px-Barack_Obama_Hope_poster.jpg'
+      '',
+      ''
    );
+
+--TABEL RIWAYAT PENDIDIKAN
+CREATE TABLE riwayat_pendidikan(
+   id_pendidikan uuid PRIMARY KEY DEFAULT
+   uuid_generate_v4(),
+   id_calon uuid REFERENCES calon(id_calon),
+   nama_institusi VARCHAR(255) NOT NULL,
+   detail TEXT,
+   tahun_mulai VARCHAR(4),
+   tahun_selesai VARCHAR(4)
+);
+
+--TABEL RIWAYAT PEKERJAAN
+CREATE TABLE riwayat_pekerjaan(
+   id_pekerjaan uuid PRIMARY KEY DEFAULT
+   uuid_generate_v4(),
+   id_calon uuid REFERENCES calon(id_calon),
+   nama_pekerjaan VARCHAR(255) NOT NULL,
+   detail TEXT,
+   tahun_mulai VARCHAR(4),
+   tahun_selesai VARCHAR(4)
+);
