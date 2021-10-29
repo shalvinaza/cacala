@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h1 class="text-center pb-4 mb-4">Calon DPR Republik Indonesia</h1>
+        <h1 class="text-center pb-4 mb-4">Calon DPRD Kabupaten/Kota</h1>
         <a class="dropdown-toggle btn btn-outline-orange2 me-3" href="#" id="navbarDropdown" data-bs-toggle="dropdown">
             Daerah Pilih
         </a>
@@ -21,7 +21,7 @@
                     <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
                     <div class="card-body p-4">
                         <h5 class="card-title text-center">Nama Calon</h5>
-                        <p class="card-subtitle text-center text-muted">Calon DPR RI</p>
+                        <p class="card-subtitle text-center text-muted">Calon DPRD Kabupaten/Kota</p>
                         <div class="row align-items-start mt-3">
                             <p class="col d-flex flex-wrap card-title">Partai</p>
                             <div class="col d-flex flex-wrap justify-content-end">
@@ -46,7 +46,7 @@
                     <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
                     <div class="card-body p-4">
                         <h5 class="card-title text-center">Nama Calon</h5>
-                        <p class="card-subtitle text-center text-muted">Calon DPR RI</p>
+                        <p class="card-subtitle text-center text-muted">Calon DPRD Kabupaten/Kota</p>
                         <div class="row align-items-start mt-3">
                             <p class="col d-flex flex-wrap card-title">Partai</p>
                             <div class="col d-flex flex-wrap justify-content-end">
@@ -71,7 +71,7 @@
                     <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
                     <div class="card-body p-4">
                         <h5 class="card-title text-center">Nama Calon</h5>
-                        <p class="card-subtitle text-center text-muted">Calon DPR RI</p>
+                        <p class="card-subtitle text-center text-muted">Calon DPRD Kabupaten/Kota</p>
                         <div class="row align-items-start mt-3">
                             <p class="col d-flex flex-wrap card-title">Partai</p>
                             <div class="col d-flex flex-wrap justify-content-end">
@@ -96,7 +96,7 @@
                     <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
                     <div class="card-body p-4">
                         <h5 class="card-title text-center">Nama Calon</h5>
-                        <p class="card-subtitle text-center text-muted">Calon DPR RI</p>
+                        <p class="card-subtitle text-center text-muted">Calon DPRD Kabupaten/Kota</p>
                         <div class="row align-items-start mt-3">
                             <p class="col d-flex flex-wrap card-title">Partai</p>
                             <div class="col d-flex flex-wrap justify-content-end">
@@ -121,7 +121,7 @@
                     <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
                     <div class="card-body p-4">
                         <h5 class="card-title text-center">Nama Calon</h5>
-                        <p class="card-subtitle text-center text-muted">Calon DPR RI</p>
+                        <p class="card-subtitle text-center text-muted">Calon DPRD Kabupaten/Kota</p>
                         <div class="row align-items-start mt-3">
                             <p class="col d-flex flex-wrap card-title">Partai</p>
                             <div class="col d-flex flex-wrap justify-content-end">
@@ -146,7 +146,7 @@
                     <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
                     <div class="card-body p-4">
                         <h5 class="card-title text-center">Nama Calon</h5>
-                        <p class="card-subtitle text-center text-muted">Calon DPR RI</p>
+                        <p class="card-subtitle text-center text-muted">Calon DPRD Kabupaten/Kota</p>
                         <div class="row align-items-start mt-3">
                             <p class="col d-flex flex-wrap card-title">Partai</p>
                             <div class="col d-flex flex-wrap justify-content-end">
@@ -171,7 +171,7 @@
                     <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
                     <div class="card-body p-4">
                         <h5 class="card-title text-center">Nama Calon</h5>
-                        <p class="card-subtitle text-center text-muted">Calon DPR RI</p>
+                        <p class="card-subtitle text-center text-muted">Calon DPRD Kabupaten/Kota</p>
                         <div class="row align-items-start mt-3">
                             <p class="col d-flex flex-wrap card-title">Partai</p>
                             <div class="col d-flex flex-wrap justify-content-end">
@@ -196,7 +196,7 @@
                     <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
                     <div class="card-body p-4">
                         <h5 class="card-title text-center">Nama Calon</h5>
-                        <p class="card-subtitle text-center text-muted">Calon DPR RI</p>
+                        <p class="card-subtitle text-center text-muted">Calon DPRD Kabupaten/Kota</p>
                         <div class="row align-items-start mt-3">
                             <p class="col d-flex flex-wrap card-title">Partai</p>
                             <div class="col d-flex flex-wrap justify-content-end">
@@ -223,7 +223,7 @@
 
 <script>
 export default {
-    name: 'All_drp_ri',
+    name: 'All_drp_kab_kota',
 }
 </script>
 
