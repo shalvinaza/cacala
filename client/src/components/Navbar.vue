@@ -22,13 +22,20 @@
                 </li>
                 <router-link to="/dprd_kab_kota" class="nav-link">DPRD Kabupaten/Kota</router-link>
             </div>
-            <div class="d-flex">
+            <div class="d-flex align-items-center">
               <button class="btn bg-light-orange text-white me-3 br-10" type="button">
                 <i class="fas fa-search me-1"></i>
                   Cari</button>
-              <!-- <button class="btn bg-light-orange text-white br-10" type="button" @click="goToLogin()">Login</button> -->
               <span v-if="isLoggedIn">
-                <button class="btn bg-light-orange text-white br-10" type="button" @click="logUserOut">Logout</button>
+                <div class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle nav-profil" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="far fa-user-circle nav-profil"></i>
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <li><a class="dropdown-item" style="color:black" href="/profil_user">Profil Saya</a></li>
+                      <li><a class="dropdown-item" style="color:black" @click="logUserOut" href="#">Keluar</a></li>
+                  </div>
+                </div>
               </span>
               <span v-else>
                 <button class="btn bg-light-orange text-white br-10" type="button" @click="goToLogin()">Login</button>
@@ -66,5 +73,13 @@ a, a:hover{
 }
 a:active{
   color: #D65A40;
+}
+.nav-profil{
+    color: #DDA18C;
+    font-size: large;
+    padding: 0;
+}
+.nav-profil:hover{
+    color: #D65A40;
 }
 </style>

@@ -10,14 +10,14 @@
                 <!-- <div class="form-data" v-if="!submitted" id="form1"> -->
                 <!-- <div class="form-data" @submit.prevent="loginUser" id="form1"> -->
                 <form @submit.prevent="loginUser">
-                    <div class="forms-group mb-4"> 
+                    <div class="forms-inputs mb-4"> 
                         <span>Email</span> 
-                        <input id="email_user" autocomplete="off" type="email" v-model="login.email" v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(email) && emailBlured}" v-on:blur="emailBlured = true" placeholder="Ketik email di sini">
+                        <input id="email_user" autocomplete="off" type="email" v-model="login.email" v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(login.email) && emailBlured}" v-on:blur="emailBlured = true" placeholder="Ketik email di sini">
                         <div class="invalid-feedback">Email harus valid!</div>
                     </div>
-                    <div class="forms-group mb-4"> 
+                    <div class="forms-inputs mb-4"> 
                         <span>Kata Sandi</span>
-                        <input id="pass_user" autocomplete="off" type="password" v-model="login.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
+                        <input id="pass_user" autocomplete="off" type="password" v-model="login.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(login.password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
                         <div class="invalid-feedback">Password minimal 8 karakter!</div>
                     </div>
                     <div class="mb-3"> 
@@ -29,7 +29,7 @@
                 <div class="mb-4">
                     <span>Belum punya akun?</span> <a style="color:#D65A40" href="/register">Daftar Sekarang</a>
                 </div>
-                <button type="button" @click="goToLoginAdmin()" class="btn btn-outline-orange w-100 br-10">Masuk sebagai admin</button> 
+                <button type="button" @click="goToLoginAdmin()" class="btn btn-outline-orange2 w-100 br-10">Masuk sebagai admin</button> 
             </div>
           </div>
   </div>
@@ -43,11 +43,9 @@ export default {
     name:'Form_login',
     data: function () {
         return {
-            email : "",
             emailBlured : false,
             valid : false,
             submitted : false,
-            password:"",
             passwordBlured:false,
             login: {
                 email: "",
@@ -152,13 +150,5 @@ p{
 }
 .bxs-badge-check {
     font-size: 90px
-}
-.btn-outline-orange{
-    color:#DDA18C;
-    border-color: #DDA18C;
-}
-.btn-outline-orange:hover{
-    color:white;
-    background-color: #D65A40;
 }
 </style>

@@ -11,17 +11,17 @@
                 <form @submit.prevent="registerUser">
                     <div class="forms-inputs mb-4">  
                         <span>Nama</span> 
-                        <input id="email_user" autocomplete="off" type="text" v-model="register.username" v-bind:class="{'form-control':true, 'is-invalid' : !validUname(uname) && unameBlured}" v-on:blur="unameBlured = true" placeholder="Ketik nama di sini">
+                        <input id="email_user" autocomplete="off" type="text" v-model="register.username" v-bind:class="{'form-control':true, 'is-invalid' : !validUname(register.username) && unameBlured}" v-on:blur="unameBlured = true" placeholder="Ketik nama di sini">
                         <div class="invalid-feedback">Nama tidak boleh kosong!</div>
                     </div>
                     <div class="forms-inputs mb-4"> 
                         <span>Email</span> 
-                        <input id="email_user" autocomplete="off" type="text" v-model="register.email" v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(email) && emailBlured}" v-on:blur="emailBlured = true" placeholder="Ketik email di sini">
+                        <input id="email_user" autocomplete="off" type="text" v-model="register.email" v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(register.email) && emailBlured}" v-on:blur="emailBlured = true" placeholder="Ketik email di sini">
                         <div class="invalid-feedback">Email harus valid!</div>
                     </div>
                     <div class="forms-inputs mb-4"> 
                         <span>Kata Sandi</span>
-                        <input id="pass_user" autocomplete="off" type="password" v-model="register.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
+                        <input id="pass_user" autocomplete="off" type="password" v-model="register.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(register.password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
                         <div class="invalid-feedback">Password minimal 8 karakter!</div>
                     </div>
                     <!-- <div class="forms-inputs mb-4"> 
@@ -51,13 +51,10 @@ export default {
     name:'Form_login',
     data: function () {
         return {
-            uname :"",
             unameBlured : false,
-            email : "",
             emailBlured : false,
             valid : false,
             submitted : false,
-            password:"",
             passwordBlured:false,
             register: {
                 username: "",

@@ -22,7 +22,7 @@
                         <button v-on:click.stop.prevent="submit" type="submit" class="btn bg-light-orange w-100 br-10">Masuk</button> 
                     </div>
                 </div>
-                <button type="button" @click="goToLoginUser()" class="btn btn-outline-orange w-100 br-10">Masuk sebagai pengguna</button> 
+                <button type="button" @click="goToLoginUser()" class="btn btn-outline-orange2 w-100 br-10">Masuk sebagai pengguna</button> 
             </div>
           </div>
   </div>
@@ -126,13 +126,5 @@ p{
 
 .bxs-badge-check {
     font-size: 90px
-}
-.btn-outline-orange{
-    color:#DDA18C;
-    border-color: #DDA18C;
-}
-.btn-outline-orange:hover{
-    color:white;
-    background-color: #D65A40;
 }
 </style>
