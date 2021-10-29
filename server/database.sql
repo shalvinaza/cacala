@@ -104,3 +104,25 @@ INSERT INTO post(
       '',
       ''
    );
+
+--TABEL RIWAYAT PENDIDIKAN
+CREATE TABLE riwayat_pendidikan(
+   id_pendidikan uuid PRIMARY KEY DEFAULT
+   uuid_generate_v4(),
+   id_calon uuid REFERENCES calon(id_calon),
+   nama_institusi VARCHAR(255) NOT NULL,
+   detail TEXT,
+   tahun_mulai VARCHAR(4),
+   tahun_selesai VARCHAR(4)
+);
+
+--TABEL RIWAYAT PEKERJAAN
+CREATE TABLE riwayat_pekerjaan(
+   id_pekerjaan uuid PRIMARY KEY DEFAULT
+   uuid_generate_v4(),
+   id_calon uuid REFERENCES calon(id_calon),
+   nama_pekerjaan VARCHAR(255) NOT NULL,
+   detail TEXT,
+   tahun_mulai VARCHAR(4),
+   tahun_selesai VARCHAR(4)
+);
