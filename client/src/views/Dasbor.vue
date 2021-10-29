@@ -1,25 +1,24 @@
 <template>
-   <div class="profil_user">
+  <div class="dasbor">
     <Navbar/>
     <div class="content" style="padding:120px 0 70px 0">
-        <Form_profil_user/>
+        <My_dasbor/>
     </div>
     <Footer1/>
-  </div> 
+  </div>
 </template>
 
 <script>
 import Navbar from '@/components/Navbar.vue'
-import Form_profil_user from '@/components/Form_profil_user.vue'
+import My_dasbor from '@/components/My_dasbor.vue'
 import Footer1 from '@/components/Footer.vue'
 
-
 export default {
-    name:'Profil_user',
+    name:'Dasbor',
     components:{
-        Navbar,
-        Form_profil_user,
-        Footer1
+      Navbar,
+      My_dasbor,
+      Footer1
     }
 }
 </script>

@@ -21,6 +21,9 @@
                   </div>
                 </li>
                 <router-link to="/dprd_kab_kota" class="nav-link">DPRD Kabupaten/Kota</router-link>
+                <span v-if="isLoggedIn">
+                  <router-link to="/dasbor_saya" class="nav-link">Dasbor</router-link>
+                </span>
             </div>
             <div class="d-flex align-items-center">
               <button class="btn bg-light-orange text-white me-3 br-10" type="button">
