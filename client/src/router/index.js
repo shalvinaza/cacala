@@ -9,6 +9,7 @@ import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Login_admin from '../views/Login_admin.vue'
 import Profil_user from '../views/Profil_user.vue'
+import Dasbor from '../views/Dasbor.vue'
 
 const routes = [
   {
@@ -40,6 +41,11 @@ const routes = [
     path: '/dprd_kab_kota',
     name: 'Dprd_kab_kota',
     component: Dprd_kab_kota
+  },
+  {
+    path: '/dasbor_saya',
+    name: 'Dasbor',
+    component: Dasbor
   },
   {
     path: '/login',

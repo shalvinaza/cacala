@@ -1,8 +1,8 @@
 <template>
-  <div class="presiden">
+  <div class="dasbor">
     <Navbar/>
     <div class="content" style="padding:120px 0 70px 0">
-        <All_capres/>
+        <My_dasbor/>
     </div>
     <Footer1/>
   </div>
@@ -10,14 +10,14 @@
 
 <script>
 import Navbar from '@/components/Navbar.vue'
-import All_capres from '@/components/All_capres.vue'
+import My_dasbor from '@/components/My_dasbor.vue'
 import Footer1 from '@/components/Footer.vue'
 
 export default {
-    name:'Presiden',
+    name:'Dasbor',
     components:{
       Navbar,
-      All_capres,
+      My_dasbor,
       Footer1
     }
 }

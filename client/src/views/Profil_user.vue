@@ -1,22 +1,24 @@
 <template>
    <div class="profil_user">
-    <Navbar2/>
+    <Navbar/>
     <div class="content" style="padding:120px 0 70px 0">
-        <h1>Profil user</h1>
+        <Form_profil_user/>
     </div>
     <Footer1/>
   </div> 
 </template>
 
 <script>
-import Navbar2 from '@/components/Navbar2.vue'
+import Navbar from '@/components/Navbar.vue'
+import Form_profil_user from '@/components/Form_profil_user.vue'
 import Footer1 from '@/components/Footer.vue'
 
 
 export default {
     name:'Profil_user',
     components:{
-        Navbar2,
+        Navbar,
+        Form_profil_user,
         Footer1
     }
 }

@@ -72,3 +72,36 @@ a:active{
 .f-24{
     font-size: 24px;
 }
+.btn-outline-orange{
+    color: #D65A40;
+    border: 3px solid  #D65A40;
+    border-radius: 10px;
+    min-width: 7rem;
+    font-weight: 600;
+}
+.btn-outline-orange:hover{
+    color:white;
+    background-color: #D65A40;
+}
+.btn-outline-blue{
+    color:#3E5D7A;
+    border: 3px solid #3E5D7A;
+    border-radius: 10px;
+    min-width: 7rem;
+    font-weight: 600;
+}
+.btn-outline-blue:hover{
+    color:white;
+    background-color: #3E5D7A;
+}
+.btn-outline-orange2{
+    color: #DDA18C;
+    border: 3px solid  #DDA18C;
+    border-radius: 10px;
+    min-width: 7rem;
+    font-weight: 600;
+}
+.btn-outline-orange2:hover{
+    color:white;
+    background-color: #DDA18C;
+}

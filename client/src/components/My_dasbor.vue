@@ -1,7 +1,14 @@
 <template>
-    <div class="container">
-        <h1 class="text-center pb-4 mb-5">Pasangan Presiden dan Wakil Presiden</h1>
-        <div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center">
+  <div class="container">
+      <h1 class="text-center pb-4 mb-4">Calon yang Diikuti</h1>
+      <div class="d-flex d-inline-row pb-3 mb-4">
+          <a href="#" class="me-3" style="color: #D65A40;">Presiden</a>
+          <a href="#" class="me-3">DPR RI</a>
+          <a href="#" class="me-3">DPD RI</a>
+          <a href="#" class="me-3">DPRD Provinsi</a>
+          <a href="#" class="me-3">DPRD Kabupaten/Kota</a>
+      </div>
+      <div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center">
             <div class="col">
                 <div class="card h-100">
                     <h3 class="card-img-overlay p-4">1</h3>
@@ -69,24 +76,30 @@
                     </div>
                 </div>
             </div>
-            
         </div>
-    </div>
+  </div>
 </template>
 
 <script>
 export default {
-    name: 'All_capres',
-    methods : {
-        
-    }
+    name:'My_dasbor'
+
 }
 </script>
 
 <style scoped>
+a{
+    color: black;
+    font-weight: 600;
+}
+a:hover,a:active{
+    color: #D65A40;
+}
 h1{
     letter-spacing: 0.10em;
     font-weight: 700;
+}
+.d-inline-row{
     border-bottom: 2px solid black;
 }
 .card{
@@ -103,12 +116,5 @@ h1{
     max-width: 22px;
     max-height: 22px;
     border-radius: 15px;
-}
-.box-no-urut{
-    background: #FFFFFF;
-    max-width: 80px;
-    max-height: 80px;
-    border-radius: calc(width)-50%;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 </style>
