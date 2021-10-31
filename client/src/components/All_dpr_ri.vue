@@ -19,6 +19,9 @@
             <div class="col">
                 <div class="card h-100">
                     <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
+                   <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
+                        <h5>1</h5>
+                    </div>
                     <div class="card-body p-4">
                         <h5 class="card-title text-center">Nama Calon</h5>
                         <p class="card-subtitle text-center text-muted">Calon DPR RI</p>
@@ -44,6 +47,9 @@
             <div class="col">
                 <div class="card h-100">
                     <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
+                   <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
+                        <h5>1</h5>
+                    </div>
                     <div class="card-body p-4">
                         <h5 class="card-title text-center">Nama Calon</h5>
                         <p class="card-subtitle text-center text-muted">Calon DPR RI</p>
@@ -66,9 +72,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col">
+                        <div class="col">
                 <div class="card h-100">
                     <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
+                   <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
+                        <h5>1</h5>
+                    </div>
                     <div class="card-body p-4">
                         <h5 class="card-title text-center">Nama Calon</h5>
                         <p class="card-subtitle text-center text-muted">Calon DPR RI</p>
@@ -91,9 +100,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col">
+                        <div class="col">
                 <div class="card h-100">
                     <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
+                   <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
+                        <h5>1</h5>
+                    </div>
                     <div class="card-body p-4">
                         <h5 class="card-title text-center">Nama Calon</h5>
                         <p class="card-subtitle text-center text-muted">Calon DPR RI</p>
@@ -116,9 +128,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col">
+                        <div class="col">
                 <div class="card h-100">
                     <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
+                   <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
+                        <h5>1</h5>
+                    </div>
                     <div class="card-body p-4">
                         <h5 class="card-title text-center">Nama Calon</h5>
                         <p class="card-subtitle text-center text-muted">Calon DPR RI</p>
@@ -141,9 +156,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col">
+                        <div class="col">
                 <div class="card h-100">
                     <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
+                   <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
+                        <h5>1</h5>
+                    </div>
                     <div class="card-body p-4">
                         <h5 class="card-title text-center">Nama Calon</h5>
                         <p class="card-subtitle text-center text-muted">Calon DPR RI</p>
@@ -166,9 +184,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col">
+                        <div class="col">
                 <div class="card h-100">
                     <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
+                   <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
+                        <h5>1</h5>
+                    </div>
                     <div class="card-body p-4">
                         <h5 class="card-title text-center">Nama Calon</h5>
                         <p class="card-subtitle text-center text-muted">Calon DPR RI</p>
@@ -191,9 +212,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col">
+                        <div class="col">
                 <div class="card h-100">
                     <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
+                   <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
+                        <h5>1</h5>
+                    </div>
                     <div class="card-body p-4">
                         <h5 class="card-title text-center">Nama Calon</h5>
                         <p class="card-subtitle text-center text-muted">Calon DPR RI</p>
@@ -254,5 +278,15 @@ h1{
 }
 .btn-outline-orange, .btn-outline-blue{
     min-width: 5rem;
+}
+.card-img-overlay{
+    right: unset;
+    left: unset;
+    bottom: unset;
+    background-color: white;
+    min-width: 50px;
+    min-height: 50px;
+    border-radius: 40px;
+    box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.25);
 }
 </style>

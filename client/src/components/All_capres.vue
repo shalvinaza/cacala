@@ -4,8 +4,10 @@
         <div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center">
             <div class="col">
                 <div class="card h-100">
-                    <h3 class="card-img-overlay p-4">1</h3>
                     <img src="../assets/images/pres.png" class="card-img-top" alt="pres 2">
+                    <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
+                        <h5>1</h5>
+                    </div>
                     <div class="card-body p-4">
                         <h5 class="card-title text-center mb-3">Nama Calon Presiden & Calon Wakil Presiden</h5>
                         <div class="row align-items-start mb-4">
@@ -28,6 +30,9 @@
             <div class="col">
                 <div class="card h-100">
                     <img src="../assets/images/pres.png" class="card-img-top" alt="pres 2">
+                     <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
+                        <h5>2</h5>
+                    </div>
                     <div class="card-body p-4">
                         <h5 class="card-title text-center mb-3">Nama Calon Presiden & Calon Wakil Presiden</h5>
                         <div class="row align-items-start mb-4">
@@ -50,6 +55,9 @@
             <div class="col">
                 <div class="card h-100">
                     <img src="../assets/images/pres.png" class="card-img-top" alt="pres 2">
+                    <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
+                        <h5>3</h5>
+                    </div>
                     <div class="card-body p-4">
                         <h5 class="card-title text-center mb-3">Nama Calon Presiden & Calon Wakil Presiden</h5>
                         <div class="row align-items-start mb-4">
@@ -104,11 +112,14 @@ h1{
     max-height: 22px;
     border-radius: 15px;
 }
-.box-no-urut{
-    background: #FFFFFF;
-    max-width: 80px;
-    max-height: 80px;
-    border-radius: calc(width)-50%;
+.card-img-overlay{
+    right: unset;
+    left: unset;
+    bottom: unset;
+    background-color: white;
+    min-width: 50px;
+    min-height: 50px;
+    border-radius: 40px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 </style>
