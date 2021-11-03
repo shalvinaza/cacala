@@ -21,7 +21,7 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-center justify-content-between">
-                            <button class="btn btn-outline-orange">Detail</button>
+                            <button class="btn btn-outline-orange" @click="goToDetail()">Detail</button>
                             <button class="btn btn-outline-blue">Ikuti</button>                        
                         </div>
                     </div>
@@ -86,7 +86,9 @@
 export default {
     name: 'All_capres',
     methods : {
-        
+        goToDetail(){
+        this.$router.push('/detail_calon');
+        }
     }
 }
 </script>

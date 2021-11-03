@@ -10,6 +10,7 @@ import Register from '../views/Register.vue'
 import Login_admin from '../views/Login_admin.vue'
 import Profil_user from '../views/Profil_user.vue'
 import Dasbor from '../views/Dasbor.vue'
+import Detail_calon from '../views/Detail_calon.vue'
 
 const routes = [
   {
@@ -67,6 +68,11 @@ const routes = [
     path: '/profil_user',
     name: 'Profil_user',
     component: Profil_user
+  },
+  {
+    path: '/detail_calon',
+    name: 'Detail_calon',
+    component: Detail_calon
   }   
   // {
   //   path: '/about',
