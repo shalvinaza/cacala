@@ -22,12 +22,16 @@ CREATE TABLE Kota(
 	      REFERENCES provinsi(id_provinsi)
 );
 
+--add kota
 INSERT INTO Kota(id_provinsi, kota) VALUES(
-   '128254fc-fd93-4025-bc23-e784f64907ee',
+   '9f709293-5ddd-4e12-a56f-894e0962f472',
    'Kota Gorontalo'
 );
 
--- SELECT KOTA + PROVINSI
+--add provinsi
+INSERT INTO provinsi(provinsi) VALUES ('Gorontalo');
+
+-- select kota + provinsi
 select kota.id_kota, kota.kota, provinsi.provinsi
    FROM kota, provinsi
          WHERE kota.id_provinsi = provinsi.id_provinsi;
@@ -53,9 +57,9 @@ INSERT INTO Calon(
       slogan
    ) 
    VALUES(
-      '6bf8043e-1015-435a-89e0-a753427ba45a', 
-      '399f8983-3983-43b0-b095-55d62cebc309',
-      '07058482-f4ef-46fa-8005-219181f0e64c',
+      'c45b83d7-667c-4e82-8033-ecc421b18919', 
+      'aa0faabb-82e5-45bc-8b0a-c5795aa4c91a',
+      '2b4af532-dfe7-4aef-8734-aeec7611e30b',
       'Aithra Junia Bouty',
       'https://i.pinimg.com/474x/40/f3/1d/40f31dd88a4ec213f8b21d1444242969.jpg',
       'Yuk Bisa Yuk'
@@ -76,7 +80,7 @@ CREATE TABLE partai(
    nama_partai VARCHAR(100) NOT NULL
 );
 
-INSERT INTO partai (nama_partai) VALUES ('Partai Uhuy');
+INSERT INTO partai (nama_partai) VALUES ('Partai Mantap');
 
 --TABEL POST
 CREATE TABLE post(
@@ -116,6 +120,21 @@ CREATE TABLE riwayat_pendidikan(
    tahun_selesai VARCHAR(4)
 );
 
+INSERT INTO riwayat_pendidikan(
+      id_calon, 
+      nama_institusi,
+      detail,
+      tahun_mulai,
+      tahun_selesai
+   ) 
+   VALUES(
+      '32555aee-f2a8-4cf3-924f-cfe888d659ae', 
+      'Universitas Padjadjaran',
+      'FMIPA Teknik Informatika',
+      '2018',
+      '2022'
+   );
+
 --TABEL RIWAYAT PEKERJAAN
 CREATE TABLE riwayat_pekerjaan(
    id_pekerjaan uuid PRIMARY KEY DEFAULT
@@ -126,3 +145,64 @@ CREATE TABLE riwayat_pekerjaan(
    tahun_mulai VARCHAR(4),
    tahun_selesai VARCHAR(4)
 );
+
+INSERT INTO riwayat_pekerjaan(
+      id_calon, 
+      nama_pekerjaan,
+      detail,
+      tahun_mulai,
+      tahun_selesai
+   ) 
+   VALUES(
+      '32555aee-f2a8-4cf3-924f-cfe888d659ae', 
+      'Mobile Developer',
+      'Magang di BNI',
+      '2021',
+      '2022'
+   );
+
+--TABEL PARTAI_CALON
+CREATE TABLE partai_calon (
+  id_calon uuid REFERENCES calon (id_calon) ON UPDATE CASCADE ON DELETE CASCADE,
+  id_partai uuid REFERENCES partai (id_partai) ON UPDATE CASCADE,
+  CONSTRAINT partai_calon_pkey PRIMARY KEY (id_calon, id_partai)  -- explicit pk
+);
+
+INSERT INTO partai_calon(
+      id_calon, 
+      id_partai
+   ) 
+   VALUES(
+      '32555aee-f2a8-4cf3-924f-cfe888d659ae', 
+      'e41f08af-27c4-4016-8766-ca45ed26edff'
+   );
+
+select calon.nama, partai.nama_partai
+   FROM partai_calon 
+      JOIN calon ON partai_calon.id_calon = calon.id_calon
+      JOIN partai ON partai_calon.id_partai = partai.id_partai;
+
+--TABEL MENGIKUTI_CALON
+CREATE TABLE mengikuti_calon (
+  id_user uuid REFERENCES users (id_user) ON UPDATE CASCADE ON DELETE CASCADE,
+  id_calon uuid REFERENCES calon (id_calon) ON UPDATE CASCADE,
+  CONSTRAINT mengikuti_calon_pkey PRIMARY KEY (id_user, id_calon)  -- explicit pk
+);
+
+INSERT INTO mengikuti_calon(
+      id_user,
+      id_calon
+   ) 
+   VALUES(
+      '862c6d34-c90c-40ff-8015-789044dd1697', 
+      '32555aee-f2a8-4cf3-924f-cfe888d659ae'
+   );
+
+select users.username, users.email, calon.nama
+   FROM mengikuti_calon 
+      JOIN users ON users.id_user= mengikuti_calon.id_user
+      JOIN calon ON mengikuti_calon.id_calon = calon.id_calon;
+
+--TABEL JABATAN
+INSERT INTO jabatan(jabatan_tujuan) VALUES ('Wakil Presiden');
+
