@@ -66,15 +66,45 @@
                     <div class="card text-white poster-calon mb-2 text-center">
                         <img src="../assets/images/poster.jpg" class="poster-calon" alt="dpr 2">
                         <div class="card-img-overlay d-flex justify-content-start poster-caption">
-                            <p class="card-text w-100">“Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...”</p>
+                            <p class="card-text me-3 w-100">“Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...”</p>
+                            <span class="card-text icons"><i class="fas fa-edit"></i></span>
                         </div>
                     </div>
                     <div class="p-4">
+                        <!-- part create post -->
+                        <button type="button" class="btn bg-light-orange br-10 mb-3">Mulai siaran langsung</button>
+                        <div class="card w-100 postingan p-3 mb-3">
+                            <div class="card-body p-0">
+                                <h5 class="card-title text-center mb-4">Apa kabar tebaru dari Anda?</h5>
+                                <form>
+                                    <div class="forms-inputs mb-4"> 
+                                        <span>Judul unggahan</span> 
+                                        <input id="judul_post" class="w-100 p-3" autocomplete="off" type="text" v-model="judul_post" placeholder="Ketik email di sini">
+                                        <!-- <div class="invalid-feedback">Email harus valid!</div> -->
+                                    </div>
+                                    <div class="forms-inputs mb-3"> 
+                                        <span>Teks unggahan</span>
+                                        <textarea id="teks_post" class="w-100 p-3" autocomplete="off" v-model="text_post" placeholder="Ketik kata sandi di sini"></textarea>
+                                        <!-- <div class="invalid-feedback">Password minimal 8 karakter!</div> -->
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <span class="card-text icons me-3"><i class="fas fa-images"></i></span>
+                                        <span class="card-text icons flex-grow-2 w-100"><i class="fas fa-video"></i></span>
+                                        <!-- <button v-on:click.stop.prevent="submit" type="submit" class="btn bg-light-orange w-100 br-10">Masuk</button>  -->
+                                        <button type="submit" class="btn bg-light-orange br-10">Unggah</button> 
+                                    </div>
+                                </form>                           
+                            </div>
+                        </div> 
                         <!-- posts just text-->
                         <div class="card w-100 postingan p-3 mb-3">
                             <div class="card-body p-0">
                                 <h5 class="card-title text-center">Judul Post</h5>
-                                <p class="card-text text-muted end-row-section pb-2" style=""><i class="far fa-calendar-alt"></i>  <small>19/08/2021</small></p>
+                                <div class="d-flex end-row-section w-100 p-0 mb-3 pb-2">
+                                    <p class="card-text text-muted m-0 flex-grow-2 w-100" style=""><i class="far fa-calendar-alt"></i>  <small>19/08/2021</small></p>
+                                    <span class="card-text icons me-2"><i class="fas fa-edit"></i></span>
+                                    <span class="card-text icons"><i class="fas fa-trash"></i></span>
+                                </div>
                                 <!-- <img src="../assets/images/poster_post.jpg" class="w-100 img-poster-post mb-3" alt="..."> -->
                                 <p class="card-text">On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.</p>
                             </div>
@@ -83,7 +113,11 @@
                         <div class="card w-100 postingan p-3 mb-3">
                             <div class="card-body p-0">
                                 <h5 class="card-title text-center">Judul Post</h5>
-                                <p class="card-text text-muted end-row-section pb-2" style=""><i class="far fa-calendar-alt"></i>  <small>19/08/2021</small></p>
+                                <div class="d-flex end-row-section w-100 p-0 mb-3 pb-2">
+                                    <p class="card-text text-muted m-0 flex-grow-2 w-100" style=""><i class="far fa-calendar-alt"></i>  <small>19/08/2021</small></p>
+                                    <span class="card-text icons me-2"><i class="fas fa-edit"></i></span>
+                                    <span class="card-text icons"><i class="fas fa-trash"></i></span>
+                                </div>
                                 <img src="../assets/images/poster_post2.jpg" class="w-100 img-poster-post mb-3" alt="...">
                                 <!-- <p class="card-text">On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.</p> -->
                             </div>
@@ -92,7 +126,11 @@
                         <div class="card w-100 postingan p-3 mb-3">
                             <div class="card-body p-0">
                                 <h5 class="card-title text-center">Judul Post</h5>
-                                <p class="card-text text-muted end-row-section pb-2" style=""><i class="far fa-calendar-alt"></i>  <small>19/08/2021</small></p>
+                                <div class="d-flex end-row-section w-100 p-0 mb-3 pb-2">
+                                    <p class="card-text text-muted m-0 flex-grow-2 w-100" style=""><i class="far fa-calendar-alt"></i>  <small>19/08/2021</small></p>
+                                    <span class="card-text icons me-2"><i class="fas fa-edit"></i></span>
+                                    <span class="card-text icons"><i class="fas fa-trash"></i></span>
+                                </div>
                                 <img src="../assets/images/poster_post.jpg" class="w-100 img-poster-post mb-3" alt="...">
                                 <p class="card-text">On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.</p>
                             </div>
@@ -107,8 +145,13 @@
 
 <script>
 export default {
-    name :'Post_detail_calon'
-
+    name :'Post_detail_calon',
+    data: function () {
+        return {
+            judul_post:"",
+            teks_post:" "
+        }   
+    }
 }
 </script>
 
@@ -160,9 +203,28 @@ export default {
     max-height: 800px;
 }
 .icons{
-    color: white;
+    color: #DDA18C;
 }
 .icons:hover,.icons:active{
     color: #D65A40;
+}
+.forms-inputs, .forms-textarea {
+    position: relative;
+}
+.forms-inputs span {
+    position: absolute;
+    top: -18px;
+    left: 10px;
+    background-color: #fff;
+    padding: 5px 10px;
+}
+.forms-inputs input, textarea {
+    border: 2px solid #9D9493;
+    border-radius:10px;
+}
+.forms-inputs input:focus, textarea:focus {
+    box-shadow: none;
+    outline: none;
+    border: 2px solid #D65A40;
 }
 </style>

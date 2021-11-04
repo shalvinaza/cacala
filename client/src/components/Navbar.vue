@@ -36,6 +36,7 @@
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                       <li><a class="dropdown-item" style="color:black" href="/profil_user">Profil Saya</a></li>
+                      <li><a class="dropdown-item" style="color:black" href="/detail_admin_calon">Profil Admin</a></li>
                       <li><a class="dropdown-item" style="color:black" @click="logUserOut" href="#">Keluar</a></li>
                   </div>
                 </div>
