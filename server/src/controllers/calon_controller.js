@@ -72,3 +72,29 @@ exports.selectCalonByJabatan = async (req, res) => {
       res.json({ message: err })
    }
 }
+
+exports.selectCalonByPartai = async (req, res) => {
+   const { id_partai } = req.params
+   try{
+      const calon = await pool.query(
+         "SELECT calon.id_calon, calon.nama, calon.foto, calon.slogan, admins.username, jabatan.jabatan_tujuan, kota.kota, provinsi.provinsi, partai.nama_partai FROM calon JOIN admins on calon.id_admin = admins.id_admin JOIN jabatan on calon.id_jabatan = jabatan.id_jabatan JOIN kota on calon.id_dapil_kota = kota.id_kota JOIN provinsi on kota.id_provinsi = provinsi.id_provinsi JOIN partai_calon ON partai_calon.id_calon = calon.id_calon JOIN partai ON partai_calon.id_partai = partai.id_partai WHERE partai_calon.id_partai = $1;",[
+            id_partai
+         ])
+      
+         res.json(calon.rows)
+   } catch(err) {
+      res.json({ message: err })
+   }
+}
+
+exports.selectPartai = async (req, res) => {
+   try{
+      const calon = await pool.query(
+         "select calon.nama, partai.nama_partai FROM partai_calon JOIN calon ON partai_calon.id_calon = calon.id_calon JOIN partai ON partai_calon.id_partai = partai.id_partai;"
+      )
+
+      res.json(calon.rows)
+   } catch(err) {
+      res.json({ message: err })
+   }
+}
