@@ -5,5 +5,6 @@ const authorization = require("../middleware/authorization")
 
 router.get("/", authorization, controller.getUser)
 router.put("/:id", controller.updateUser)
+router.get("/followed", authorization, controller.selectFollowedCalonByUser)
 
 module.exports = router

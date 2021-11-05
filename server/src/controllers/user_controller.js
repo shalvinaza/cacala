@@ -110,3 +110,16 @@ exports.updateUser = async (req, res) => {
       res.json({ message: err })
    }
 }
+
+exports.selectFollowedCalonByUser = async (req, res) => {
+   try{
+      const calon = await pool.query(
+         "select users.username, users.email, calon.id_calon, calon.nama FROM mengikuti_calon JOIN users ON users.id_user= mengikuti_calon.id_user JOIN calon ON mengikuti_calon.id_calon = calon.id_calon WHERE mengikuti_calon.id_user = $1;",[
+            req.user
+         ])
+      
+         res.json(calon.rows)
+   } catch(err) {
+      res.json({ message: err })
+   }
+}
