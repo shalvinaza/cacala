@@ -57,8 +57,8 @@ INSERT INTO Calon(
       slogan
    ) 
    VALUES(
-      'c45b83d7-667c-4e82-8033-ecc421b18919', 
-      'aa0faabb-82e5-45bc-8b0a-c5795aa4c91a',
+      'd2647461-20fd-4520-bda3-47077b46a31e', 
+      '51978294-1f8a-4c8c-acbf-f3cc013c16d3',
       '2b4af532-dfe7-4aef-8734-aeec7611e30b',
       'Aithra Junia Bouty',
       'https://i.pinimg.com/474x/40/f3/1d/40f31dd88a4ec213f8b21d1444242969.jpg',
@@ -212,11 +212,15 @@ INSERT INTO mengikuti_calon(
       '32555aee-f2a8-4cf3-924f-cfe888d659ae'
    );
 
+INSERT INTO mengikuti_calon(id_user, id_calon) VALUES('862c6d34-c90c-40ff-8015-789044dd1697','32555aee-f2a8-4cf3-924f-cfe888d659ae');
+
 select users.username, users.email, calon.id_calon, calon.nama
    FROM mengikuti_calon 
       JOIN users ON users.id_user= mengikuti_calon.id_user
       JOIN calon ON mengikuti_calon.id_calon = calon.id_calon
-   WHERE id_user = '32555aee-f2a8-4cf3-924f-cfe888d659ae';
+   WHERE mengikuti_calon.id_user = '862c6d34-c90c-40ff-8015-789044dd1697';
+
+select users.username, users.email, calon.id_calon, calon.nama FROM mengikuti_calon JOIN users ON users.id_user= mengikuti_calon.id_user JOIN calon ON mengikuti_calon.id_calon = calon.id_calon WHERE mengikuti_calon.id_user = $1;
 
 --TABEL JABATAN
 INSERT INTO jabatan(jabatan_tujuan) VALUES ('Wakil Presiden');

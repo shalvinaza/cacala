@@ -111,6 +111,21 @@ exports.updateUser = async (req, res) => {
    }
 }
 
+exports.followCalon = async (req, res) => {
+   const { id_calon } = req.params
+   try{
+      const user = await pool.query(
+         "INSERT INTO mengikuti_calon(id_user, id_calon) VALUES($1, $2);", [
+            req.user, id_calon
+         ]
+      )
+
+      res.json("Calon followed")
+   } catch(err) {
+      res.json({message: err})
+   }
+}
+
 exports.selectFollowedCalonByUser = async (req, res) => {
    try{
       const calon = await pool.query(
