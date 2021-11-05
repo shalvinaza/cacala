@@ -182,6 +182,20 @@ select calon.nama, partai.nama_partai
       JOIN calon ON partai_calon.id_calon = calon.id_calon
       JOIN partai ON partai_calon.id_partai = partai.id_partai;
 
+select calon.nama, partai.nama_partai FROM partai_calon JOIN calon ON partai_calon.id_calon = calon.id_calon JOIN partai ON partai_calon.id_partai = partai.id_partai;
+
+SELECT calon.id_calon, calon.nama, calon.foto, calon.slogan, admins.username, jabatan.jabatan_tujuan, kota.kota, provinsi.provinsi, partai.nama_partai
+   FROM calon 
+      JOIN admins on calon.id_admin = admins.id_admin 
+      JOIN jabatan on calon.id_jabatan = jabatan.id_jabatan 
+      JOIN kota on calon.id_dapil_kota = kota.id_kota 
+      JOIN provinsi on kota.id_provinsi = provinsi.id_provinsi 
+      JOIN partai_calon ON partai_calon.id_calon = calon.id_calon
+      JOIN partai ON partai_calon.id_partai = partai.id_partai
+   WHERE partai_calon.id_partai = '75f09646-c4c1-46ac-9261-11f468aabdb4';
+
+SELECT calon.id_calon, calon.nama, calon.foto, calon.slogan, admins.username, jabatan.jabatan_tujuan, kota.kota, provinsi.provinsi, partai.nama_partai FROM calon JOIN admins on calon.id_admin = admins.id_admin JOIN jabatan on calon.id_jabatan = jabatan.id_jabatan JOIN kota on calon.id_dapil_kota = kota.id_kota JOIN provinsi on kota.id_provinsi = provinsi.id_provinsi JOIN partai_calon ON partai_calon.id_calon = calon.id_calon JOIN partai ON partai_calon.id_partai = partai.id_partai WHERE partai_calon.id_partai = '75f09646-c4c1-46ac-9261-11f468aabdb4';
+
 --TABEL MENGIKUTI_CALON
 CREATE TABLE mengikuti_calon (
   id_user uuid REFERENCES users (id_user) ON UPDATE CASCADE ON DELETE CASCADE,
@@ -198,10 +212,11 @@ INSERT INTO mengikuti_calon(
       '32555aee-f2a8-4cf3-924f-cfe888d659ae'
    );
 
-select users.username, users.email, calon.nama
+select users.username, users.email, calon.id_calon, calon.nama
    FROM mengikuti_calon 
       JOIN users ON users.id_user= mengikuti_calon.id_user
-      JOIN calon ON mengikuti_calon.id_calon = calon.id_calon;
+      JOIN calon ON mengikuti_calon.id_calon = calon.id_calon
+   WHERE id_user = '32555aee-f2a8-4cf3-924f-cfe888d659ae';
 
 --TABEL JABATAN
 INSERT INTO jabatan(jabatan_tujuan) VALUES ('Wakil Presiden');
