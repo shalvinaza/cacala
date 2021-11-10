@@ -1,8 +1,21 @@
 const { pool } = require("../dbConfig")
 
-exports.addPostByAdmin = async (req, res) => {
+exports.selectPostByAdmin = async (req, res) => {
    try{
-      const { id_admin } = req.body
+      const post = await pool.query(
+         "SELECT * from post WHERE id_admin = $1", [
+            req.user
+         ]
+      )
+
+      res.json(post.rows)
+   } catch(err){
+      res.json({ message: err })
+   }
+}
+
+exports.addPost = async (req, res) => {
+   try{
       const { judul } = req.body
       const { teks } = req.body
       const { foto } = req.body
@@ -10,27 +23,12 @@ exports.addPostByAdmin = async (req, res) => {
 
       const post = await pool.query(
          "INSERT INTO post(id_admin, judul, teks, foto, video) VALUES($1, $2, $3, $4, $5) RETURNING *",
-         [id_admin, judul, teks, foto, video]
+         [req.user, judul, teks, foto, video]
       )
 
       res.json(post)
    } catch(err) {
       console.error(err.message)
-   }
-}
-
-exports.selectPostByAdmin = async (req, res) => {
-   const { id_admin } = req.params
-   try{
-      const post = await pool.query(
-         "SELECT * from post WHERE id_admin = $1", [
-            id_admin
-         ]
-      )
-
-      res.json(post.rows)
-   } catch(err){
-      res.json({ message: err })
    }
 }
 
@@ -66,6 +64,21 @@ exports.deletePost = async (req, res) => {
 
       res.json("Post is deleted")
    } catch (err) {
+      res.json({ message: err })
+   }
+}
+
+exports.selectPostByUser = async (req, res) => {
+   const { id_admin } = req.params
+   try{
+      const post = await pool.query(
+         "SELECT * from post WHERE id_admin = $1", [
+            id_admin
+         ]
+      )
+
+      res.json(post.rows)
+   } catch(err){
       res.json({ message: err })
    }
 }
