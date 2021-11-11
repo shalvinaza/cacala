@@ -57,21 +57,25 @@ INSERT INTO Calon(
       slogan
    ) 
    VALUES(
-      'd2647461-20fd-4520-bda3-47077b46a31e', 
-      '51978294-1f8a-4c8c-acbf-f3cc013c16d3',
+      '7f5135e1-afb6-421c-9b29-11dea6c0b729', 
+      '7ab14b00-559b-4a3a-b307-80a78cff4b22',
       '2b4af532-dfe7-4aef-8734-aeec7611e30b',
-      'Aithra Junia Bouty',
+      'WAPRES',
       'https://i.pinimg.com/474x/40/f3/1d/40f31dd88a4ec213f8b21d1444242969.jpg',
-      'Yuk Bisa Yuk'
+      'Aku calon wakil presiden'
    );
 
-select calon.id_calon, calon.nama, calon.foto, calon.slogan, admins.username, jabatan.jabatan_tujuan, kota.kota, provinsi.provinsi
-   FROM calon
-      JOIN admins on calon.id_admin = admins.id_admin
-      JOIN jabatan on calon.id_jabatan = jabatan.id_jabatan
-      JOIN kota on calon.id_dapil_kota = kota.id_kota
-      JOIN provinsi on kota.id_provinsi = provinsi.id_provinsi
+select c.id_calon, c.nama, c.foto, c.slogan, a.id_admin, j.jabatan_tujuan, k.kota, p.provinsi, pend.nama_institusi, pend.detail_pendidikan, pend.tahun_mulai_pendidikan, pend.tahun_selesai_pendidikan, pek.nama_pekerjaan, pek.detail_pekerjaan, pek.tahun_mulai_pekerjaan, pek.tahun_selesai_pekerjaan
+   FROM calon c
+      JOIN admins a on c.id_admin = a.id_admin
+      JOIN jabatan j on c.id_jabatan = j.id_jabatan
+      JOIN kota k on c.id_dapil_kota = k.id_kota
+      JOIN provinsi p on k.id_provinsi = p.id_provinsi
+      JOIN riwayat_pendidikan pend on pend.id_calon = c.id_calon
+      JOIN riwayat_pekerjaan pek on pek.id_calon = c.id_calon
 ;
+
+select c.id_calon, c.nama, c.foto, c.slogan, a.id_admin, j.jabatan_tujuan, k.kota, p.provinsi, pend.nama_institusi, pend.detail_pendidikan, pend.tahun_mulai_pendidikan, pend.tahun_selesai_pendidikan, pek.nama_pekerjaan, pek.detail_pekerjaan, pek.tahun_mulai_pekerjaan, pek.tahun_selesai_pekerjaan FROM admins a JOIN calon c on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan JOIN kota k on c.id_dapil_kota = k.id_kota JOIN provinsi p on k.id_provinsi = p.id_provinsi JOIN riwayat_pendidikan pend on pend.id_calon = c.id_calon JOIN riwayat_pekerjaan pek on pek.id_calon = c.id_calon  WHERE a.id_admin = '7f5135e1-afb6-421c-9b29-11dea6c0b729';
 
 --TABEL PARTAI
 CREATE TABLE partai(
@@ -115,17 +119,17 @@ CREATE TABLE riwayat_pendidikan(
    uuid_generate_v4(),
    id_calon uuid REFERENCES calon(id_calon),
    nama_institusi VARCHAR(255) NOT NULL,
-   detail TEXT,
-   tahun_mulai VARCHAR(4),
-   tahun_selesai VARCHAR(4)
+   detail_pendidikan TEXT,
+   tahun_mulai_pendidikan VARCHAR(4),
+   tahun_selesai_pendidikan VARCHAR(4)
 );
 
 INSERT INTO riwayat_pendidikan(
       id_calon, 
       nama_institusi,
-      detail,
-      tahun_mulai,
-      tahun_selesai
+      detail_pendidikan,
+      tahun_mulai_pendidikan,
+      tahun_selesai_pendidikan
    ) 
    VALUES(
       '32555aee-f2a8-4cf3-924f-cfe888d659ae', 
@@ -135,30 +139,32 @@ INSERT INTO riwayat_pendidikan(
       '2022'
    );
 
+INSERT INTO riwayat_pendidikan(id_calon, nama_institusi, detail, tahun_mulai, tahun_selesai) VALUES($1, $2, $3, $4, $5);
+
 --TABEL RIWAYAT PEKERJAAN
 CREATE TABLE riwayat_pekerjaan(
    id_pekerjaan uuid PRIMARY KEY DEFAULT
    uuid_generate_v4(),
    id_calon uuid REFERENCES calon(id_calon),
    nama_pekerjaan VARCHAR(255) NOT NULL,
-   detail TEXT,
-   tahun_mulai VARCHAR(4),
-   tahun_selesai VARCHAR(4)
+   detail_pekerjaan TEXT,
+   tahun_mulai_pekerjaan VARCHAR(4),
+   tahun_selesai_pekerjaan VARCHAR(4)
 );
 
 INSERT INTO riwayat_pekerjaan(
       id_calon, 
       nama_pekerjaan,
-      detail,
-      tahun_mulai,
-      tahun_selesai
+      detail_pekerjaan,
+      tahun_mulai_pekerjaan,
+      tahun_selesai_pekerjaan
    ) 
    VALUES(
-      '32555aee-f2a8-4cf3-924f-cfe888d659ae', 
-      'Mobile Developer',
-      'Magang di BNI',
-      '2021',
-      '2022'
+      '5e1788f2-9912-417b-abd5-78b67b358cf5', 
+      'Programmer',
+      'Programmer handal',
+      '2020',
+      '2020'
    );
 
 --TABEL PARTAI_CALON
@@ -180,7 +186,8 @@ INSERT INTO partai_calon(
 select calon.nama, partai.nama_partai
    FROM partai_calon 
       JOIN calon ON partai_calon.id_calon = calon.id_calon
-      JOIN partai ON partai_calon.id_partai = partai.id_partai;
+      JOIN partai ON partai_calon.id_partai = partai.id_partai
+   WHERE partai_calon.id_calon = '32555aee-f2a8-4cf3-924f-cfe888d659ae';
 
 select calon.nama, partai.nama_partai FROM partai_calon JOIN calon ON partai_calon.id_calon = calon.id_calon JOIN partai ON partai_calon.id_partai = partai.id_partai;
 
