@@ -2,89 +2,65 @@
     <div class="container">
         <h1 class="text-center pb-4 mb-5">Pasangan Presiden dan Wakil Presiden</h1>
         <div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center">
-            <div class="col">
-                <div class="card h-100">
-                    <img src="../assets/images/pres.png" class="card-img-top" alt="pres 2">
-                    <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
-                        <h5>1</h5>
-                    </div>
-                    <div class="card-body p-4">
-                        <h5 class="card-title text-center mb-3">Nama Calon Presiden & Calon Wakil Presiden</h5>
-                        <div class="row align-items-start mb-4">
-                            <p class="col-md-5 d-flex flex-wrap card-title">Partai Koalisi</p>
-                            <div class="col-md-7 d-flex flex-wrap justify-content-end">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                            </div>
+            <!-- <section v-if="no_data">
+                <div class="d-flex justify-content-center">
+                    <img src="../assets/images/no_data.jpg" style="max-width:100%;min-width:100%" alt="no data">
+                </div>
+            </section> -->
+                <div class="col" v-for="(calon,index) in calons" :key="calon.id_calon">
+                    <div class="card h-100">
+                        <img src="../assets/images/pres.png" class="card-img-top" alt="pres 2">
+                        <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
+                            <h5>{{index + 1}}</h5>
                         </div>
-                        <div class="d-flex justify-content-center justify-content-between">
-                            <button class="btn btn-outline-orange" @click="goToDetail()">Detail</button>
-                            <button class="btn btn-outline-blue">Ikuti</button>                        
+                        <div class="card-body p-4">
+                            <h5 class="card-title text-center mb-3">{{calon.nama}}</h5>
+                            <div class="row align-items-start mb-4">
+                                <p class="col-md-5 d-flex flex-wrap card-title">Partai Koalisi</p>
+                                <div class="col-md-7 d-flex flex-wrap justify-content-end">
+                                    <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
+                                    <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
+                                    <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
+                                    <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
+                                    <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-center justify-content-between">
+                                <button class="btn btn-outline-orange" @click="goToDetail()">Detail</button>
+                                <button class="btn btn-outline-blue">Ikuti</button>                        
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="../assets/images/pres.png" class="card-img-top" alt="pres 2">
-                     <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
-                        <h5>2</h5>
-                    </div>
-                    <div class="card-body p-4">
-                        <h5 class="card-title text-center mb-3">Nama Calon Presiden & Calon Wakil Presiden</h5>
-                        <div class="row align-items-start mb-4">
-                            <p class="col-md-5 d-flex flex-wrap card-title">Partai Koalisi</p>
-                            <div class="col-md-7 d-flex flex-wrap justify-content-end">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-center justify-content-between">
-                            <button class="btn btn-outline-orange">Detail</button>
-                            <button class="btn btn-outline-blue">Ikuti</button>                        
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="../assets/images/pres.png" class="card-img-top" alt="pres 2">
-                    <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
-                        <h5>3</h5>
-                    </div>
-                    <div class="card-body p-4">
-                        <h5 class="card-title text-center mb-3">Nama Calon Presiden & Calon Wakil Presiden</h5>
-                        <div class="row align-items-start mb-4">
-                            <p class="col-md-5 d-flex flex-wrap card-title">Partai Koalisi</p>
-                            <div class="col-md-7 d-flex flex-wrap justify-content-end">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-center justify-content-between">
-                            <button class="btn btn-outline-orange">Detail</button>
-                            <button class="btn btn-outline-blue">Ikuti</button>                        
-                        </div>
-                    </div>
-                </div>
-            </div>
             
         </div>
     </div>
 </template>
 
 <script>
+import axios from 'axios'
+const PRESIDEN_API_URL = `http://localhost:3000/calon/jabatan/8269c2f7-0b6e-43fb-91af-de9419d2d8e5`
+
 export default {
     name: 'All_capres',
+    data : () => ({
+        no_data: false,
+        calons: []
+    }),
+    beforeMount(){
+        fetch(PRESIDEN_API_URL)
+            .then(response => response.json())
+            .then(result => {
+                this.calons = result
+                var parsedobj = JSON.parse(JSON.stringify(result))
+                console.log(parsedobj)
+            })
+            .catch(error => {
+                if(calons==null){
+                    this.no_data = true;
+                }
+            });
+    },
     methods : {
         goToDetail(){
         this.$router.push('/detail_calon');
