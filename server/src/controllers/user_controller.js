@@ -93,7 +93,7 @@ exports.getUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
    try{
-      const { id } = req.params
+      //const { id } = req.params
       const { username } = req.body
       const { email } = req.body
       const { password } = req.body
@@ -102,7 +102,7 @@ exports.updateUser = async (req, res) => {
       const bcryptPass = await bcryptPassword(password)
 
       const user = await pool.query("UPDATE users SET username = $1, email = $2, password = $3 WHERE id_user = $4", [
-         username, email, bcryptPass, id
+         username, email, bcryptPass, req.user
       ])
 
       res.json("User detail is updated")

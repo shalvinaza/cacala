@@ -15,12 +15,16 @@ const userRoute = require("../src/routes/user_route")
 const adminRoute = require("../src/routes/admin_route")
 const calonRoute = require("../src/routes/calon_route")
 const postRoute = require("../src/routes/post_route")
+const jabatanRoute = require("../src/routes/jabatan_route")
+const dapilRoute = require("../src/routes/dapil_route")
 
 app.use("/auth", authRoute)
 app.use("/user", userRoute)
 app.use("/admin", adminRoute)
 app.use("/calon", calonRoute)
 app.use("/post", postRoute)
+app.use("/jabatan", jabatanRoute)
+app.use("/dapil", dapilRoute)
 
 app.listen(process.env.PORT || 3000, () => {
    console.log("server is running on port 3000")
