@@ -106,8 +106,31 @@
 </template>
 
 <script>
+import axios from 'axios'
+
+// this.id_calon = this.$route.params.id_calon;
+// const CALON_API_URL = `${process.env.VUE_APP_API_URL}/calon/` + id_calon;
+
 export default {
     name :'Post_detail_calon'
+    // data : () => ({
+    //     no_data: false,
+    //     calons: []
+    // }),
+    // beforeMount(){
+    //     fetch(`${process.env.VUE_APP_API_URL}/calon/${id_calon}`)
+    //         .then(response => response.json())
+    //         .then(result => {
+    //             this.calons = result
+    //             var parsedobj = JSON.parse(JSON.stringify(result))
+    //             console.log(parsedobj)
+    //         })
+    //         .catch(error => {
+    //             if(calons==null){
+    //                 this.no_data = true;
+    //             }
+    //         });
+    // },
 
 }
 </script>

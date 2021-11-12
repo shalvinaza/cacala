@@ -16,15 +16,15 @@
             <li><a class="dropdown-item" style="color:black" href="#">Partai 2</a></li>
         </div>
         <div class="row row-cols-1 row-cols-md-4 g-4 justify-content-center mt-3">
-            <div class="col">
+            <div class="col" v-for="(calon,index) in calons" :key="calon.id_calon">
                 <div class="card h-100">
                     <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
                     <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
-                        <h5>1</h5>
+                        <h5>{{index + 1}}</h5>
                     </div>
                     <div class="card-body p-4">
-                        <h5 class="card-title text-center">Nama Calon</h5>
-                        <p class="card-subtitle text-center text-muted">Calon DPD RI</p>
+                        <h5 class="card-title text-center">{{calon.nama}}</h5>
+                        <p class="card-subtitle text-center text-muted">Calon {{calon.jabatan_tujuan}}</p>
                         <div class="row align-items-start mt-3">
                             <p class="col d-flex flex-wrap card-title">Partai</p>
                             <div class="col d-flex flex-wrap justify-content-end">
@@ -34,207 +34,11 @@
                         <div class="row align-items-start mb-2">
                             <p class="col d-flex flex-wrap card-title">Daerah Pilih</p>
                             <div class="col d-flex flex-wrap justify-content-end">
-                                <p>Kota Kota</p>
+                                <p>{{calon.kota}}</p>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-center justify-content-between">
-                            <button class="btn btn-outline-orange">Detail</button>
-                            <button class="btn btn-outline-blue">Ikuti</button>                          
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
-                    <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
-                        <h5>2</h5>
-                    </div>
-                    <div class="card-body p-4">
-                        <h5 class="card-title text-center">Nama Calon</h5>
-                        <p class="card-subtitle text-center text-muted">Calon DPD RI</p>
-                        <div class="row align-items-start mt-3">
-                            <p class="col d-flex flex-wrap card-title">Partai</p>
-                            <div class="col d-flex flex-wrap justify-content-end">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="dpr 2">
-                            </div>
-                        </div>
-                        <div class="row align-items-start mb-2">
-                            <p class="col d-flex flex-wrap card-title">Daerah Pilih</p>
-                            <div class="col d-flex flex-wrap justify-content-end">
-                                <p>Kota Kota</p>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-center justify-content-between">
-                            <button class="btn btn-outline-orange">Detail</button>
-                            <button class="btn btn-outline-blue">Ikuti</button>                          
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
-                    <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
-                        <h5>3</h5>
-                    </div>
-                    <div class="card-body p-4">
-                        <h5 class="card-title text-center">Nama Calon</h5>
-                        <p class="card-subtitle text-center text-muted">Calon DPD RI</p>
-                        <div class="row align-items-start mt-3">
-                            <p class="col d-flex flex-wrap card-title">Partai</p>
-                            <div class="col d-flex flex-wrap justify-content-end">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="dpr 2">
-                            </div>
-                        </div>
-                        <div class="row align-items-start mb-2">
-                            <p class="col d-flex flex-wrap card-title">Daerah Pilih</p>
-                            <div class="col d-flex flex-wrap justify-content-end">
-                                <p>Kota Kota</p>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-center justify-content-between">
-                            <button class="btn btn-outline-orange">Detail</button>
-                            <button class="btn btn-outline-blue">Ikuti</button>                          
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
-                    <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
-                        <h5>4</h5>
-                    </div>
-                    <div class="card-body p-4">
-                        <h5 class="card-title text-center">Nama Calon</h5>
-                        <p class="card-subtitle text-center text-muted">Calon DPD RI</p>
-                        <div class="row align-items-start mt-3">
-                            <p class="col d-flex flex-wrap card-title">Partai</p>
-                            <div class="col d-flex flex-wrap justify-content-end">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="dpr 2">
-                            </div>
-                        </div>
-                        <div class="row align-items-start mb-2">
-                            <p class="col d-flex flex-wrap card-title">Daerah Pilih</p>
-                            <div class="col d-flex flex-wrap justify-content-end">
-                                <p>Kota Kota</p>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-center justify-content-between">
-                            <button class="btn btn-outline-orange">Detail</button>
-                            <button class="btn btn-outline-blue">Ikuti</button>                          
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
-                    <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
-                        <h5>1</h5>
-                    </div>
-                    <div class="card-body p-4">
-                        <h5 class="card-title text-center">Nama Calon</h5>
-                        <p class="card-subtitle text-center text-muted">Calon DPD RI</p>
-                        <div class="row align-items-start mt-3">
-                            <p class="col d-flex flex-wrap card-title">Partai</p>
-                            <div class="col d-flex flex-wrap justify-content-end">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="dpr 2">
-                            </div>
-                        </div>
-                        <div class="row align-items-start mb-2">
-                            <p class="col d-flex flex-wrap card-title">Daerah Pilih</p>
-                            <div class="col d-flex flex-wrap justify-content-end">
-                                <p>Kota Kota</p>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-center justify-content-between">
-                            <button class="btn btn-outline-orange">Detail</button>
-                            <button class="btn btn-outline-blue">Ikuti</button>                          
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
-                    <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
-                        <h5>2</h5>
-                    </div>
-                    <div class="card-body p-4">
-                        <h5 class="card-title text-center">Nama Calon</h5>
-                        <p class="card-subtitle text-center text-muted">Calon DPD RI</p>
-                        <div class="row align-items-start mt-3">
-                            <p class="col d-flex flex-wrap card-title">Partai</p>
-                            <div class="col d-flex flex-wrap justify-content-end">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="dpr 2">
-                            </div>
-                        </div>
-                        <div class="row align-items-start mb-2">
-                            <p class="col d-flex flex-wrap card-title">Daerah Pilih</p>
-                            <div class="col d-flex flex-wrap justify-content-end">
-                                <p>Kota Kota</p>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-center justify-content-between">
-                            <button class="btn btn-outline-orange">Detail</button>
-                            <button class="btn btn-outline-blue">Ikuti</button>                          
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
-                    <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
-                        <h5>3</h5>
-                    </div>
-                    <div class="card-body p-4">
-                        <h5 class="card-title text-center">Nama Calon</h5>
-                        <p class="card-subtitle text-center text-muted">Calon DPD RI</p>
-                        <div class="row align-items-start mt-3">
-                            <p class="col d-flex flex-wrap card-title">Partai</p>
-                            <div class="col d-flex flex-wrap justify-content-end">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="dpr 2">
-                            </div>
-                        </div>
-                        <div class="row align-items-start mb-2">
-                            <p class="col d-flex flex-wrap card-title">Daerah Pilih</p>
-                            <div class="col d-flex flex-wrap justify-content-end">
-                                <p>Kota Kota</p>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-center justify-content-between">
-                            <button class="btn btn-outline-orange">Detail</button>
-                            <button class="btn btn-outline-blue">Ikuti</button>                          
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
-                    <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
-                        <h5>4</h5>
-                    </div>
-                    <div class="card-body p-4">
-                        <h5 class="card-title text-center">Nama Calon</h5>
-                        <p class="card-subtitle text-center text-muted">Calon DPD RI</p>
-                        <div class="row align-items-start mt-3">
-                            <p class="col d-flex flex-wrap card-title">Partai</p>
-                            <div class="col d-flex flex-wrap justify-content-end">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="dpr 2">
-                            </div>
-                        </div>
-                        <div class="row align-items-start mb-2">
-                            <p class="col d-flex flex-wrap card-title">Daerah Pilih</p>
-                            <div class="col d-flex flex-wrap justify-content-end">
-                                <p>Kota Kota</p>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-center justify-content-between">
-                            <button class="btn btn-outline-orange">Detail</button>
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-outline-orange" @click="goToDetail()">Detail</button>
                             <button class="btn btn-outline-blue">Ikuti</button>                          
                         </div>
                     </div>
@@ -246,8 +50,34 @@
 </template>
 
 <script>
+import axios from 'axios'
+const DPD_API_URL = `http://localhost:3000/calon/jabatan/ccf4ecc1-20f4-4ce3-95fb-8af85a003e3a`
+
 export default {
-    name: 'All_drp_ri',
+    name: 'All_dpd_ri',
+    data : () => ({
+        no_data: false,
+        calons: []
+    }),
+    beforeMount(){
+        fetch(DPD_API_URL)
+            .then(response => response.json())
+            .then(result => {
+                this.calons = result
+                var parsedobj = JSON.parse(JSON.stringify(result))
+                console.log(parsedobj)
+            })
+            .catch(error => {
+                if(calons==null){
+                    this.no_data = true;
+                }
+            });
+    },
+    methods : {
+        goToDetail(){
+        this.$router.push('/detail_calon');
+        }
+    }
 }
 </script>
 
