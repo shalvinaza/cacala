@@ -40,7 +40,7 @@
                         <div class="d-flex justify-content-between">
                             <router-link :to="{ name: 'Detail_calon', params: { id_admin: calon.id_admin}}" class="btn btn-outline-orange">Detail</router-link>
                             <span v-if="isLoggedIn">
-                                <button class="btn btn-outline-blue">Ikuti</button>   
+                                <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon)">Ikuti</button>   
                             </span>    
                             <span v-else>
                                 <button class="btn btn-outline-blue" @click="goToLogin()">Ikuti</button> 
@@ -85,6 +85,21 @@ export default {
     methods : {
         goToLogin(){
             this.$router.push('/login');
+        },
+
+        followCalon(id_calon){
+            const FOLLOW_API_URL = `http://localhost:3000/user/${id_calon}`
+            axios.defaults.headers.common["token"] = localStorage.token
+            
+            axios.post(FOLLOW_API_URL)
+                .then(() => {
+                    this.$router.push("/dasbor_saya")
+                })
+                .catch((error) => {
+                    console.error(error)
+                })
+
+            console.log(localStorage.token)
         }
     }
 }

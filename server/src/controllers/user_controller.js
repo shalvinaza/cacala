@@ -129,7 +129,7 @@ exports.followCalon = async (req, res) => {
 exports.selectFollowedCalonByUser = async (req, res) => {
    try{
       const calon = await pool.query(
-         "select users.username, users.email, calon.id_calon, calon.nama FROM mengikuti_calon JOIN users ON users.id_user= mengikuti_calon.id_user JOIN calon ON mengikuti_calon.id_calon = calon.id_calon WHERE mengikuti_calon.id_user = $1;",[
+         "select users.username, users.email, calon.id_calon, calon.nama, jabatan.jabatan_tujuan, kota.kota FROM mengikuti_calon JOIN users ON users.id_user= mengikuti_calon.id_user JOIN calon ON mengikuti_calon.id_calon = calon.id_calon JOIN jabatan on calon.id_jabatan = jabatan.id_jabatan JOIN kota on calon.id_dapil_kota = kota.id_kota WHERE mengikuti_calon.id_user = $1;",[
             req.user
          ])
       
