@@ -2,7 +2,8 @@
   <div class="container">
       <h1 class="text-center pb-4 mb-4">Calon yang Diikuti</h1>
       <div class="d-flex d-inline-row pb-3 mb-4">
-          <a href="#" class="me-3" style="color: #D65A40;">Presiden</a>
+          <a href="#" class="me-3" style="color: #D65A40;">Semua</a>
+          <a href="#" class="me-3">Presiden</a>
           <a href="#" class="me-3">DPR RI</a>
           <a href="#" class="me-3">DPD RI</a>
           <a href="#" class="me-3">DPRD Provinsi</a>
@@ -32,7 +33,7 @@
                         </div>
                         <div class="d-flex justify-content-between">
                             <button class="btn btn-outline-orange" @click="goToDetail()">Detail</button>
-                            <button class="btn btn-outline-blue">Ikuti</button>                          
+                            <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon)">Berhenti Mengikuti</button>                          
                         </div>
                     </div>
                 </div>
@@ -70,6 +71,21 @@ export default {
     methods : {
         goToDetail(){
         this.$router.push('/detail_calon');
+        },
+
+        unfollowCalon(id_calon){
+            const UNFOLLOW_API_URL = `http://localhost:3000/user/unfollow/${id_calon}`
+            axios.defaults.headers.common["token"] = localStorage.token
+
+            axios.delete(UNFOLLOW_API_URL)
+                .then(() => {
+                    window.location = "/dasbor_saya"
+                })
+                .catch((error) => {
+                    console.error(error)
+                })
+
+            
         }
     }
 }

@@ -236,6 +236,8 @@ select users.username, users.email, calon.id_calon, calon.nama
 
 select users.username, users.email, calon.id_calon, calon.nama FROM mengikuti_calon JOIN users ON users.id_user= mengikuti_calon.id_user JOIN calon ON mengikuti_calon.id_calon = calon.id_calon WHERE mengikuti_calon.id_user = $1;
 
+delete from mengikuti_calon where id_calon = 'e32568fd-7296-4935-b297-b6ce9f1a82e6' AND id_user = '862c6d34-c90c-40ff-8015-789044dd1697';
+
 --TABEL JABATAN
 INSERT INTO jabatan(jabatan_tujuan) VALUES ('Wakil Presiden');
 

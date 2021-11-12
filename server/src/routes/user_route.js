@@ -7,5 +7,6 @@ router.get("/", authorization, controller.getUser)
 router.put("/", authorization, controller.updateUser)
 router.post("/:id_calon", authorization, controller.followCalon)
 router.get("/followed", authorization, controller.selectFollowedCalonByUser)
+router.delete("/unfollow/:id_calon", authorization, controller.unfollowCalon)
 
 module.exports = router

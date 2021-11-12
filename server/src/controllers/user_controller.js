@@ -138,3 +138,17 @@ exports.selectFollowedCalonByUser = async (req, res) => {
       res.json({ message: err })
    }
 }
+
+exports.unfollowCalon = async (req, res) => {
+   const { id_calon } = req.params
+   try{
+      const user = await pool.query(
+         "DELETE FROM mengikuti_calon WHERE id_calon = $1 AND id_user = $2",
+         [id_calon, req.user]
+      )
+
+      res.json("Calon unfollowed")
+   } catch(err){
+      res.json({message: err})
+   }
+}
