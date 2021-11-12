@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <h1 class="text-center pb-4 mb-5">Pasangan Presiden dan Wakil Presiden</h1>
-        <div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
             <!-- <section v-if="no_data">
                 <div class="d-flex justify-content-center">
                     <img src="../assets/images/no_data.jpg" style="max-width:100%;min-width:100%" alt="no data">

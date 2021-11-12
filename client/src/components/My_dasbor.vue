@@ -9,7 +9,7 @@
           <a href="#" class="me-3">DPRD Provinsi</a>
           <a href="#" class="me-3">DPRD Kabupaten/Kota</a>
       </div>
-      <div class="row row-cols-1 row-cols-md-4 g-4 justify-content-center mt-3">
+      <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
             <div class="col" v-for="(calon,index) in calons" :key="calon.id_calon">
                 <div class="card h-100">
                     <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">

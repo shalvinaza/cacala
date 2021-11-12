@@ -15,7 +15,7 @@
             <li><a class="dropdown-item" style="color:black" href="#">Partai 1</a></li>
             <li><a class="dropdown-item" style="color:black" href="#">Partai 2</a></li>
         </div>
-        <div class="row row-cols-2 row-cols-md-4 g-4 justify-content-center mt-3">
+        <div class="row row-cols-2 row-cols-md-4 g-4 mt-3">
             <div class="col" v-for="(calon,index) in calons" :key="calon.id_calon">
                 <div class="card h-100">
                     <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
