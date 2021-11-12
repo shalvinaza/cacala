@@ -25,7 +25,7 @@
                     </div>
                     <div class="forms-inputs mb-4"> 
                         <span>Kata Sandi Baru</span>
-                        <input id="pass_user" autocomplete="off" type="password" v-model="register.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi baru">
+                        <input id="new_user" autocomplete="off" type="password" v-model="register.newpassword" v-bind:class="{'form-control':true, 'is-invalid' : !validNewPassword(newpassword) && newpasswordBlured}" v-on:blur="newpasswordBlured = true" placeholder="Ketik kata sandi baru">
                         <div class="invalid-feedback">Password minimal 8 karakter!</div>
                     </div>
                     <div class="mb-3 d-flex justify-content-end"> 
@@ -56,10 +56,13 @@ export default {
             submitted : false,
             password:"",
             passwordBlured:false,
+            newpassword:"",
+            newpasswordBlured:false,
             register: {
                 username: "",
                 email: "",
-                password: ""
+                password: "",
+                newpassword: ""
             },
         }
     },
@@ -68,7 +71,8 @@ export default {
             this.unameBlured = true;
             this.emailBlured = true;
             this.passwordBlured = true;
-            if( this.validUname(this.uname) && this.validEmail(this.email) && this.validPassword(this.password)){
+            this.newpasswordBlured = true;
+            if( this.validUname(this.uname) && this.validEmail(this.email) && this.validPassword(this.password) && this.validNewPassword(this.newpassword)){
                 this.valid = true;
                 }
         },
@@ -85,6 +89,11 @@ export default {
         },
         validPassword : function(password) {
             if (password.length > 7) {
+                return true;
+                }
+        },
+        validNewPassword : function(newpassword) {
+            if (newpassword.length > 7) {
                 return true;
                 }
         },
