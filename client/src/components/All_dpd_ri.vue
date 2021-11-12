@@ -39,7 +39,12 @@
                         </div>
                         <div class="d-flex justify-content-between">
                             <router-link :to="{ name: 'Detail_calon', params: { id_admin: calon.id_admin}}" class="btn btn-outline-orange">Detail</router-link>
-                            <button class="btn btn-outline-blue">Ikuti</button>                          
+                            <span v-if="isLoggedIn">
+                                <button class="btn btn-outline-blue">Ikuti</button>   
+                            </span>    
+                            <span v-else>
+                                <button class="btn btn-outline-blue" @click="goToLogin()">Ikuti</button> 
+                            </span>                        
                         </div>
                     </div>
                 </div>
@@ -60,6 +65,9 @@ export default {
         no_data: false,
         calons: []
     }),
+    computed: {
+        isLoggedIn: function() {return localStorage.getItem("token") != null}
+    },
     mounted(){
         fetch(DPD_API_URL)
             .then(response => response.json())
@@ -73,6 +81,11 @@ export default {
                     this.no_data = true;
                 }
             });
+    },
+    methods : {
+        goToLogin(){
+            this.$router.push('/login');
+        }
     }
 }
 </script>
