@@ -39,7 +39,7 @@
 
 <script>
 import axios from 'axios'
-const PRESIDEN_API_URL = `http://localhost:3000/calon/jabatan/8269c2f7-0b6e-43fb-91af-de9419d2d8e5`
+const PRESIDEN_API_URL = `http://localhost:3000/calon/jabatan/4afc1348-c4a3-4c3c-a355-dcd938614b13`
 
 export default {
     name: 'All_capres',
@@ -63,7 +63,8 @@ export default {
     },
     methods : {
         goToDetail(){
-        this.$router.push('/detail_calon');
+            this.$router.push('/detail_calon');
+            // this.$router.push({name:'Detail_calon', params: {id: '[id_calon]'}}); 
         }
     }
 }

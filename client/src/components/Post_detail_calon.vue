@@ -5,7 +5,7 @@
                 <div class="p-4 br-15" style="background: #EDEDE9; max-height:1430px">
                     <img src="../assets/images/dpr.jpg" class="profil-calon-detail mb-4" alt="dpr 2">
                     <h5 class="text-center">Nama Calon</h5>
-                    <p class="mb-5">Calon DPR Republik Indonesia</p>
+                    <p class="mb-5">Calon DPR RI</p>
                     <div class="row align-items-start">
                         <h6 class="col">Partai</h6>
                         <div class="col d-flex flex-wrap justify-content-end">
@@ -15,7 +15,7 @@
                     <div class="row align-items-start">
                         <h6 class="col">Daerah Pilih</h6>
                         <div class="col d-flex flex-wrap justify-content-end">
-                            <p>Kota Kota</p>
+                            <p>Kota</p>
                         </div>
                     </div>
                     <div class="row align-items-start end-row-section">
@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 
 // this.id_calon = this.$route.params.id_calon;
 // const CALON_API_URL = `${process.env.VUE_APP_API_URL}/calon/` + id_calon;
@@ -130,8 +130,7 @@ export default {
     //                 this.no_data = true;
     //             }
     //         });
-    // },
-
+    // }
 }
 </script>
 
