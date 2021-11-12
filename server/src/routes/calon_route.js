@@ -6,7 +6,7 @@ const authorization = require("../middleware/authorization")
 router.get("/", controller.selectAllCalon)
 router.get("/admin", authorization, controller.selectCalonByAdmin)
 router.post("/", controller.addCalon)
-router.get("/:id", controller.selectCalonByUser)
+router.get("/:id_admin", controller.selectCalonByUser)
 router.get("/kota/:id_kota", controller.selectCalonByKota)
 router.get("/jabatan/:id_jabatan", controller.selectCalonByJabatan)
 
