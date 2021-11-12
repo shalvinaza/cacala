@@ -1,11 +1,11 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-md-3 left-col d-flex justify-content-center">
+            <div class="col-md-3 left-col d-flex justify-content-center" v-for="(calon,index) in calons" :key="calon.id_admin">
                 <div class="p-4 br-15" style="background: #EDEDE9; max-height:1430px">
                     <img src="../assets/images/dpr.jpg" class="profil-calon-detail mb-4" alt="dpr 2">
-                    <h5 class="text-center">Nama Calon</h5>
-                    <p class="mb-5">Calon DPR RI</p>
+                    <h5 class="text-center">{{calon.nama}}</h5>
+                    <p class="mb-5 text-center">Calon {{calon.jabatan_tujuan}}</p>
                     <div class="row align-items-start">
                         <h6 class="col">Partai</h6>
                         <div class="col d-flex flex-wrap justify-content-end">
@@ -15,20 +15,20 @@
                     <div class="row align-items-start">
                         <h6 class="col">Daerah Pilih</h6>
                         <div class="col d-flex flex-wrap justify-content-end">
-                            <p>Kota</p>
+                            <p>{{calon.kota}}</p>
                         </div>
                     </div>
                     <div class="row align-items-start end-row-section">
                         <h6 class="col">Nomor Urut</h6>
                         <div class="col d-flex flex-wrap justify-content-end">
-                            <p>1</p>
+                            <p>{{index + 1}}</p>
                         </div>
                     </div>
                     <div class="mt-4 pb-3 end-row-section">
                         <h5 class="mb-3">Riwayat Pendidikan</h5>
-                        <h6>Universitas Padjadjaran</h6>
-                        <p class="mb-2">Fakultas Ilmu Politik</p>
-                        <span><i class="far fa-calendar-alt"></i> 2000 - 2004</span>
+                        <h6>{{calon.nama_institusi}}</h6>
+                        <p class="mb-2">{{calon.detail_pendidikan}}</p>
+                        <i class="far fa-calendar-alt"></i> <span>{{calon.tahun_mulai_pendidikan}}</span> - <span>{{calon.tahun_selesai_pendidikan}}</span>
 
                         <h6 class="mt-3">SMA Negeri 5</h6>
                         <p class="mb-2">Kota Bandung</p>
@@ -41,9 +41,9 @@
                     </div>
                     <div class="mt-4 pb-3">
                         <h5 class="mb-3">Riwayat Pekerjaan</h5>
-                        <h6>Kepala Desa</h6>
-                        <p class="mb-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-                        <span><i class="far fa-calendar-alt"></i> 2000 - 2004</span>
+                        <h6>{{calon.nama_pekerjaan}}</h6>
+                        <p class="mb-2">{{calon.detail_pekerjaan}}</p>
+                        <i class="far fa-calendar-alt"></i> <span>{{calon.tahun_mulai_pekerjaan}}</span> - <span>{{calon.tahun_selesai_pekerjaan}}</span>
 
                         <h6 class="mt-3">Kepala Cabang</h6>
                         <p class="mb-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
@@ -106,31 +106,32 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 
 // this.id_calon = this.$route.params.id_calon;
 // const CALON_API_URL = `${process.env.VUE_APP_API_URL}/calon/` + id_calon;
+// const DPD_API_URL = `http://localhost:3000/calon/` + id_calon;
 
 export default {
-    name :'Post_detail_calon'
-    // data : () => ({
-    //     no_data: false,
-    //     calons: []
-    // }),
-    // beforeMount(){
-    //     fetch(`${process.env.VUE_APP_API_URL}/calon/${id_calon}`)
-    //         .then(response => response.json())
-    //         .then(result => {
-    //             this.calons = result
-    //             var parsedobj = JSON.parse(JSON.stringify(result))
-    //             console.log(parsedobj)
-    //         })
-    //         .catch(error => {
-    //             if(calons==null){
-    //                 this.no_data = true;
-    //             }
-    //         });
-    // }
+    name :'Post_detail_calon',
+    data : () => ({
+        no_data: false,
+        calons: []
+    }),
+    created(){
+        const id_admin = this.$route.params.id_admin;
+        const DPD_API_URL = `http://localhost:3000/calon/` + id_admin;
+        fetch(`${process.env.VUE_APP_API_URL}/calon/${id_admin}`)
+            .then(response => response.json())
+            .then(result => {
+                this.calons = result;
+            })
+            .catch(error => {
+                if(calons==null){
+                    this.no_data = true;
+                }
+            });
+    }
 }
 </script>
 

@@ -38,7 +38,7 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-between">
-                            <button class="btn btn-outline-orange" @click="goToDetail()">Detail</button>
+                            <router-link :to="{ name: 'Detail_calon', params: { id_admin: calon.id_admin}}" class="btn btn-outline-orange">Detail</router-link>
                             <button class="btn btn-outline-blue">Ikuti</button>                          
                         </div>
                     </div>
@@ -51,6 +51,7 @@
 
 <script>
 import axios from 'axios'
+
 const DPD_API_URL = `http://localhost:3000/calon/jabatan/51978294-1f8a-4c8c-acbf-f3cc013c16d3`
 
 export default {
@@ -59,7 +60,7 @@ export default {
         no_data: false,
         calons: []
     }),
-    beforeMount(){
+    mounted(){
         fetch(DPD_API_URL)
             .then(response => response.json())
             .then(result => {
@@ -72,11 +73,6 @@ export default {
                     this.no_data = true;
                 }
             });
-    },
-    methods : {
-        goToDetail(){
-        this.$router.push('/detail_calon');
-        }
     }
 }
 </script>
