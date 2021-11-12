@@ -8,78 +8,31 @@
           <a href="#" class="me-3">DPRD Provinsi</a>
           <a href="#" class="me-3">DPRD Kabupaten/Kota</a>
       </div>
-      <div class="row row-cols-1 row-cols-md-3 g-4 justify-content-center">
-            <div class="col">
+      <div class="row row-cols-1 row-cols-md-4 g-4 justify-content-center mt-3">
+            <div class="col" v-for="(calon,index) in calons" :key="calon.id_calon">
                 <div class="card h-100">
-                    <img src="../assets/images/pres.png" class="card-img-top" alt="pres 2">
+                    <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
                     <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
-                        <h5>1</h5>
+                        <h5>{{index + 1}}</h5>
                     </div>
                     <div class="card-body p-4">
-                        <h5 class="card-title text-center mb-3">Nama Calon Presiden & Calon Wakil Presiden</h5>
-                        <div class="row align-items-start mb-4">
-                            <p class="col-md-5 d-flex flex-wrap card-title">Partai Koalisi</p>
-                            <div class="col-md-7 d-flex flex-wrap justify-content-end">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
+                        <h5 class="card-title text-center">{{calon.nama}}</h5>
+                        <p class="card-subtitle text-center text-muted">Calon {{calon.jabatan_tujuan}}</p>
+                        <div class="row align-items-start mt-3">
+                            <p class="col d-flex flex-wrap card-title">Partai</p>
+                            <div class="col d-flex flex-wrap justify-content-end">
+                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="dpr 2">
                             </div>
                         </div>
-                        <div class="d-flex justify-content-center justify-content-between">
-                            <button class="btn btn-outline-orange">Detail</button>
-                            <button class="btn btn-outline-blue">Ikuti</button>                        
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="../assets/images/pres.png" class="card-img-top" alt="pres 2">
-                     <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
-                        <h5>2</h5>
-                    </div>
-                    <div class="card-body p-4">
-                        <h5 class="card-title text-center mb-3">Nama Calon Presiden & Calon Wakil Presiden</h5>
-                        <div class="row align-items-start mb-4">
-                            <p class="col-md-5 d-flex flex-wrap card-title">Partai Koalisi</p>
-                            <div class="col-md-7 d-flex flex-wrap justify-content-end">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
+                        <div class="row align-items-start mb-2">
+                            <p class="col d-flex flex-wrap card-title">Daerah Pilih</p>
+                            <div class="col d-flex flex-wrap justify-content-end">
+                                <p>{{calon.kota}}</p>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-center justify-content-between">
-                            <button class="btn btn-outline-orange">Detail</button>
-                            <button class="btn btn-outline-blue">Ikuti</button>                        
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="../assets/images/pres.png" class="card-img-top" alt="pres 2">
-                    <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
-                        <h5>3</h5>
-                    </div>
-                    <div class="card-body p-4">
-                        <h5 class="card-title text-center mb-3">Nama Calon Presiden & Calon Wakil Presiden</h5>
-                        <div class="row align-items-start mb-4">
-                            <p class="col-md-5 d-flex flex-wrap card-title">Partai Koalisi</p>
-                            <div class="col-md-7 d-flex flex-wrap justify-content-end">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="pres 2">
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-center justify-content-between">
-                            <button class="btn btn-outline-orange">Detail</button>
-                            <button class="btn btn-outline-blue">Ikuti</button>                        
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-outline-orange" @click="goToDetail()">Detail</button>
+                            <button class="btn btn-outline-blue">Ikuti</button>                          
                         </div>
                     </div>
                 </div>
@@ -89,9 +42,36 @@
 </template>
 
 <script>
-export default {
-    name:'My_dasbor'
+import axios from 'axios'
+const USER_API_URL = `http://localhost:3000/user`
+const FOLLOWED_CALON_API_URL = `http://localhost:3000/user/followed`
 
+export default {
+    name:'My_dasbor',
+    data : () => ({
+        no_data: false,
+        calons: [],
+    }),
+    beforeMount(){
+        const headers = { token: localStorage.token }
+        fetch(FOLLOWED_CALON_API_URL, { headers })
+            .then(response => response.json())
+            .then(result => {
+                this.calons = result
+                var parsedobj = JSON.parse(JSON.stringify(result))
+                console.log(parsedobj)
+            })
+            .catch(error => {
+                if(calons==null){
+                    this.no_data = true;
+                }
+            });
+    },
+    methods : {
+        goToDetail(){
+        this.$router.push('/detail_calon');
+        }
+    }
 }
 </script>
 
