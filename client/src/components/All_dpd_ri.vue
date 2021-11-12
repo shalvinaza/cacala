@@ -51,7 +51,7 @@
 
 <script>
 import axios from 'axios'
-const DPD_API_URL = `http://localhost:3000/calon/jabatan/ccf4ecc1-20f4-4ce3-95fb-8af85a003e3a`
+const DPD_API_URL = `http://localhost:3000/calon/jabatan/51978294-1f8a-4c8c-acbf-f3cc013c16d3`
 
 export default {
     name: 'All_dpd_ri',
