@@ -1,6 +1,6 @@
 <template>
   <div class="admin_calon">
-    <Navbar/>
+    <Navbar2/>
     <div class="content" style="padding:120px 0 70px 0">
         <detail_admin_calon/>
     </div>
@@ -9,14 +9,14 @@
 </template>
 
 <script>
-import Navbar from '@/components/Navbar.vue'
+import Navbar2 from '@/components/Navbar2.vue'
 import Detail_admin_calon from '@/components/Detail_admin_calon .vue'
 import Footer1 from '@/components/Footer.vue'
 
 export default {
     name:'Detail_admin_calon ',
     components:{
-      Navbar,
+      Navbar2,
       Detail_admin_calon ,
       Footer1
     }

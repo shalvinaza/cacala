@@ -7,21 +7,21 @@
             </div>
             <div class="col-md right flex-row d-md-block flex-wrap">
                 <h4 class="bold text-center mb-5">Masuk sebagai admin</h4>
-                <div class="form-data" v-if="!submitted" id="form1">
+                <form class="form-data" @submit.prevent="loginAdmin">
                     <div class="forms-inputs mb-4"> 
                         <span>Nama</span> 
-                        <input id="email_user" autocomplete="off" type="text" v-model="uname" v-bind:class="{'form-control':true, 'is-invalid' : !validUname(uname) && unameBlured}" v-on:blur="unameBlured = true" placeholder="Ketik nama di sini">
+                        <input autocomplete="off" type="text" v-model="login.username" v-bind:class="{'form-control':true, 'is-invalid' : !validUsername(login.username) && usernameBlured}" v-on:blur="usernameBlured = true" placeholder="Ketik nama di sini">
                         <div class="invalid-feedback">Nama tidak boleh kosong!</div>
                     </div>
                     <div class="forms-inputs mb-4"> 
                         <span>Kata Sandi</span>
-                        <input id="pass_user" autocomplete="off" type="password" v-model="password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
+                        <input autocomplete="off" type="password" v-model="login.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(login.password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
                         <div class="invalid-feedback">Password minimal 8 karakter!</div>
                     </div>
                     <div class="mb-3"> 
-                        <button v-on:click.stop.prevent="submit" type="submit" class="btn bg-light-orange w-100 br-10">Masuk</button> 
+                        <button type="submit" class="btn bg-light-orange w-100 br-10">Masuk</button>
                     </div>
-                </div>
+                </form>
                 <button type="button" @click="goToLoginUser()" class="btn btn-outline-orange2 w-100 br-10">Masuk sebagai pengguna</button> 
             </div>
           </div>
@@ -29,35 +29,40 @@
 </template>
 
 <script>
+import axios from 'axios'
+const LOGIN_API_URL = `http://localhost:3000/auth/admins/login`
+
 export default {
     name:'Form_login',
     data: function () {
         return {
-            uname : "",
-            unameBlured : false,
+            usernameBlured : false,
             valid : false,
             submitted : false,
-            password:"",
-            passwordBlured:false
+            passwordBlured:false,
+            login: {
+                username : "",
+                password : ""
+            }
             }
     },
     methods:{
         validate : function(){
-            this.unameBlured = true;
+            this.usernameBlured = true;
             this.passwordBlured = true;
-            if( this.validUname(this.uname) && this.validPassword(this.password)){
+            if( this.validusername(this.username) && this.validPassword(this.password)){
                 this.valid = true;
                 }
         },
-        validUname : function(uname) {
-            if(uname.length > 0){
+        validUsername : function(username) {
+            if(username.length > 0){
                 return true;
             }
         },
         validPassword : function(password) {
             if (password.length > 7) {
                 return true;
-                }
+            }
         },
         submit : function(){
             this.validate();
@@ -67,6 +72,23 @@ export default {
         },
         goToLoginUser(){
             this.$router.push('/login');
+        },
+        loginAdmin(e){
+            e.preventDefault()
+            if (this.login.password.length > 0) {
+                axios.post(LOGIN_API_URL, this.login)
+                .then(response => {
+                    localStorage.setItem('token',response.data.token)
+
+                if (localStorage.getItem('token') != null){
+                    this.$emit('loggedIn')
+                    this.$router.push('/detail_admin_calon')
+                }
+                })
+                .catch(function (error) {
+                    console.error(error.response);
+                })
+            }
         }
     }
 }

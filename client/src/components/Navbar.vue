@@ -16,8 +16,8 @@
                     DPRD Provinsi
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" style="color:black" href="#">Provinsi 1</a></li>
-                    <li><a class="dropdown-item" style="color:black" href="#">Provinsi 2</a></li>
+                    <li><a class="dropdown-item" style="color:black" href="/dprd_prov">Provinsi 1</a></li>
+                    <!-- <li><a class="dropdown-item" style="color:black" href="#">Provinsi 2</a></li> -->
                   </div>
                 </li>
                 <router-link to="/dprd_kab_kota" class="nav-link">DPRD Kabupaten/Kota</router-link>

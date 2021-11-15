@@ -8,32 +8,16 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="navbar-nav me-auto mb-2 mb-lg-0">
-                <router-link to="/presiden" class="nav-item nav-link">Presiden</router-link>
-                <router-link to="/dpr_ri" class="nav-item nav-link">DPR RI</router-link>
-                <router-link to="/dpd_ri" class="nav-link">DPD RI</router-link>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle txt-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    DPRD Provinsi
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" style="color:black" href="#">Provinsi 1</a></li>
-                    <li><a class="dropdown-item" style="color:black" href="#">Provinsi 2</a></li>
-                  </div>
-                </li>
-                <router-link to="/dprd_kab_kota" class="nav-link">DPRD Kabupaten/Kota</router-link>
-                <router-link to="#" class="nav-link">Dasbor</router-link>
+                <router-link to="/detail_admin_calon" class="nav-item nav-link">Dasbor</router-link>
+                <router-link to="#" class="nav-item nav-link">Edit Akun</router-link>
             </div>
             <div class="d-flex align-items-center">
-                <button class="btn bg-light-orange text-white me-3 br-10" type="button"> <i class="fas fa-search me-1"></i>Cari</button>
-                <div class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle nav-profil" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="far fa-user-circle nav-profil"></i>
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" style="color:black" href="/profil_user">Profil Saya</a></li>
-                        <li><a class="dropdown-item" style="color:black" href="#">Keluar</a></li>
-                    </div>
-                </div>
+              <span v-if="isLoggedIn">
+                <button class="btn bg-light-orange text-white br-10" type="button" @click="logUserOut">Keluar</button>
+              </span>
+              <span v-else>
+                <button class="btn bg-light-orange text-white br-10" type="button" @click="goToLogin()">Masuk</button>
+              </span>
             </div>
         </div>
       </nav>
@@ -44,9 +28,16 @@
 <script>
 export default {
   name: 'Navbar',
+  computed: {
+    isLoggedIn: function() {return localStorage.getItem("token") != null}
+  },
   methods:{
     goToLogin(){
       this.$router.push('/login');
+    },
+    logUserOut(){
+      localStorage.removeItem('token')
+      this.$router.push('/login')
     }
   }
   
