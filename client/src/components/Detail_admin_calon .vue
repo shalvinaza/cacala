@@ -4,8 +4,8 @@
             <div class="col-md-3 left-col d-flex justify-content-center">
                 <div class="p-4 br-15" style="background: #EDEDE9; max-height:1430px">
                     <img src="../assets/images/dpr.jpg" class="profil-calon-detail mb-4" alt="dpr 2">
-                    <h5 class="text-center">Nama Calon</h5>
-                    <p class="mb-5">Calon DPR Republik Indonesia</p>
+                    <h5 class="text-center">{{calon.nama}}</h5>
+                    <p class="mb-5 text-center">Calon {{calon.jabatan_tujuan}}</p>
                     <div class="row align-items-start">
                         <h6 class="col">Partai</h6>
                         <div class="col d-flex flex-wrap justify-content-end">
@@ -15,7 +15,7 @@
                     <div class="row align-items-start">
                         <h6 class="col">Daerah Pilih</h6>
                         <div class="col d-flex flex-wrap justify-content-end">
-                            <p>Kota Kota</p>
+                            <p>{{calon.kota}}</p>
                         </div>
                     </div>
                     <div class="row align-items-start end-row-section">
@@ -26,9 +26,9 @@
                     </div>
                     <div class="mt-4 pb-3 end-row-section">
                         <h5 class="mb-3">Riwayat Pendidikan</h5>
-                        <h6>Universitas Padjadjaran</h6>
-                        <p class="mb-2">Fakultas Ilmu Politik</p>
-                        <span><i class="far fa-calendar-alt"></i> 2000 - 2004</span>
+                        <h6>{{calon.nama_institusi}}</h6>
+                        <p class="mb-2">{{calon.detail_pendidikan}}</p>
+                        <i class="far fa-calendar-alt"></i> <span>{{calon.tahun_mulai_pendidikan}}</span> - <span>{{calon.tahun_selesai_pendidikan}}</span>
 
                         <h6 class="mt-3">SMA Negeri 5</h6>
                         <p class="mb-2">Kota Bandung</p>
@@ -41,9 +41,9 @@
                     </div>
                     <div class="mt-4 pb-3">
                         <h5 class="mb-3">Riwayat Pekerjaan</h5>
-                        <h6>Kepala Desa</h6>
-                        <p class="mb-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-                        <span><i class="far fa-calendar-alt"></i> 2000 - 2004</span>
+                        <h6>{{calon.nama_pekerjaan}}</h6>
+                        <p class="mb-2">{{calon.detail_pekerjaan}}</p>
+                        <i class="far fa-calendar-alt"></i> <span>{{calon.tahun_mulai_pekerjaan}}</span> - <span>{{calon.tahun_selesai_pekerjaan}}</span>
 
                         <h6 class="mt-3">Kepala Cabang</h6>
                         <p class="mb-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
@@ -66,7 +66,7 @@
                     <div class="card text-white poster-calon mb-2 text-center">
                         <img src="../assets/images/poster.jpg" class="poster-calon" alt="dpr 2">
                         <div class="card-img-overlay d-flex justify-content-start poster-caption">
-                            <p class="card-text me-3 w-100">“Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...”</p>
+                        <p class="card-text me-3 w-100">{{calon.slogan}}</p>
                             <span class="card-text icons"><i class="fas fa-edit"></i></span>
                         </div>
                     </div>
@@ -97,6 +97,20 @@
                             </div>
                         </div> 
                         <!-- posts just text-->
+                        <span v-for="post in posts"  :key="post.id_post">
+                            <div class="card w-100 postingan p-3 mb-3">
+                                <div class="card-body p-0">
+                                    <h5 class="card-title text-center">{{post.judul}}</h5>
+                                    <div class="d-flex end-row-section w-100 p-0 mb-3 pb-2">
+                                        <p class="card-text text-muted m-0 flex-grow-2 w-100" style=""><i class="far fa-calendar-alt"></i>  <small>{{post.waktu}}</small></p>
+                                        <span class="card-text icons me-2"><i class="fas fa-edit"></i></span>
+                                        <span class="card-text icons"><i class="fas fa-trash"></i></span>
+                                    </div>
+                                    <!-- <img src="../assets/images/poster_post.jpg" class="w-100 img-poster-post mb-3" alt="..."> -->
+                                    <p class="card-text">{{post.teks}}</p>
+                                </div>
+                            </div>
+                        </span>
                         <div class="card w-100 postingan p-3 mb-3">
                             <div class="card-body p-0">
                                 <h5 class="card-title text-center">Judul Post</h5>
@@ -144,14 +158,46 @@
 </template>
 
 <script>
+import axios from 'axios'
+const ADMIN_API_URL = `http://localhost:3000/admin/`
+const CALON_API_URL = `http://localhost:3000/calon/admin`
+const GET_POST_API_URL = `http://localhost:3000/post/`
+
 export default {
     name :'Post_detail_calon',
     data: function () {
         return {
-            judul_post:"",
-            teks_post:" "
+             calon: "",
+             posts: []
         }   
-    }
+    },
+    mounted(){
+        const headers = { token: localStorage.token }
+        fetch(CALON_API_URL, { headers })
+            .then(response => response.json())
+            .then(result => {
+                this.calon = result
+                var parsedobj = JSON.parse(JSON.stringify(result))
+                console.log(parsedobj)
+            })
+            .catch(error => {
+                if(calons==null){
+                    this.no_data = true;
+                }
+            });
+        fetch(GET_POST_API_URL, { headers })
+            .then(response => response.json())
+            .then(result => {
+                this.posts = result
+                var parsedobj = JSON.parse(JSON.stringify(result))
+                console.log(parsedobj)
+            })
+            .catch(error => {
+                if(posts==null){
+                    this.no_data = true;
+                }
+            });
+    },
 }
 </script>
 
