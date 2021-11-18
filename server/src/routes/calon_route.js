@@ -17,4 +17,6 @@ router.get("/partai/:id_calon", controller.selectPartaiCalon)
 router.post("/riwayat-pendidikan", controller.addRiwayatPendidikanCalon)
 router.post("/riwayat-pekerjaan", controller.addRiwayatPekerjaanCalon)
 
+router.get("/dprdKota/:id_kota", controller.selectCalonDPRDKotaByKota)
+
 module.exports = router

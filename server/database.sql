@@ -75,14 +75,26 @@ select c.id_calon, c.nama, c.foto, c.slogan, a.id_admin, j.jabatan_tujuan, k.kot
       JOIN riwayat_pekerjaan pek on pek.id_calon = c.id_calon
 ;
 
+SELECT c.id_calon, c.nama, c.foto, c.slogan, a.id_admin, j.jabatan_tujuan, k.kota, p.provinsi 
+   FROM calon c
+      JOIN admins a on c.id_admin = a.id_admin 
+      JOIN jabatan j on c.id_jabatan = j.id_jabatan 
+      JOIN kota k on c.id_dapil_kota = k.id_kota 
+      JOIN provinsi p on k.id_provinsi = p.id_provinsi 
+   WHERE 
+      c.id_jabatan = '1267363f-491f-4b70-aecc-3ef02b4c32ee' 
+   AND 
+      c.id_dapil_kota = '04c68139-0968-40ba-acdc-85ed4ef98ea8'
+;
+
+SELECT c.id_calon, c.nama, c.foto, c.slogan, a.id_admin, j.jabatan_tujuan, k.kota, p.provinsi FROM calon c JOIN admins a on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan JOIN kota k on c.id_dapil_kota = k.id_kota JOIN provinsi p on k.id_provinsi = p.id_provinsi WHERE c.id_jabatan = '1267363f-491f-4b70-aecc-3ef02b4c32ee' AND c.id_dapil_kota = '04c68139-0968-40ba-acdc-85ed4ef98ea8';
+
 select * 
    from calon c
       join admins a on c.id_admin = a.id_admin
       join jabatan j on c.id_jabatan = j.id_jabatan
    where c.id_jabatan = '4afc1348-c4a3-4c3c-a355-dcd938614b13' AND j.id_jabatan = '7ab14b00-559b-4a3a-b307-80a78cff4b22'
 ;
-
-select c.id_calon, c.nama, c.foto, c.slogan, a.id_admin, j.jabatan_tujuan, k.kota, p.provinsi, pend.nama_institusi, pend.detail_pendidikan, pend.tahun_mulai_pendidikan, pend.tahun_selesai_pendidikan, pek.nama_pekerjaan, pek.detail_pekerjaan, pek.tahun_mulai_pekerjaan, pek.tahun_selesai_pekerjaan FROM admins a JOIN calon c on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan JOIN kota k on c.id_dapil_kota = k.id_kota JOIN provinsi p on k.id_provinsi = p.id_provinsi JOIN riwayat_pendidikan pend on pend.id_calon = c.id_calon JOIN riwayat_pekerjaan pek on pek.id_calon = c.id_calon  WHERE a.id_admin = '7f5135e1-afb6-421c-9b29-11dea6c0b729';
 
 --TABEL PARTAI
 CREATE TABLE partai(
