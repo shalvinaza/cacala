@@ -3,7 +3,7 @@ const { pool } = require("../dbConfig")
 exports.selectAllProvinsi = async (req, res) => {
    try{
       const provinsi = await pool.query(
-         "SELECT * from provinsi"
+         "SELECT * from provinsi ORDER BY provinsi"
       )
 
       res.json(provinsi.rows)
@@ -62,7 +62,7 @@ exports.deleteProvinsi = async (req, res) => {
 exports.selectAllKota = async (req, res) => {
 	try{
 		const kota = await pool.query(
-			"SELECT * from kota, provinsi where kota.id_provinsi = provinsi.id_provinsi"
+			"SELECT * from kota, provinsi where kota.id_provinsi = provinsi.id_provinsi ORDER BY kota"
 		)
 
 		res.json(kota.rows)

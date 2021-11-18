@@ -16,11 +16,18 @@
                     DPRD Provinsi
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" style="color:black" href="/dprd_prov">Provinsi 1</a></li>
-                    <!-- <li><a class="dropdown-item" style="color:black" href="#">Provinsi 2</a></li> -->
+                    <li><a class="dropdown-item" style="color:black" href="/dprd_prov" v-for="(prov) in provinsi" :key="prov.id_provinsi">{{prov.provinsi}}</a></li>
                   </div>
                 </li>
-                <router-link to="/dprd_kab_kota" class="nav-link">DPRD Kabupaten/Kota</router-link>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle txt-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    DPRD Kota
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" style="color:black" href="/dprd_kota" v-for="(kta) in kota" :key="kta.id_kota">{{kta.kota}}</a></li>
+                  </div>
+                </li>
+                <!-- <router-link to="/dprd_kab_kota" class="nav-link">DPRD Kabupaten/Kota</router-link> -->
                 <span v-if="isLoggedIn">
                   <router-link to="/dasbor_saya" class="nav-link">Dasbor</router-link>
                 </span>
@@ -51,15 +58,41 @@
 </template>
 
 <script>
+import axios from 'axios'
+
+const PROVINSI_API_URL = `http://localhost:3000/dapil/provinsi`
+const KOTA_API_URL = `http://localhost:3000/dapil/kota`
+
 export default {
   name: 'Navbar',
+  data: () => ({
+    provinsi: [],
+    kota: []
+  }),
   computed: {
     isLoggedIn: function() {return localStorage.getItem("token") != null}
+  },
+  mounted(){
+    fetch(PROVINSI_API_URL)
+      .then(response => response.json())
+      .then(result => {
+        this.provinsi = result
+        var parsedobj = JSON.parse(JSON.stringify(result))
+        console.log(parsedobj)
+      })
+    fetch(KOTA_API_URL)
+      .then(response => response.json())
+      .then(result => {
+        this.kota = result
+        var parsedobj = JSON.parse(JSON.stringify(result))
+        console.log(parsedobj)
+      })
   },
   methods:{
     goToLogin(){
       this.$router.push('/login');
     },
+
     logUserOut(){
       localStorage.removeItem('token')
       this.$router.push('/login')
