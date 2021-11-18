@@ -1,151 +1,63 @@
-<template>
-  <div class="container">
-          <div class="row">
-            <div class="col-md left flex-row flex-wrap justify-content-center text-center">
-                <img src="../assets/images/add.png" alt="Login">
-                <p class="mt-3">Masuk  dan ikuti akun-akun calon yang Anda inginkan untuk membuat pintasan akses akun-aun Calon ke halaman dashbormu </p>
-            </div>
-            <div class="col-md right flex-row d-md-block flex-wrap">
-                <h4 class="bold text-center mb-5">Masuk</h4>
-                <div class="form-data" v-if="!submitted" id="form1">
-                    <div class="forms-inputs mb-4"> 
-                        <span>Nama</span> 
-                        <input id="email_user" autocomplete="off" type="text" v-model="email" v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(email) && emailBlured}" v-on:blur="emailBlured = true" placeholder="Ketik email di sini">
-                        <div class="invalid-feedback">Email harus valid!</div>
-                    </div>
-                    <div class="forms-inputs mb-4"> 
-                        <span>Email</span> 
-                        <input id="email_user" autocomplete="off" type="text" v-model="email" v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(email) && emailBlured}" v-on:blur="emailBlured = true" placeholder="Ketik email di sini">
-                        <div class="invalid-feedback">Email harus valid!</div>
-                    </div>
-                    <div class="forms-inputs mb-4"> 
-                        <span>Kata Sandi</span>
-                        <input id="pass_user" autocomplete="off" type="password" v-model="password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
-                        <div class="invalid-feedback">Password minimal 8 karakter!</div>
-                    </div>
-                    <div class="forms-inputs mb-4"> 
-                        <span>Konfirmasi Kata Sandi</span>
-                        <input id="pass_user" autocomplete="off" type="password" v-model="password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
-                        <div class="invalid-feedback">Password minimal 8 karakter!</div>
-                    </div>                    
-                    <div class="mb-3"> 
-                        <button v-on:click.stop.prevent="submit" type="submit" class="btn bg-light-orange w-100">Masuk</button> 
-                    </div>
-                </div>
-                <div class="mb-4">
-                    <span>Sudah punya akun?</span> <a style="color:#D65A40" href="/register">Masuk Sekarang</a>
-                </div>
-            </div>
+<template></template>
+<div>
+  <!-- <div v-if="isVisibility" class="overlay">
+      <div class="modal">
+          <div class="d-flex align-items-center justify-content-between p-3">
+              <span>Modal Title</span>
+              <button class="button"> 
+                Klik disini   
+              </button>
           </div>
-  </div>
-</template>
+          <div class="p-3">
+              <div class="mb-4">
+                  Modal Body
+              </div>
+              <button @click.prevent="toggleModal" class="btn btn-primary">
+                  confirm
+              </button>
+          </div>
+      </div>
+  </div> -->
 
+  <button @click.prevent="toggleModal" class="btn btn-primary green">
+      Open modal {{isVisibility}}
+  </button>
+</div>
+
+</template>
 <script>
 export default {
-    name:'Form_login',
-    data: function () {
+    data() {
         return {
-            email : "",
-            emailBlured : false,
-            valid : false,
-            submitted : false,
-            password:"",
-            passwordBlured:false
-            }
+            isVisibility: false
+        }
     },
-    methods:{
-        validate : function(){
-            this.emailBlured = true;
-            this.passwordBlured = true;
-            if( this.validEmail(this.email) && this.validPassword(this.password)){
-                this.valid = true;
-                }
-        },
-        validEmail : function(email) {
-            var re = /(.+)@(.+){2,}\.(.+){2,}/;
-            if(re.test(email.toLowerCase())){
-                return true;
-            }
-        },
-        validPassword : function(password) {
-            if (password.length > 7) {
-                return true;
-                }
-        },
-        submit : function(){
-            this.validate();
-            if(this.valid){
-                this.submitted = true;
-            }
-        },
-        goToLoginAdmin(){
-            this.$router.push('/login_admin');
+    methods: {
+        toggleModal(){
+            this.isVisibility = !this.isVisibility;
         }
     }
 }
 </script>
 
-<style scoped>
-p{
-    font-size: 20px;
-}
-.col-md{
+<style lang="postcss" scoped>
+.overlay{
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.3);
+    z-index: 100;
     display: flex;
-    border: 4px solid #DDA18C;
+    align-items: center;
     justify-content: center;
-    padding: 3rem;
-    color: white;
 }
-.left{
-    border-radius: 15px 0 0 15px;
-    background-color:#DDA18C;
-}
-.right{
-    color: black;
-    border-radius: 0 15px 15px 0;
-}
-.forms-inputs {
-    position: relative
-}
-
-.forms-inputs span {
-    position: absolute;
-    top: -18px;
-    left: 10px;
-    background-color: #fff;
-    padding: 5px 10px;
-}
-
-.forms-inputs input {
-    height: 50px;
-    border: 2px solid #9D9493;
-    border-radius:10px;
-}
-
-.forms-inputs input:focus {
-    box-shadow: none;
-    outline: none;
-    border: 2px solid #D65A40;
-}
-
-.btn {
-    height: 50px;
-}
-
-.success-data {
-    display: flex;
-    flex-direction: column;
-}
-
-.bxs-badge-check {
-    font-size: 90px
-}
-.btn-outline-orange{
-    color:#DDA18C;
-    border-color: #DDA18C;
-}
-.btn-outline-orange:hover{
-    color:white;
-    background-color: #D65A40;
+.model{
+    width: 500px;
+    box-shadow: 1px 2px 4px rgba(153,155,168,0.12);
+    border-radius: 4px;
+    background-color: white;
+    padding: 10%;
 }
 </style>

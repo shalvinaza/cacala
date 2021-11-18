@@ -72,30 +72,30 @@
                     </div>
                     <div class="p-4">
                         <!-- part create post -->
-                        <button type="button" class="btn bg-light-orange br-10 mb-3">Mulai siaran langsung</button>
+                        <button type="button" class="btn bg-light-orange br-10 mb-3 d-md-block">Mulai siaran langsung</button>
                         <div class="card w-100 postingan p-3 mb-3">
                             <div class="card-body p-0">
                                 <h5 class="card-title text-center mb-4">Apa kabar tebaru dari Anda?</h5>
-                                <form>
+                                <form @submit.prevent="addPost">
                                     <div class="forms-inputs mb-4"> 
                                         <span>Judul unggahan</span> 
-                                        <input id="judul_post" class="w-100 p-3" autocomplete="off" type="text" v-model="judul_post" placeholder="Ketik email di sini">
-                                        <!-- <div class="invalid-feedback">Email harus valid!</div> -->
+                                        <input class="w-100 p-3" autocomplete="off" type="text" v-model="form.judul" placeholder="Ketik email di sini">
                                     </div>
                                     <div class="forms-inputs mb-3"> 
                                         <span>Teks unggahan</span>
-                                        <textarea id="teks_post" class="w-100 p-3" autocomplete="off" v-model="text_post" placeholder="Ketik kata sandi di sini"></textarea>
-                                        <!-- <div class="invalid-feedback">Password minimal 8 karakter!</div> -->
+                                        <textarea class="w-100 p-3" autocomplete="off" v-model="form.teks" placeholder="Ketik kata sandi di sini"></textarea>
                                     </div>
                                     <div class="d-flex align-items-center">
                                         <span class="card-text icons me-3"><i class="fas fa-images"></i></span>
                                         <span class="card-text icons flex-grow-2 w-100"><i class="fas fa-video"></i></span>
-                                        <!-- <button v-on:click.stop.prevent="submit" type="submit" class="btn bg-light-orange w-100 br-10">Masuk</button>  -->
                                         <button type="submit" class="btn bg-light-orange br-10">Unggah</button> 
                                     </div>
                                 </form>                           
                             </div>
                         </div> 
+                        <Popup v-if="isVisibility" title="ini judul" @toggle-modal="toggleModal">
+                            <h2>my popup</h2>
+                        </Popup>
                         <!-- posts just text-->
                         <span v-for="post in posts"  :key="post.id_post">
                             <div class="card w-100 postingan p-3 mb-3">
@@ -103,7 +103,7 @@
                                     <h5 class="card-title text-center">{{post.judul}}</h5>
                                     <div class="d-flex end-row-section w-100 p-0 mb-3 pb-2">
                                         <p class="card-text text-muted m-0 flex-grow-2 w-100" style=""><i class="far fa-calendar-alt"></i>  <small>{{post.waktu}}</small></p>
-                                        <span class="card-text icons me-2"><i class="fas fa-edit"></i></span>
+                                        <span class="card-text icons me-2"  @click.prevent="toggleModal"><i class="fas fa-edit"></i></span>
                                         <span class="card-text icons"><i class="fas fa-trash"></i></span>
                                     </div>
                                     <!-- <img src="../assets/images/poster_post.jpg" class="w-100 img-poster-post mb-3" alt="..."> -->
@@ -158,17 +158,26 @@
 </template>
 
 <script>
+import Popup from './Popup.vue'
 import axios from 'axios'
 const ADMIN_API_URL = `http://localhost:3000/admin/`
 const CALON_API_URL = `http://localhost:3000/calon/admin`
-const GET_POST_API_URL = `http://localhost:3000/post/`
 
 export default {
     name :'Post_detail_calon',
+    components:{
+        Popup
+    },
     data: function () {
         return {
              calon: "",
-             posts: []
+             posts: [],
+             form : {
+                 judul:'',
+                 waktu:'',
+                 teks:''
+             },
+             isVisibility: false
         }   
     },
     mounted(){
@@ -185,19 +194,61 @@ export default {
                     this.no_data = true;
                 }
             });
-        fetch(GET_POST_API_URL, { headers })
-            .then(response => response.json())
-            .then(result => {
-                this.posts = result
-                var parsedobj = JSON.parse(JSON.stringify(result))
-                console.log(parsedobj)
-            })
-            .catch(error => {
-                if(posts==null){
-                    this.no_data = true;
-                }
-            });
+        this.load()
     },
+    methods: {
+        load(){
+            const GET_POST_API_URL = `http://localhost:3000/post/`
+            axios.defaults.headers.common["token"] = localStorage.token
+            axios.get(GET_POST_API_URL)
+                .then(result => {
+                    this.posts = result.data
+                    var parsedobj = JSON.parse(JSON.stringify(result))
+                    console.log(parsedobj)
+                })
+                .catch((err) =>
+                {
+                    console.log(err);
+                })
+        },
+        addPost(){
+            const POST_POSTS_API_URL = `http://localhost:3000/post/`
+            axios.defaults.headers.common["token"] = localStorage.token
+            axios.post(POST_POSTS_API_URL,this.form)
+                .then(result => {
+                    this.load()
+                    this.form.judul =''
+                    this.form.waktu = ''
+                    this.form.teks = ''
+                })
+            
+        },
+        edit(posts){
+            this.form.id = posts.id_post
+            this.form.judul = posts.judul
+            this.form.teks = post.teks
+        },
+        update(form){
+            axios.defaults.headers.common["token"] = localStorage.token
+            return axios.put('http://localhost:3000/post/' + form.id, {
+                judul : this.form.judul,
+                waktu : this.form.waktu,
+                teks : this.form.teks
+            })
+            .then(result =>{
+                this.load()
+                this.form.judul =''
+                this.form.waktu = ''
+                this.form.teks = ''
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+        },
+        toggleModal(){
+            this.isVisibility = !this.isVisibility;
+        }
+    }
 }
 </script>
 
