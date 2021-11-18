@@ -3,7 +3,7 @@ const { pool } = require("../dbConfig")
 exports.selectPostByAdmin = async (req, res) => {
    try{
       const post = await pool.query(
-         "SELECT * from post WHERE id_admin = $1", [
+         "SELECT * from post WHERE id_admin = $1 ORDER BY waktu DESC", [
             req.user
          ]
       )
@@ -72,7 +72,7 @@ exports.selectPostByUser = async (req, res) => {
    const { id_admin } = req.params
    try{
       const post = await pool.query(
-         "SELECT * from post WHERE id_admin = $1", [
+         "SELECT * from post WHERE id_admin = $1 ORDER BY waktu DESC", [
             id_admin
          ]
       )
