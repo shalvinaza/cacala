@@ -93,8 +93,8 @@
                                 </form>                           
                             </div>
                         </div> 
-                        <Popup v-if="isVisibility" title="Edit Postingan" @toggle-modal="toggleModal">
-                                <form >
+                        <Popup v-if="updateSubmit" title="Edit Postingan" @toggle-modal="toggleModal">
+                                <form>
                                     <div class="forms-inputs mb-4"> 
                                         <span>Judul unggahan</span> 
                                         <input class="w-100 p-3" autocomplete="off" type="text" v-model="form.judul" placeholder="Ketik email di sini">
@@ -106,7 +106,7 @@
                                     <div class="d-flex align-items-center">
                                         <span class="card-text icons me-3"><i class="fas fa-images"></i></span>
                                         <span class="card-text icons flex-grow-2 w-100"><i class="fas fa-video"></i></span>
-                                        <button type="submit" class="btn bg-light-orange br-10">Perbarui</button>
+                                        <button type="submit" class="btn bg-light-orange br-10" @click="update(form)">Perbarui</button>
                                     </div>
                                 </form>  
                         </Popup>
@@ -117,7 +117,7 @@
                                     <h5 class="card-title text-center">{{post.judul}}</h5>
                                     <div class="d-flex end-row-section w-100 p-0 mb-3 pb-2">
                                         <p class="card-text text-muted m-0 flex-grow-2 w-100" style=""><i class="far fa-calendar-alt"></i>  <small>{{post.waktu}}</small></p>
-                                        <span class="card-text icons me-2"  @click.prevent="toggleModal" :params="post.id_post"><i class="fas fa-edit"></i></span>
+                                        <span class="card-text icons me-2" @click="edit(post)" ><i class="fas fa-edit"></i></span>
                                         <span class="card-text icons" @click="del(post)"><i class="fas fa-trash"></i></span>
                                     </div>
                                     <!-- <img src="../assets/images/poster_post.jpg" class="w-100 img-poster-post mb-3" alt="..."> -->
@@ -191,7 +191,7 @@ export default {
                  waktu:'',
                  teks:''
              },
-             isVisibility: false
+             updateSubmit: false
         }   
     },
     mounted(){
@@ -209,22 +209,13 @@ export default {
                 }
             });
         this.load()
-        // axios.get(`http://localhost:3000/post/${route.params}`)
-        // .then(response => {
-        //     form.judul = response.data.data.judul
-        //     form.waktu = response.data.data.waktu
-        //     form.teks = response.data.data.teks
-        // })
-        // .catch(error => {
-        //     console.log(error.response.data)
-        // })
     },
     afterMounted(){
         axios.get(`http://localhost:3000/post/${route.params}`)
         .then(response => {
-            form.judul = response.data.data.judul
-            form.waktu = response.data.data.waktu
-            form.teks = response.data.data.teks
+            edit.judul = response.data.data.judul
+            edit.waktu = response.data.data.waktu
+            edit.teks = response.data.data.teks
         })
         .catch(error => {
             console.log(error.response.data)
@@ -264,47 +255,34 @@ export default {
                 this.posts.splice(index,1)
             })            
         },
-        // edit(posts){
-        //     this.form.id = posts.id_post
-        //     this.form.judul = posts.judul
-        //     this.form.teks = post.teks
-        // },
-        // update(form){
-        //     axios.defaults.headers.common["token"] = localStorage.token
-        //     return axios.put('http://localhost:3000/post/' + form.id, {
-        //         judul : this.form.judul,
-        //         waktu : this.form.waktu,
-        //         teks : this.form.teks
-        //     })
-        //     .then(result =>{
-        //         this.load()
-        //         this.form.judul =''
-        //         this.form.waktu = ''
-        //         this.form.teks = ''
-        //     })
-        //     .catch((err)=>{
-        //         console.log(err);
-        //     })
-        // },
-        toggleModal(){
-            this.isVisibility = !this.isVisibility;
+        edit(post){
+            this.updateSubmit = true
+            axios.get('http://localhost:3000/post/'+ post.id_post).then(result =>{
+                this.form.id = post.id_post
+                this.form.judul = post.judul
+                this.form.teks = post.teks
+            })  
         },
-        update(){
-            let judul = form.judul
-            let waktu =  form.waktu
-            let teks = form.teks
-
-            axios.patch(`http://localhost:3000/post/${route.params}`,{
-                judul: judul,
-                waktu: waktu,
-                teks: teks
-            }).then(()=>{
-                router.push({
-                    name:'Detail_admin_calon'
-                })
-            }).catch((err)=>{
+        update(form){
+            axios.defaults.headers.common["token"] = localStorage.token
+            return axios.put('http://localhost:3000/post/' + form.id, {
+                judul : this.form.judul,
+                waktu : this.form.waktu,
+                teks : this.form.teks
+            })
+            .then(result =>{
+                updateSubmit = false
+                this.load()
+                this.form.judul =''
+                this.form.waktu = ''
+                this.form.teks = ''
+            })
+            .catch((err)=>{
                 console.log(err);
-                })
+            })
+        },
+        toggleModal(){
+            this.updateSubmit = !this.updateSubmit;
         }
     }
 }
