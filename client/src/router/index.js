@@ -36,7 +36,7 @@ const routes = [
     component: Dpd_ri
   },
   {
-    path: '/dprd_prov',
+    path: '/dprd_prov/:id_provinsi',
     name: 'Dprd_prov',
     component: Dprd_prov
   },

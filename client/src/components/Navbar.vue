@@ -16,7 +16,11 @@
                     DPRD Provinsi
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" style="color:black" href="/dprd_prov" v-for="(prov) in provinsi" :key="prov.id_provinsi">{{prov.provinsi}}</a></li>
+                    <li>
+                      <router-link v-for="(prov) in provinsi" :key="prov.id_provinsi" :to="{name: 'Dprd_prov', params: { id_provinsi: prov.id_provinsi }}" class="dropdown-item" style="color:black">
+                        {{prov.provinsi}}
+                      </router-link>
+                    </li>
                   </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -24,17 +28,13 @@
                     DPRD Kabupaten/Kota
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <!-- <li>
-                      <a class="dropdown-item" v-for="(kta) in kota" :key="kta.id_kota">
-                        <router-link :to="{name: 'Dprd_kab_kota', params: { id_kota: kta.id_kota }}" style="color:black">{{kta.kota}}</router-link>
-                      </a>
-                    </li> -->
                     <li>
-                      <router-link :to="{name: 'Dprd_kab_kota', params: { id_kota: kta.id_kota }}" class="dropdown-item" style="color:black" v-for="(kta) in kota" :key="kta.id_kota">{{kta.kota}}</router-link>
+                      <router-link v-for="(kta) in kota" :key="kta.id_kota" :to="{name: 'Dprd_kab_kota', params: { id_kota: kta.id_kota }}" class="dropdown-item" style="color:black">
+                        {{kta.kota}}
+                      </router-link>
                     </li>
                   </div>
                 </li>
-                <!-- <router-link to="/dprd_kab_kota" class="nav-link">DPRD Kabupaten/Kota</router-link> -->
                 <span v-if="isLoggedIn">
                   <router-link to="/dasbor_saya" class="nav-link">Dasbor</router-link>
                 </span>
