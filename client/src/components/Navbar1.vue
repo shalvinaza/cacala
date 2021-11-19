@@ -16,11 +16,25 @@
                     DPRD Provinsi
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" style="color:black" href="#">Provinsi 1</a></li>
-                    <li><a class="dropdown-item" style="color:black" href="#">Provinsi 2</a></li>
+                    <li>
+                      <router-link v-for="(prov) in provinsi" :key="prov.id_provinsi" :to="{name: 'Dprd_prov', params: { id_provinsi: prov.id_provinsi }}" class="dropdown-item" style="color:black">
+                        {{prov.provinsi}}
+                      </router-link>
+                    </li>
                   </div>
                 </li>
-                <router-link to="/dprd_kab_kota" class="nav-link">DPRD Kabupaten/Kota</router-link>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle txt-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    DPRD Kabupaten/Kota
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li>
+                      <router-link v-for="(kta) in kota" :key="kta.id_kota" :to="{name: 'Dprd_kab_kota', params: { id_kota: kta.id_kota }}" class="dropdown-item" style="color:black">
+                        {{kta.kota}}
+                      </router-link>
+                    </li>
+                  </div>
+                </li>
             </div>
             <div class="d-flex">
               <button class="btn bg-light-orange text-white br-10" type="button">
@@ -34,11 +48,33 @@
 </template>
 
 <script>
+import axios from 'axios'
+
+const PROVINSI_API_URL = `http://localhost:3000/dapil/provinsi`
+const KOTA_API_URL = `http://localhost:3000/dapil/kota`
+
 export default {
   name: 'Navbar1',
-  methods:{
-
-  }
+  data: () => ({
+    provinsi: [],
+    kota: []
+  }),
+  mounted(){
+    fetch(PROVINSI_API_URL)
+      .then(response => response.json())
+      .then(result => {
+        this.provinsi = result
+        var parsedobj = JSON.parse(JSON.stringify(result))
+        console.log(parsedobj)
+      })
+    fetch(KOTA_API_URL)
+      .then(response => response.json())
+      .then(result => {
+        this.kota = result
+        var parsedobj = JSON.parse(JSON.stringify(result))
+        console.log(parsedobj)
+      })
+  },  
   
 }
 </script>
