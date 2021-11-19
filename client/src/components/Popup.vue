@@ -1,17 +1,14 @@
 <template>
     <div class="popup">
-        <div class="popup-inner">
-            <slot/>
-            <div class="d-flex align-items-center justify-content-between p-3">
-              <span>{{title}}</span>
+        <div class="col-md-6 popup-inner p-4">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <h5>{{title}}</h5>
+              <span  @click.prevent="close"><i class="fas fa-times"></i></span>
             </div>
-            <div class="p-3">
-                <div class="mb-4">
-                    Modal Body
+            <div class="p-0">
+                <div class="">
+                    <slot/>
                 </div>
-                <button @click.prevent="close" class="btn btn-primary">
-                    confirm
-                </button>
             </div>
         </div>
     </div>
@@ -49,7 +46,14 @@ export default {
 
     .popup-inner{
         background: white;
-        padding: 32px;
+        border-radius: 15px;
+    }
+}
+.fa-times{
+    color: grey;
+
+    &:hover{
+        color: orange;
     }
 }
 </style>

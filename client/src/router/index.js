@@ -12,6 +12,7 @@ import Profil_user from '../views/Profil_user.vue'
 import Dasbor from '../views/Dasbor.vue'
 import Detail_calon from '../views/Detail_calon.vue'
 import Detail_admin_calon from '../views/Admin_calon.vue'
+// import Popup from '../components/Popup.vue'
 
 const routes = [
   {
@@ -79,7 +80,13 @@ const routes = [
     path: '/detail_admin_calon',
     name: 'Detail_admin_calon',
     component: Detail_admin_calon
-  }     
+  },
+  // {
+  //   path: '/update_post/:id_post',
+  //   name: 'Popup',
+  //   component: Popup
+  // }
+
   // {
   //   path: '/about',
   //   name: 'About',

@@ -93,8 +93,22 @@
                                 </form>                           
                             </div>
                         </div> 
-                        <Popup v-if="isVisibility" title="ini judul" @toggle-modal="toggleModal">
-                            <h2>my popup</h2>
+                        <Popup v-if="isVisibility" title="Edit Postingan" @toggle-modal="toggleModal">
+                                <form >
+                                    <div class="forms-inputs mb-4"> 
+                                        <span>Judul unggahan</span> 
+                                        <input class="w-100 p-3" autocomplete="off" type="text" v-model="form.judul" placeholder="Ketik email di sini">
+                                    </div>
+                                    <div class="forms-inputs mb-3"> 
+                                        <span>Teks unggahan</span>
+                                        <textarea class="w-100 p-3" autocomplete="off" v-model="form.teks" placeholder="Ketik kata sandi di sini"></textarea>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <span class="card-text icons me-3"><i class="fas fa-images"></i></span>
+                                        <span class="card-text icons flex-grow-2 w-100"><i class="fas fa-video"></i></span>
+                                        <button type="submit" class="btn bg-light-orange br-10">Perbarui</button>
+                                    </div>
+                                </form>  
                         </Popup>
                         <!-- posts just text-->
                         <span v-for="post in posts"  :key="post.id_post">
@@ -103,8 +117,8 @@
                                     <h5 class="card-title text-center">{{post.judul}}</h5>
                                     <div class="d-flex end-row-section w-100 p-0 mb-3 pb-2">
                                         <p class="card-text text-muted m-0 flex-grow-2 w-100" style=""><i class="far fa-calendar-alt"></i>  <small>{{post.waktu}}</small></p>
-                                        <span class="card-text icons me-2"  @click.prevent="toggleModal"><i class="fas fa-edit"></i></span>
-                                        <span class="card-text icons"><i class="fas fa-trash"></i></span>
+                                        <span class="card-text icons me-2"  @click.prevent="toggleModal" :params="post.id_post"><i class="fas fa-edit"></i></span>
+                                        <span class="card-text icons" @click="del(post)"><i class="fas fa-trash"></i></span>
                                     </div>
                                     <!-- <img src="../assets/images/poster_post.jpg" class="w-100 img-poster-post mb-3" alt="..."> -->
                                     <p class="card-text">{{post.teks}}</p>
@@ -195,6 +209,26 @@ export default {
                 }
             });
         this.load()
+        // axios.get(`http://localhost:3000/post/${route.params}`)
+        // .then(response => {
+        //     form.judul = response.data.data.judul
+        //     form.waktu = response.data.data.waktu
+        //     form.teks = response.data.data.teks
+        // })
+        // .catch(error => {
+        //     console.log(error.response.data)
+        // })
+    },
+    afterMounted(){
+        axios.get(`http://localhost:3000/post/${route.params}`)
+        .then(response => {
+            form.judul = response.data.data.judul
+            form.waktu = response.data.data.waktu
+            form.teks = response.data.data.teks
+        })
+        .catch(error => {
+            console.log(error.response.data)
+        })
     },
     methods: {
         load(){
@@ -223,30 +257,54 @@ export default {
                 })
             
         },
-        edit(posts){
-            this.form.id = posts.id_post
-            this.form.judul = posts.judul
-            this.form.teks = post.teks
-        },
-        update(form){
-            axios.defaults.headers.common["token"] = localStorage.token
-            return axios.put('http://localhost:3000/post/' + form.id, {
-                judul : this.form.judul,
-                waktu : this.form.waktu,
-                teks : this.form.teks
-            })
-            .then(result =>{
+        del(post){
+            axios.delete('http://localhost:3000/post/'+ post.id_post).then(result =>{
                 this.load()
-                this.form.judul =''
-                this.form.waktu = ''
-                this.form.teks = ''
-            })
-            .catch((err)=>{
-                console.log(err);
-            })
+                let index = this.posts.indexOf(form.name)
+                this.posts.splice(index,1)
+            })            
         },
+        // edit(posts){
+        //     this.form.id = posts.id_post
+        //     this.form.judul = posts.judul
+        //     this.form.teks = post.teks
+        // },
+        // update(form){
+        //     axios.defaults.headers.common["token"] = localStorage.token
+        //     return axios.put('http://localhost:3000/post/' + form.id, {
+        //         judul : this.form.judul,
+        //         waktu : this.form.waktu,
+        //         teks : this.form.teks
+        //     })
+        //     .then(result =>{
+        //         this.load()
+        //         this.form.judul =''
+        //         this.form.waktu = ''
+        //         this.form.teks = ''
+        //     })
+        //     .catch((err)=>{
+        //         console.log(err);
+        //     })
+        // },
         toggleModal(){
             this.isVisibility = !this.isVisibility;
+        },
+        update(){
+            let judul = form.judul
+            let waktu =  form.waktu
+            let teks = form.teks
+
+            axios.patch(`http://localhost:3000/post/${route.params}`,{
+                judul: judul,
+                waktu: waktu,
+                teks: teks
+            }).then(()=>{
+                router.push({
+                    name:'Detail_admin_calon'
+                })
+            }).catch((err)=>{
+                console.log(err);
+                })
         }
     }
 }

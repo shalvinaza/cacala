@@ -82,3 +82,16 @@ exports.selectPostByUser = async (req, res) => {
       res.json({ message: err })
    }
 }
+exports.selectPostById = async (req, res) => {
+   const {id_post} = req.params
+   try{
+      const post = await pool.query(
+         "select * from post where id_post = $1", [
+         id_post
+      ])
+
+      res.json(post.rows)
+   } catch(err) {
+      res.json({ message: err })
+   }
+}
