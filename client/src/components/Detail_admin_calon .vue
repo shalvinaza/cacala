@@ -210,17 +210,6 @@ export default {
             });
         this.load()
     },
-    afterMounted(){
-        axios.get(`http://localhost:3000/post/${route.params}`)
-        .then(response => {
-            edit.judul = response.data.data.judul
-            edit.waktu = response.data.data.waktu
-            edit.teks = response.data.data.teks
-        })
-        .catch(error => {
-            console.log(error.response.data)
-        })
-    },
     methods: {
         load(){
             const GET_POST_API_URL = `http://localhost:3000/post/`

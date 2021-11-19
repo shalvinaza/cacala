@@ -7,34 +7,30 @@
             </div>
             <div class="col-md flex-row d-md-block flex-wrap">
                 <!-- <div class="form-data" v-if="!submitted" id="form1"> -->
-                <!-- <div class="form-data" @submit.prevent="loginUser" id="form1"> -->
-                <form @submit.prevent="registerUser">
+                <div class="form-data">
+                <form @submit.prevent="updateUser">
                     <div class="forms-inputs mb-4">  
                         <span>Nama</span> 
-                        <input id="name_user" autocomplete="off" type="text" v-model="register.name" v-bind:class="{'form-control':true, 'is-invalid' : !validUname(uname) && unameBlured}" v-on:blur="unameBlured = true" placeholder="Shalvina">
+                        <input autocomplete="off" type="text" v-model="user.username" v-bind:class="{'form-control':true}" placeholder="Ketik nama disini">
                     </div>
                     <div class="forms-inputs mb-4"> 
                         <span>Email</span> 
-                        <input id="email_user" autocomplete="off" type="text" v-model="register.email" v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(email) && emailBlured}" v-on:blur="emailBlured = true" placeholder="shalvina@gmail.com">
-                        <div class="invalid-feedback">Email harus valid!</div>
-                    </div>
-                    <div class="forms-inputs mb-4"> 
-                        <span>Kata Sandi Sekarang</span>
-                        <input id="pass_user" autocomplete="off" type="password" v-model="register.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi sekarang">
-                        <div class="invalid-feedback">Password harus benar!</div>
+                        <input autocomplete="off" type="text" v-model="user.email" v-bind:class="{'form-control':true}" placeholder="Ketik email disini">
                     </div>
                     <div class="forms-inputs mb-4"> 
                         <span>Kata Sandi Baru</span>
-                        <input id="new_user" autocomplete="off" type="password" v-model="register.newpassword" v-bind:class="{'form-control':true, 'is-invalid' : !validNewPassword(newpassword) && newpasswordBlured}" v-on:blur="newpasswordBlured = true" placeholder="Ketik kata sandi baru">
-                        <div class="invalid-feedback">Password minimal 8 karakter!</div>
+                        <input autocomplete="off" type="password" v-model="user.password" v-bind:class="{'form-control':true}" placeholder="Ketik kata sandi sekarang">
+                    </div>
+                    <div class="forms-inputs mb-4"> 
+                        <span>Konfirmasi Kata Sandi</span>
+                        <input autocomplete="off" type="password" v-model="newPassword" v-bind:class="{'form-control':true}" placeholder="Ketik kata sandi user">
                     </div>
                     <div class="mb-3 d-flex justify-content-end"> 
-                        <!-- <button v-on:click.stop.prevent="submit" type="submit" class="btn bg-light-orange w-100 br-10">Daftar</button>  -->
                         <button type="button" class="btn bg-light-orange me-3 br-10" style="background-color:#D65A40">Hapus Akun</button> 
                         <button type="submit" class="btn bg-light-orange br-10">Simpan</button>
                     </div> 
                 </form>
-                <!-- </div> -->
+                </div>
             </div>
           </div>
   </div>
@@ -42,84 +38,55 @@
 
 <script>
 import axios from 'axios'
-const REGISTER_API_URL = `http://localhost:3000/auth/users/register`
 
 export default {
     name:'Form_login',
     data: function () {
         return {
-            uname :"",
-            unameBlured : false,
-            email : "",
-            emailBlured : false,
-            valid : false,
-            submitted : false,
-            password:"",
-            passwordBlured:false,
-            newpassword:"",
-            newpasswordBlured:false,
-            register: {
-                username: "",
-                email: "",
-                password: "",
-                newpassword: ""
-            },
+            verified: false,
+            newPassword:"",
+            user: []
         }
     },
-    methods:{
-        validate : function(){
-            this.unameBlured = true;
-            this.emailBlured = true;
-            this.passwordBlured = true;
-            this.newpasswordBlured = true;
-            if( this.validUname(this.uname) && this.validEmail(this.email) && this.validPassword(this.password) && this.validNewPassword(this.newpassword)){
-                this.valid = true;
-                }
-        },
-        validUname : function(uname) {
-            if(uname.length > 0){
-                return true;
-            }
-        },
-        validEmail : function(email) {
-            var re = /(.+)@(.+){2,}\.(.+){2,}/;
-            if(re.test(email.toLowerCase())){
-                return true;
-            }
-        },
-        validPassword : function(password) {
-            if (password.length > 7) {
-                return true;
-                }
-        },
-        validNewPassword : function(newpassword) {
-            if (newpassword.length > 7) {
-                return true;
-                }
-        },
-        submit : function(){
-            this.validate();
-            if(this.valid){
-                this.submitted = true;
-            }
-        },
-        registerUser(e) {
-      e.preventDefault()
-      if (this.register.password.length > 0){
-        axios.post(REGISTER_API_URL, this.register)
-        .then(response => {
-          localStorage.setItem('token',response.data.token)
-
-          if (localStorage.getItem('token') != null){
-            this.$emit('loggedIn')
-            this.$router.push('/')    
-          }
-        })
-        .catch(error => {
-            console.error(error)
-        })
-      } 
+    // mounted(){
+    //     this.edit()
+    // },
+    mounted(){
+        const headers = { token: localStorage.token };
+        const GET_USER_API_URL = `http://localhost:3000/user`
+        fetch(GET_USER_API_URL, {headers})
+            .then(response => response.json())
+            .then(result => {
+                this.user = result
+                var parsedobj = JSON.parse(JSON.stringify(result))
+                console.log(parsedobj)
+            });
     },
+    methods:{
+        // verifyPass(password,newPassword){
+        //     if(this.newPassword == password){
+        //         this.verified = true;
+        //     }
+        // },
+        updateUser(){
+        axios.defaults.headers.common["token"] = localStorage.token
+        return axios.put('http://localhost:3000/user',{
+            username: this.user.username,
+            email: this.user.email,
+            password: this.user.password            
+        })
+        .then(result =>{
+            window.location = "/profil_user"
+            this.user=''
+        })
+        },
+        del(user){
+            axios.delete('http://localhost:3000/users/' + user.id).then(res =>{
+            this.load()
+            let index = this.users.indexOf(form.name)
+            this.users.splice(index,1)
+        })
+        }
     }
 }
 </script>
