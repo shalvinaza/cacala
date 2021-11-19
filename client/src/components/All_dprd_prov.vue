@@ -56,7 +56,6 @@
 
 <script>
 import axios from 'axios'
-const DPD_API_URL = `http://localhost:3000/calon/jabatan/aa0faabb-82e5-45bc-8b0a-c5795aa4c91a`
 
 export default {
     name: 'All_dprd_kab_kota',
@@ -69,7 +68,10 @@ export default {
         isLoggedIn: function() {return localStorage.getItem("token") != null}
     },
     mounted(){
-        fetch(DPD_API_URL)
+        const id_provinsi = this.$route.params.id_provinsi;
+        const DRPD_PROV_API_URL = `http://localhost:3000/calon/dprdProv/${id_provinsi}` 
+
+        fetch(DRPD_PROV_API_URL)
             .then(response => response.json())
             .then(result => {
                 this.calons = result

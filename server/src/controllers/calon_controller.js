@@ -190,3 +190,17 @@ exports.selectCalonDPRDKotaByKota = async (req, res) => {
       res.json({ message: err })
    }
 }
+
+exports.selectCalonDPRDProvByProv = async (req, res) => {
+   const { id_provinsi } = req.params
+   try{
+      const calon = await pool.query(
+         "SELECT c.id_calon, c.nama, c.foto, c.slogan, a.id_admin, j.jabatan_tujuan, k.kota, p.provinsi FROM calon c JOIN admins a on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan JOIN kota k on c.id_dapil_kota = k.id_kota JOIN provinsi p on k.id_provinsi = p.id_provinsi WHERE c.id_jabatan = 'aa0faabb-82e5-45bc-8b0a-c5795aa4c91a' AND k.id_provinsi = $1;",[
+            id_provinsi
+         ])
+      
+         res.json(calon.rows)
+   } catch(err) {
+      res.json({ message: err })
+   }
+}

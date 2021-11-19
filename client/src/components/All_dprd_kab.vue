@@ -56,7 +56,6 @@
 
 <script>
 import axios from 'axios'
-var id_kota = ''
 
 export default {
     name: 'All_dprd_kab_kota',
@@ -69,7 +68,7 @@ export default {
         isLoggedIn: function() {return localStorage.getItem("token") != null}
     },
     mounted(){
-        id_kota = this.$route.params.id_kota;
+        const id_kota = this.$route.params.id_kota;
         const DRPD_KOTA_API_URL = `http://localhost:3000/calon/dprdKota/${id_kota}` 
 
         fetch(DRPD_KOTA_API_URL)
@@ -84,20 +83,6 @@ export default {
                     this.no_data = true;
                 }
             });
-    },
-    // watch: {
-    //     '$route.params' : {
-    //         handler(newValue){
-    //             const{DRPD_KOTA_API_URL} = newValue
-    //             this.mounted()
-    //         },
-    //         immediate: true,
-    //     }
-    // },
-    watch: {
-        created(val){
-            id_kota = val;
-        }
     },
     methods : {
         goToLogin(){
