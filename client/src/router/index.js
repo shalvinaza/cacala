@@ -40,7 +40,7 @@ const routes = [
     component: Dprd_prov
   },
   {
-    path: '/dprd_kab_kota',
+    path: '/dprd_kab_kota/:id_kota',
     name: 'Dprd_kab_kota',
     component: Dprd_kab_kota
   },

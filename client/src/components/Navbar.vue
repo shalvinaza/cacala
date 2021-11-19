@@ -21,10 +21,17 @@
                 </li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle txt-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    DPRD Kota
+                    DPRD Kabupaten/Kota
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" style="color:black" href="/dprd_kota" v-for="(kta) in kota" :key="kta.id_kota">{{kta.kota}}</a></li>
+                    <!-- <li>
+                      <a class="dropdown-item" v-for="(kta) in kota" :key="kta.id_kota">
+                        <router-link :to="{name: 'Dprd_kab_kota', params: { id_kota: kta.id_kota }}" style="color:black">{{kta.kota}}</router-link>
+                      </a>
+                    </li> -->
+                    <li>
+                      <router-link :to="{name: 'Dprd_kab_kota', params: { id_kota: kta.id_kota }}" class="dropdown-item" style="color:black" v-for="(kta) in kota" :key="kta.id_kota">{{kta.kota}}</router-link>
+                    </li>
                   </div>
                 </li>
                 <!-- <router-link to="/dprd_kab_kota" class="nav-link">DPRD Kabupaten/Kota</router-link> -->

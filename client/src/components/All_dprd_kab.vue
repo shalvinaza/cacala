@@ -56,7 +56,7 @@
 
 <script>
 import axios from 'axios'
-const DPD_API_URL = `http://localhost:3000/calon/jabatan/1267363f-491f-4b70-aecc-3ef02b4c32ee`
+var id_kota = ''
 
 export default {
     name: 'All_dprd_kab_kota',
@@ -69,7 +69,10 @@ export default {
         isLoggedIn: function() {return localStorage.getItem("token") != null}
     },
     mounted(){
-        fetch(DPD_API_URL)
+        id_kota = this.$route.params.id_kota;
+        const DRPD_KOTA_API_URL = `http://localhost:3000/calon/dprdKota/${id_kota}` 
+
+        fetch(DRPD_KOTA_API_URL)
             .then(response => response.json())
             .then(result => {
                 this.calons = result
@@ -81,6 +84,20 @@ export default {
                     this.no_data = true;
                 }
             });
+    },
+    // watch: {
+    //     '$route.params' : {
+    //         handler(newValue){
+    //             const{DRPD_KOTA_API_URL} = newValue
+    //             this.mounted()
+    //         },
+    //         immediate: true,
+    //     }
+    // },
+    watch: {
+        created(val){
+            id_kota = val;
+        }
     },
     methods : {
         goToLogin(){
@@ -100,8 +117,27 @@ export default {
                 })
 
             console.log(localStorage.token)
-        }
-    }
+        },
+        
+        // fetchCalon(url){
+        //     const id_kota = this.$route.params.id_kota;
+        //     const DRPD_KOTA_API_URL = `http://localhost:3000/calon/dprdKota/${id_kota}`
+
+        //     axios.get(DRPD_KOTA_API_URL)
+        //         .then(response => response.json())
+        //         .then(result => {
+        //             this.calons = result
+        //             var parsedobj = JSON.parse(JSON.stringify(result))
+        //             console.log('parsedobj')
+        //         })
+        //         .catch(error => {
+        //             if(calons==null){
+        //                 this.no_data = true;
+        //             }
+        //         }
+        //     );            
+        // }
+    },
 }
 </script>
 
