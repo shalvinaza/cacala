@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h1 class="text-center pb-4 mb-4">Calon DPRD Provinsi 1</h1>
+        <h1 class="text-center pb-4 mb-4">Calon DPRD Provinsi {{provinsi.provinsi}}</h1>
         <a class="dropdown-toggle btn btn-outline-orange2 me-3" href="#" id="navbarDropdown" data-bs-toggle="dropdown">
             Daerah Pilih
         </a>
@@ -62,7 +62,8 @@ export default {
     data : () => ({
         no_data: false,
         calons: [],
-        user: []
+        user: [],
+        provinsi: []
     }),
     computed: {
         isLoggedIn: function() {return localStorage.getItem("token") != null}
@@ -75,14 +76,20 @@ export default {
             .then(response => response.json())
             .then(result => {
                 this.calons = result
-                var parsedobj = JSON.parse(JSON.stringify(result))
-                console.log(parsedobj)
             })
             .catch(error => {
                 if(calons==null){
                     this.no_data = true;
                 }
             });
+
+        const PROV_API_URL = `http://localhost:3000/dapil/provinsi/${this.$route.params.id_provinsi}`
+        
+        fetch(PROV_API_URL)
+        .then(response => response.json())
+        .then(result => {
+            this.provinsi = result
+        })
     },
     methods : {
         goToLogin(){

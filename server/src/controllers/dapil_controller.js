@@ -119,3 +119,33 @@ exports.deleteKota = async (req, res) => {
 		res.json({ message: err })
 	}
 }
+
+exports.selectKotaById = async (req, res) => {
+	try{
+		const {id_kota} = req.params
+
+		const kota = await pool.query(
+			"SELECT * from kota WHERE id_kota = $1",
+			[id_kota]
+		)
+
+		res.json(kota.rows[0])
+	} catch(err){
+		res.json({ message: err })
+	}
+}
+
+exports.selectProvinsiById = async (req, res) => {
+	try{
+		const {id_provinsi} = req.params
+
+		const provinsi = await pool.query(
+			"SELECT * from provinsi WHERE id_provinsi = $1",
+			[id_provinsi]
+		)
+
+		res.json(provinsi.rows[0])
+	} catch(err){
+		res.json({ message: err })
+	}
+}

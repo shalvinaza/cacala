@@ -84,15 +84,11 @@ export default {
       .then(response => response.json())
       .then(result => {
         this.provinsi = result
-        var parsedobj = JSON.parse(JSON.stringify(result))
-        console.log(parsedobj)
       })
     fetch(KOTA_API_URL)
       .then(response => response.json())
       .then(result => {
         this.kota = result
-        var parsedobj = JSON.parse(JSON.stringify(result))
-        console.log(parsedobj)
       })
   },
   methods:{
