@@ -19,7 +19,7 @@
                     </div>
                     <div class="forms-inputs mb-4"> 
                         <span>Kata Sandi Baru</span>
-                        <input autocomplete="off" type="password" v-model="user.password" v-bind:class="{'form-control':true}" placeholder="Ketik kata sandi sekarang">
+                        <input autocomplete="off" type="password" v-model="password" v-bind:class="{'form-control':true}" placeholder="Ketik kata sandi sekarang">
                     </div>
                     <div class="forms-inputs mb-4"> 
                         <span>Konfirmasi Kata Sandi</span>
@@ -44,6 +44,7 @@ export default {
     data: function () {
         return {
             verified: false,
+            password:"",
             newPassword:"",
             user: []
         }
