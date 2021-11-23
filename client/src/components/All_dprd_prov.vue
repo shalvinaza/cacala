@@ -40,7 +40,13 @@
                         <div class="d-flex justify-content-center justify-content-between">
                             <router-link :to="{ name: 'Detail_calon', params: { id_admin: calon.id_admin}}" class="btn btn-outline-orange">Detail</router-link>
                             <span v-if="isLoggedIn">
-                                <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon)">Ikuti</button>   
+                                <!-- <span v-if="isFollowed">
+                                    <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon)">Berhenti</button>  
+                                </span>
+                                <span v-else> -->
+                                    <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon)">Ikuti</button> 
+                                    <!-- <button @click="followedCalon(calon.id_calon)">Show if followed</button>  -->
+                                <!-- </span>  -->
                             </span>    
                             <span v-else>
                                 <button class="btn btn-outline-blue" @click="goToLogin()">Ikuti</button> 
@@ -56,6 +62,14 @@
 
 <script>
 import axios from 'axios'
+const FOLLOWED_CALON_API_URL = `http://localhost:3000/user/followed`
+
+// length = this.followed_calon.length
+// for(let i=0; i<length; i++){
+//     if(this.followed_calon[i].id_calon == id_calon){
+//         isFollowed = true
+//     }
+// }
 
 export default {
     name: 'All_dprd_kab_kota',
@@ -63,10 +77,30 @@ export default {
         no_data: false,
         calons: [],
         user: [],
-        provinsi: []
+        provinsi: [],
+        followed_calon: [],
+        isFollowed: false
     }),
     computed: {
-        isLoggedIn: function() {return localStorage.getItem("token") != null}
+        isLoggedIn: function() {return localStorage.getItem("token") != null},
+        // isFollowed: function(id_calon){
+        //     length = this.followed_calon.length
+        //     for(let i=0; i<length; i++){
+        //         return this.followed_calon[i].id_calon == id_calon
+        //     }
+        // }
+    },
+    beforeMount(){
+        const headers = { token: localStorage.token }
+        fetch(FOLLOWED_CALON_API_URL, { headers })
+            .then(response => response.json())
+            .then(result => {
+                this.followed_calon = result
+                var parsedobj = JSON.parse(JSON.stringify(result))
+                console.log(parsedobj)
+            })
+
+        //this.followedCalon()
     },
     mounted(){
         const id_provinsi = this.$route.params.id_provinsi;
@@ -109,6 +143,16 @@ export default {
                 })
 
             console.log(localStorage.token)
+        },
+
+        followedCalon(id_calon){
+            calon_length = this.calons.length
+            followed_calon_length = this.followed_calon.length
+            for(let i=0; i<length; i++){
+                // if(this.followed_calon[i].id_calon == id_calon){
+                //     this.isFollowed = true;
+                // }
+            }
         }
     }
 }

@@ -4,8 +4,13 @@ const controller = require("../controllers/calon_controller")
 const authorization = require("../middleware/authorization")
 
 router.get("/", controller.selectAllCalon)
+router.get("/:id_calon", controller.selectCalonByIdCalon)
+router.get("/dev/:id_calon", controller.selectCalonByIdCalonForDev)
 router.get("/admin", authorization, controller.selectCalonByAdmin)
 router.post("/", controller.addCalon)
+router.put("/:id_calon", controller.updateCalon)
+router.delete("/:id_calon", controller.deleteCalon)
+
 router.get("/:id_admin", controller.selectCalonByUser)
 router.get("/kota/:id_kota", controller.selectCalonByKota)
 router.get("/jabatan/:id_jabatan", controller.selectCalonByJabatan)

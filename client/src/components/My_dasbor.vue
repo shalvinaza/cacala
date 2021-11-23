@@ -44,7 +44,6 @@
 
 <script>
 import axios from 'axios'
-const USER_API_URL = `http://localhost:3000/user`
 const FOLLOWED_CALON_API_URL = `http://localhost:3000/user/followed`
 
 export default {
