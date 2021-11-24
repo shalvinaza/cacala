@@ -152,3 +152,16 @@ exports.unfollowCalon = async (req, res) => {
       res.json({message: err})
    }
 }
+exports.deleteAkun = async (req, res) => {
+   const { id_user } = req.params
+   try{
+      const user = await pool.query(
+         "DELETE FROM users WHERE id_user = $1",
+         [id_user]
+      )
+
+      res.json("Account Deleted")
+   } catch(err){
+      res.json({message: err})
+   }
+}

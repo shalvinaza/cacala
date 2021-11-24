@@ -19,14 +19,14 @@
                     </div>
                     <div class="forms-inputs mb-4"> 
                         <span>Kata Sandi Baru</span>
-                        <input autocomplete="off" type="password" v-model="password" v-bind:class="{'form-control':true}" placeholder="Ketik kata sandi sekarang">
+                        <input autocomplete="off" type="password" v-model="user.password" v-bind:class="{'form-control':true}" placeholder="Ketik kata sandi sekarang">
                     </div>
                     <div class="forms-inputs mb-4"> 
                         <span>Konfirmasi Kata Sandi</span>
                         <input autocomplete="off" type="password" v-model="newPassword" v-bind:class="{'form-control':true}" placeholder="Ketik kata sandi user">
                     </div>
                     <div class="mb-3 d-flex justify-content-end"> 
-                        <button type="button" class="btn bg-light-orange me-3 br-10" style="background-color:#D65A40">Hapus Akun</button> 
+                        <button type="button" class="btn bg-light-orange me-3 br-10" style="background-color:#D65A40" @click="del(user)">Hapus Akun</button> 
                         <button type="submit" class="btn bg-light-orange br-10">Simpan</button>
                     </div> 
                 </form>
@@ -46,7 +46,7 @@ export default {
             verified: false,
             password:"",
             newPassword:"",
-            user: []
+            user:[]
         }
     },
     // mounted(){
@@ -82,11 +82,14 @@ export default {
         })
         },
         del(user){
-            axios.delete('http://localhost:3000/users/' + user.id).then(res =>{
-            this.load()
-            let index = this.users.indexOf(form.name)
-            this.users.splice(index,1)
-        })
+            const id_user = this.user.id_user
+            const DEL_USER_API_URL = `http://localhost:3000/user/delete/`
+            axios.defaults.headers.common["token"] = localStorage.token
+            axios.delete(DEL_USER_API_URL + id_user)
+            .then(res =>{
+                localStorage.removeItem('token')
+                this.$router.push('/login')
+            })
         }
     }
 }
