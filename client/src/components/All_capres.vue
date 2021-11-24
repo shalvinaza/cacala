@@ -28,7 +28,13 @@
                             <div class="d-flex justify-content-center justify-content-between">
                                 <router-link :to="{ name: 'Detail_calon', params: { id_admin: calon.id_admin}}" class="btn btn-outline-orange">Detail</router-link>
                                 <span v-if="isLoggedIn">
-                                    <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon)">Ikuti</button>   
+                                    <span v-if="calon.status">
+                                        <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status)">Berhenti</button>  
+                                    </span>
+                                    <span v-else>
+                                        <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon, calon.status)">Ikuti</button> 
+                                        <!-- <button @click="followedCalon(calon.id_calon)">Show if followed</button>  -->
+                                    </span> 
                                 </span>    
                                 <span v-else>
                                     <button class="btn btn-outline-blue" @click="goToLogin()">Ikuti</button> 
@@ -45,18 +51,25 @@
 <script>
 import axios from 'axios'
 const PRESIDEN_API_URL = `http://localhost:3000/calon/jabatan/4afc1348-c4a3-4c3c-a355-dcd938614b13`
+const FOLLOWED_CALON_API_URL = `http://localhost:3000/user/followed`
 
 export default {
     name: 'All_capres',
     data : () => ({
         no_data: false,
-        calons: []
+        calons: [],
+        followed_calon: []
     }),
     computed: {
         isLoggedIn: function() {return localStorage.getItem("token") != null}
     },
     mounted(){
-        fetch(PRESIDEN_API_URL)
+        this.fetchCapresCalons()
+        this.fetchFollowedCalon()
+    },
+    methods : {
+        fetchCapresCalons(){
+            fetch(PRESIDEN_API_URL)
             .then(response => response.json())
             .then(result => {
                 this.calons = result
@@ -68,26 +81,68 @@ export default {
                     this.no_data = true;
                 }
             });
-    },
-    methods : {
+        },
+
+        fetchFollowedCalon(){
+            const headers = { token: localStorage.token }
+            fetch(FOLLOWED_CALON_API_URL, { headers })
+                .then(response => response.json())
+                .then(result => {
+                    this.followed_calon = result
+                    this.checkFollowedCalon()
+                    var parsedobj = JSON.parse(JSON.stringify(result))
+                    console.log(parsedobj)
+                })
+        },
+
+        checkFollowedCalon(){
+            console.log(this.calons.length)
+            this.calons.forEach((value, i) => {
+                this.calons[i].status = false
+                // console.log(`${this.calons[i].nama} => status: ${this.calons[i].status}`)
+
+                for(let j=0; j<this.followed_calon.length; j++){
+                    if(this.calons[i].id_calon == this.followed_calon[j].id_calon){
+                        this.calons[i].status = true
+                        console.log(`${this.calons[i].nama} => status: ${this.calons[i].status}`)
+                    }
+                }
+            })
+        },
+
         goToLogin(){
             this.$router.push('/login');
         },
 
-        followCalon(id_calon){
+        followCalon(id_calon, status){
             const FOLLOW_API_URL = `http://localhost:3000/user/${id_calon}`
             axios.defaults.headers.common["token"] = localStorage.token
             
             axios.post(FOLLOW_API_URL)
                 .then(() => {
-                    this.$router.push("/dasbor_saya")
+                    //this.$router.push("/dasbor_saya")
+                    status = true
                 })
                 .catch((error) => {
                     console.error(error)
                 })
 
             console.log(localStorage.token)
-        }
+        },
+
+        unfollowCalon(id_calon, status){
+            const UNFOLLOW_API_URL = `http://localhost:3000/user/unfollow/${id_calon}`
+            axios.defaults.headers.common["token"] = localStorage.token
+
+            axios.delete(UNFOLLOW_API_URL)
+                .then(() => {
+                    // window.location = "/dasbor_saya"
+                    status = false
+                })
+                .catch((error) => {
+                    console.error(error)
+                })
+        },
     }
 }
 </script>

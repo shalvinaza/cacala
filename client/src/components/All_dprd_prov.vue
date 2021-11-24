@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <h1 class="text-center pb-4 mb-4">Calon DPRD Provinsi {{provinsi.provinsi}}</h1>
-        <button @click="followedCalon()">Show if followed</button>   
+        <button @click="checkFollowedCalon()">Show if followed</button>   
         <a class="dropdown-toggle btn btn-outline-orange2 me-3" href="#" id="navbarDropdown" data-bs-toggle="dropdown">
             Daerah Pilih
         </a>
@@ -42,10 +42,10 @@
                             <router-link :to="{ name: 'Detail_calon', params: { id_admin: calon.id_admin}}" class="btn btn-outline-orange">Detail</router-link>
                             <span v-if="isLoggedIn">
                                 <span v-if="calon.status">
-                                    <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon)">Berhenti</button>  
+                                    <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status)">Berhenti</button>  
                                 </span>
                                 <span v-else>
-                                    <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon)">Ikuti</button> 
+                                    <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon, calon.status)">Ikuti</button> 
                                     <!-- <button @click="followedCalon(calon.id_calon)">Show if followed</button>  -->
                                 </span> 
                             </span>    
@@ -77,53 +77,64 @@ export default {
     computed: {
         isLoggedIn: function() {return localStorage.getItem("token") != null},
     },
-    beforeMount(){
-        const headers = { token: localStorage.token }
-        fetch(FOLLOWED_CALON_API_URL, { headers })
-            .then(response => response.json())
-            .then(result => {
-                this.followed_calon = result
-                var parsedobj = JSON.parse(JSON.stringify(result))
-                console.log(parsedobj)
-            })
-
-        // this.followedCalon()
-    },
-    mounted(){
-        const id_provinsi = this.$route.params.id_provinsi;
-        const DRPD_PROV_API_URL = `http://localhost:3000/calon/dprdProv/${id_provinsi}` 
-
-        fetch(DRPD_PROV_API_URL)
-            .then(response => response.json())
-            .then(result => {
-                this.calons = result
-            })
-            .catch(error => {
-                if(calons==null){
-                    this.no_data = true;
-                }
-            });
-
-        const PROV_API_URL = `http://localhost:3000/dapil/provinsi/${this.$route.params.id_provinsi}`
-        
-        fetch(PROV_API_URL)
-        .then(response => response.json())
-        .then(result => {
-            this.provinsi = result
-        })
+    // beforeMount(){
+    //     },
+    created(){
+        this.fetchDPRDProvCalons()
+        this.fetchFollowedCalon()
+        this.fetchProvinsiName()
     },
     methods : {
+        fetchProvinsiName(){
+            const PROV_API_URL = `http://localhost:3000/dapil/provinsi/${this.$route.params.id_provinsi}`
+        
+            fetch(PROV_API_URL)
+            .then(response => response.json())
+            .then(result => {
+                this.provinsi = result
+            })   
+        },
+
+        fetchDPRDProvCalons(){
+            const id_provinsi = this.$route.params.id_provinsi;
+            const DRPD_PROV_API_URL = `http://localhost:3000/calon/dprdProv/${id_provinsi}` 
+
+            fetch(DRPD_PROV_API_URL)
+                .then(response => response.json())
+                .then(result => {
+                    this.calons = result
+                })
+                .catch(error => {
+                    if(calons==null){
+                        this.no_data = true;
+                    }
+                });
+        },
+
+        fetchFollowedCalon(){
+            const headers = { token: localStorage.token }
+            fetch(FOLLOWED_CALON_API_URL, { headers })
+                .then(response => response.json())
+                .then(result => {
+                    this.followed_calon = result
+                    this.checkFollowedCalon()
+                    var parsedobj = JSON.parse(JSON.stringify(result))
+                    console.log(parsedobj)
+                })
+        },
+
         goToLogin(){
             this.$router.push('/login');
         },
 
-        followCalon(id_calon){
+        followCalon(id_calon, status){
             const FOLLOW_API_URL = `http://localhost:3000/user/${id_calon}`
             axios.defaults.headers.common["token"] = localStorage.token
             
             axios.post(FOLLOW_API_URL)
                 .then(() => {
-                    this.$router.push("/dasbor_saya")
+                    //this.$router.push("/dasbor_saya")
+                    status = true
                 })
                 .catch((error) => {
                     console.error(error)
@@ -132,8 +143,23 @@ export default {
             console.log(localStorage.token)
         },
 
-        followedCalon(){
-            for(let i=0; i<this.calons.length; i++){
+        unfollowCalon(id_calon, status){
+            const UNFOLLOW_API_URL = `http://localhost:3000/user/unfollow/${id_calon}`
+            axios.defaults.headers.common["token"] = localStorage.token
+
+            axios.delete(UNFOLLOW_API_URL)
+                .then(() => {
+                    // window.location = "/dasbor_saya"
+                    status = false
+                })
+                .catch((error) => {
+                    console.error(error)
+                })
+        },
+
+        checkFollowedCalon(){
+            console.log(this.calons.length)
+            this.calons.forEach((value, i) => {
                 this.calons[i].status = false
                 // console.log(`${this.calons[i].nama} => status: ${this.calons[i].status}`)
 
@@ -143,12 +169,9 @@ export default {
                         console.log(`${this.calons[i].nama} => status: ${this.calons[i].status}`)
                     }
                 }
-            }
-        }
+            })
+        },
     },
-    created: function(){
-        this.followedCalon()
-    }
 }
 </script>
 
