@@ -129,7 +129,7 @@ exports.selectCalonByJabatan = async (req, res) => {
    const { id_jabatan } = req.params
    try{
       const calon = await pool.query(
-         "SELECT calon.id_calon, calon.nama, calon.foto, calon.slogan, calon.no_urut, admins.id_admin, jabatan.jabatan_tujuan, kota.kota, provinsi.provinsi FROM calon JOIN admins on calon.id_admin = admins.id_admin JOIN jabatan on calon.id_jabatan = jabatan.id_jabatan JOIN kota on calon.id_dapil_kota = kota.id_kota JOIN provinsi on kota.id_provinsi = provinsi.id_provinsi WHERE calon.id_jabatan = $1;",[
+         "SELECT calon.id_calon, calon.nama, calon.foto, calon.slogan, calon.no_urut, admins.id_admin, jabatan.jabatan_tujuan, kota.kota, provinsi.provinsi FROM calon JOIN admins on calon.id_admin = admins.id_admin JOIN jabatan on calon.id_jabatan = jabatan.id_jabatan JOIN kota on calon.id_dapil_kota = kota.id_kota JOIN provinsi on kota.id_provinsi = provinsi.id_provinsi WHERE calon.id_jabatan = $1 ORDER BY no_urut;",[
             id_jabatan
          ])
       
@@ -247,7 +247,7 @@ exports.selectCalonDPRDKotaByKota = async (req, res) => {
    const { id_kota } = req.params
    try{
       const calon = await pool.query(
-         "SELECT c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, j.jabatan_tujuan, k.kota, p.provinsi FROM calon c JOIN admins a on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan JOIN kota k on c.id_dapil_kota = k.id_kota JOIN provinsi p on k.id_provinsi = p.id_provinsi WHERE c.id_jabatan = '1267363f-491f-4b70-aecc-3ef02b4c32ee' AND c.id_dapil_kota = $1;",[
+         "SELECT c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, j.jabatan_tujuan, k.kota, p.provinsi FROM calon c JOIN admins a on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan JOIN kota k on c.id_dapil_kota = k.id_kota JOIN provinsi p on k.id_provinsi = p.id_provinsi WHERE c.id_jabatan = '1267363f-491f-4b70-aecc-3ef02b4c32ee' AND c.id_dapil_kota = $1 ORDER BY no_urut;",[
             id_kota
          ])
       
@@ -261,7 +261,7 @@ exports.selectCalonDPRDProvByProv = async (req, res) => {
    const { id_provinsi } = req.params
    try{
       const calon = await pool.query(
-         "SELECT c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, j.jabatan_tujuan, k.kota, p.provinsi FROM calon c JOIN admins a on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan JOIN kota k on c.id_dapil_kota = k.id_kota JOIN provinsi p on k.id_provinsi = p.id_provinsi WHERE c.id_jabatan = 'aa0faabb-82e5-45bc-8b0a-c5795aa4c91a' AND k.id_provinsi = $1;",[
+         "SELECT c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, j.jabatan_tujuan, k.kota, p.provinsi FROM calon c JOIN admins a on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan JOIN kota k on c.id_dapil_kota = k.id_kota JOIN provinsi p on k.id_provinsi = p.id_provinsi WHERE c.id_jabatan = 'aa0faabb-82e5-45bc-8b0a-c5795aa4c91a' AND k.id_provinsi = $1 ORDER BY no_urut;",[
             id_provinsi
          ])
       
