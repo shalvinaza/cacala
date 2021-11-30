@@ -29,7 +29,9 @@
                         <div class="row align-items-start mt-3">
                             <p class="col d-flex flex-wrap card-title">Partai</p>
                             <div class="col d-flex flex-wrap justify-content-end">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="dpr 2">
+                                <div v-for="(partai) in calon.partai" :key="partai.nama_partai">
+                                    <img :src=partai.logo_partai class="img-partai m-1" alt="{{partai.nama_partai}}">
+                                </div>
                             </div>
                         </div>
                         <div class="row align-items-start mb-2">
@@ -82,7 +84,9 @@ export default {
     //     },
     created(){
         this.fetchDPRDProvCalons()
-        this.fetchFollowedCalon()
+        if(localStorage.getItem("token") != null){
+            this.fetchFollowedCalon()
+        }
         this.fetchProvinsiName()
         this.fetchKotaName()
     },

@@ -7,5 +7,6 @@ router.post("/", controller.addPartai)
 router.put("/:id_partai", controller.updatePartai)
 router.delete("/:id_partai", controller.deletePartai)
 router.get("/calon/:id_calon", controller.selectPartaiCalon)
+router.post("/calon", controller.addPartaiToCalon)
 
 module.exports = router

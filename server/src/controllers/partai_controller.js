@@ -15,10 +15,11 @@ exports.selectAllPartai = async (req, res) => {
 exports.addPartai = async (req, res) => {
     try{
        const { nama_partai } = req.body
+       const { logo_partai } = req.body
  
        const partai = await pool.query(
-          "INSERT INTO partai(nama_partai) VALUES($1) RETURNING *",
-          [nama_partai]
+          "INSERT INTO partai(nama_partai, logo_partai) VALUES($1, $2) RETURNING *",
+          [nama_partai, logo_partai]
        )
  
        res.json(partai)
@@ -31,10 +32,11 @@ exports.updatePartai = async (req, res) => {
     try{
         const { id_partai } = req.params
        const { nama_partai } = req.body
+       const { logo_partai } = req.body
  
        const partai = await pool.query(
-          "UPDATE partai SET nama_partai = $1 WHERE id_partai = $2",
-          [nama_partai, id_partai]
+          "UPDATE partai SET nama_partai = $1, logo_partai = $2 WHERE id_partai = $3",
+          [nama_partai, logo_partai, id_partai]
        )
  
        res.json(partai)
@@ -73,3 +75,19 @@ exports.deletePartai = async (req, res) => {
        res.json({ message: err })
     }
  }
+
+ exports.addPartaiToCalon = async (req, res) => {
+     try{
+        const { id_calon } = req.body
+        const { id_partai } = req.body
+  
+        const partai = await pool.query(
+           "INSERT INTO partai_calon(id_calon, id_partai) VALUES($1, $2) RETURNING *",
+           [id_calon, id_partai]
+        )
+  
+        res.json(partai)
+     } catch(err) {
+        console.error(err.message)
+     }
+  }
