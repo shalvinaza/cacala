@@ -9,7 +9,7 @@
             </section> -->
                 <div class="col" v-for="(calon,index) in calons" :key="calon.id_calon">
                     <div class="card h-100">
-                        <img src="../assets/images/pres.png" class="card-img-top" alt="pres 2">
+                    <img :src=calon.foto class="card-img-top" alt="dpr 2">
                         <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
                             <h5>{{index + 1}}</h5>
                         </div>

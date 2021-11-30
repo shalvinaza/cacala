@@ -18,7 +18,7 @@
         <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
             <div class="col" v-for="(calon,index) in calons" :key="calon.id_calon">
                 <div class="card h-100">
-                    <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
+                    <img :src=calon.foto class="card-img-top" alt="dpr 2">
                     <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
                         <h5>{{index + 1}}</h5>
                     </div>
