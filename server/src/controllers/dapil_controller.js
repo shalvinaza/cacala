@@ -59,6 +59,21 @@ exports.deleteProvinsi = async (req, res) => {
 	}
 }
 
+exports.selectProvinsiById = async (req, res) => {
+	try{
+		const {id_provinsi} = req.params
+
+		const provinsi = await pool.query(
+			"SELECT * from provinsi WHERE id_provinsi = $1",
+			[id_provinsi]
+		)
+
+		res.json(provinsi.rows[0])
+	} catch(err){
+		res.json({ message: err })
+	}
+}
+
 exports.selectAllKota = async (req, res) => {
 	try{
 		const kota = await pool.query(
@@ -135,16 +150,16 @@ exports.selectKotaById = async (req, res) => {
 	}
 }
 
-exports.selectProvinsiById = async (req, res) => {
+exports.selectKotaByIdProvinsi = async (req, res) => {
 	try{
 		const {id_provinsi} = req.params
 
-		const provinsi = await pool.query(
-			"SELECT * from provinsi WHERE id_provinsi = $1",
+		const kota = await pool.query(
+			"SELECT * from kota WHERE id_provinsi = $1",
 			[id_provinsi]
 		)
 
-		res.json(provinsi.rows[0])
+		res.json(kota.rows)
 	} catch(err){
 		res.json({ message: err })
 	}

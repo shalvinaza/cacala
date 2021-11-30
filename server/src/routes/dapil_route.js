@@ -13,5 +13,6 @@ router.post("/kota/", controller.addKota)
 router.put("/kota/:id_kota", controller.updateKota)
 router.delete("/kota/:id_kota", controller.deleteKota)
 router.get("/kota/:id_kota", controller.selectKotaById)
+router.get("/kota/provinsi/:id_provinsi", controller.selectKotaByIdProvinsi)
 
 module.exports = router

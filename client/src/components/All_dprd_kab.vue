@@ -2,13 +2,13 @@
     <div class="container">
         <h1 class="text-center pb-4 mb-4">Calon DPRD Kabupaten/Kota {{kota.kota}}</h1>
         <button @click="checkFollowedCalon()">Show if followed</button>   
-        <a class="dropdown-toggle btn btn-outline-orange2 me-3" href="#" id="navbarDropdown" data-bs-toggle="dropdown">
+        <!-- <a class="dropdown-toggle btn btn-outline-orange2 me-3" href="#" id="navbarDropdown" data-bs-toggle="dropdown">
             Daerah Pilih
         </a>
         <div class="dropdown-menu">
             <li><a class="dropdown-item" style="color:black" href="#">Kota 1</a></li>
             <li><a class="dropdown-item" style="color:black" href="#">Kota 2</a></li>
-        </div>
+        </div> -->
         <a class="dropdown-toggle btn btn-outline-orange2" href="#" id="navbarDropdown" data-bs-toggle="dropdown">
             Partai
         </a>

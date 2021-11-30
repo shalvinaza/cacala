@@ -165,35 +165,6 @@ exports.selectPartai = async (req, res) => {
    }
 }
 
-// exports.selectPartaiCalon = async (req, res) => {
-//    const { id_calon } = req.params
-//    try{
-//       const calon = await pool.query(
-//          "select calon.nama, partai.nama_partai FROM partai_calon JOIN calon ON partai_calon.id_calon = calon.id_calon JOIN partai ON partai_calon.id_partai = partai.id_partai WHERE partai_calon.id_calon = $1;", [
-//             id_calon
-//          ]
-//       )
-
-//       res.json(calon.rows)
-//    } catch(err) {
-//       res.json({ message: err })
-//    }
-// }
-
-exports.selectPartaiCalon = async (req, res) => {
-   const { id_calon } = req.params
-   try{
-      const calon = await pool.query(
-         "select partai.nama_partai FROM partai_calon JOIN calon ON partai_calon.id_calon = calon.id_calon JOIN partai ON partai_calon.id_partai = partai.id_partai WHERE partai_calon.id_calon = $1;",[
-            id_calon
-         ])
-      
-         res.json(calon.rows)
-   } catch(err) {
-      res.json({ message: err })
-   }
-}
-
 exports.addRiwayatPendidikanCalon = async (req, res) => {
    try{
       const { id_calon } = req.body
@@ -262,6 +233,48 @@ exports.selectCalonDPRDProvByProv = async (req, res) => {
    try{
       const calon = await pool.query(
          "SELECT c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, j.jabatan_tujuan, k.kota, p.provinsi FROM calon c JOIN admins a on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan JOIN kota k on c.id_dapil_kota = k.id_kota JOIN provinsi p on k.id_provinsi = p.id_provinsi WHERE c.id_jabatan = 'aa0faabb-82e5-45bc-8b0a-c5795aa4c91a' AND k.id_provinsi = $1 ORDER BY no_urut;",[
+            id_provinsi
+         ])
+      
+         res.json(calon.rows)
+   } catch(err) {
+      res.json({ message: err })
+   }
+}
+
+exports.selectCalonDPRDProvByKota = async (req, res) => {
+   const { id_kota } = req.params
+   try{
+      const calon = await pool.query(
+         "SELECT c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, j.jabatan_tujuan, k.kota, p.provinsi FROM calon c JOIN admins a on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan JOIN kota k on c.id_dapil_kota = k.id_kota JOIN provinsi p on k.id_provinsi = p.id_provinsi WHERE c.id_jabatan = 'aa0faabb-82e5-45bc-8b0a-c5795aa4c91a' AND c.id_dapil_kota = $1 ORDER BY no_urut;",[
+            id_kota
+         ])
+      
+         res.json(calon.rows)
+   } catch(err) {
+      res.json({ message: err })
+   }
+}
+
+exports.selectCalonDPRRIByProv = async (req, res) => {
+   const { id_provinsi } = req.params
+   try{
+      const calon = await pool.query(
+         "SELECT c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, j.jabatan_tujuan, k.kota, p.provinsi FROM calon c JOIN admins a on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan JOIN kota k on c.id_dapil_kota = k.id_kota JOIN provinsi p on k.id_provinsi = p.id_provinsi WHERE c.id_jabatan = 'ab55ff16-0673-4c8b-a572-bf282f75d9cf' AND k.id_provinsi = $1 ORDER BY no_urut;",[
+            id_provinsi
+         ])
+      
+         res.json(calon.rows)
+   } catch(err) {
+      res.json({ message: err })
+   }
+}
+
+exports.selectCalonDPDByProv = async (req, res) => {
+   const { id_provinsi } = req.params
+   try{
+      const calon = await pool.query(
+         "SELECT c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, j.jabatan_tujuan, k.kota, p.provinsi FROM calon c JOIN admins a on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan JOIN kota k on c.id_dapil_kota = k.id_kota JOIN provinsi p on k.id_provinsi = p.id_provinsi WHERE c.id_jabatan = '51978294-1f8a-4c8c-acbf-f3cc013c16d3' AND k.id_provinsi = $1 ORDER BY no_urut",[
             id_provinsi
          ])
       

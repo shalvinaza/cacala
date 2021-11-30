@@ -5,9 +5,9 @@
         <a class="dropdown-toggle btn btn-outline-orange2 me-3" href="#" id="navbarDropdown" data-bs-toggle="dropdown">
             Daerah Pilih
         </a>
-        <div class="dropdown-menu">
-            <li><a class="dropdown-item" style="color:black" href="#">Kota 1</a></li>
-            <li><a class="dropdown-item" style="color:black" href="#">Kota 2</a></li>
+        <div class="dropdown-menu" v-for="(kta) in kota" :key="kta.id_kota">
+            <li><a class="dropdown-item" style="color:black" href="#">{{kta.kota}}</a></li>
+            <!-- <li><a class="dropdown-item" style="color:black" href="#">Kota 2</a></li> -->
         </div>
         <a class="dropdown-toggle btn btn-outline-orange2" href="#" id="navbarDropdown" data-bs-toggle="dropdown">
             Partai
@@ -72,6 +72,7 @@ export default {
         calons: [],
         user: [],
         provinsi: [],
+        kota: [],
         followed_calon: []
     }),
     computed: {
@@ -83,8 +84,22 @@ export default {
         this.fetchDPRDProvCalons()
         this.fetchFollowedCalon()
         this.fetchProvinsiName()
+        this.fetchKotaName()
     },
     methods : {
+        fetchKotaName(){
+            const KOTA_API_URL = `http://localhost:3000/dapil/kota/provinsi/${this.$route.params.id_provinsi}`
+        
+            fetch(KOTA_API_URL)
+            .then(response => response.json())
+            .then(result => {
+                this.kota = result 
+                var parsedobj = JSON.parse(JSON.stringify(result))
+                console.log(parsedobj)
+            })
+        },
+
+        
         fetchProvinsiName(){
             const PROV_API_URL = `http://localhost:3000/dapil/provinsi/${this.$route.params.id_provinsi}`
         
