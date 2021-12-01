@@ -1,14 +1,6 @@
 <template>
     <div class="container">
         <h1 class="text-center pb-4 mb-4">Calon DPRD Kabupaten/Kota {{kota.kota}}</h1>
-        <button @click="checkFollowedCalon()">Show if followed</button>   
-        <!-- <a class="dropdown-toggle btn btn-outline-orange2 me-3" href="#" id="navbarDropdown" data-bs-toggle="dropdown">
-            Daerah Pilih
-        </a>
-        <div class="dropdown-menu">
-            <li><a class="dropdown-item" style="color:black" href="#">Kota 1</a></li>
-            <li><a class="dropdown-item" style="color:black" href="#">Kota 2</a></li>
-        </div> -->
         <a class="dropdown-toggle btn btn-outline-orange2" href="#" id="navbarDropdown" data-bs-toggle="dropdown">
             Partai
         </a>
@@ -43,7 +35,7 @@
                         <div class="d-flex justify-content-center justify-content-between">
                             <router-link :to="{ name: 'Detail_calon', params: { id_admin: calon.id_admin}}" class="btn btn-outline-orange">Detail</router-link>
                             <span v-if="isLoggedIn">
-                                <span v-if="calon.status">
+                                <span v-if="calon.status == true">
                                     <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status)">Berhenti</button>  
                                 </span>
                                 <span v-else>
@@ -80,9 +72,6 @@ export default {
         isLoggedIn: function() {return localStorage.getItem("token") != null}
     },
     mounted(){
-        if(localStorage.getItem("token") != null){
-            this.fetchFollowedCalon()
-        }
         this.fetchDPRDKabCalons()
         this.fetchKotaName()
     },
@@ -105,6 +94,10 @@ export default {
                 .then(response => response.json())
                 .then(result => {
                     this.calons = result
+
+                    if(localStorage.getItem("token") != null){
+                        this.fetchFollowedCalon()
+                    }
                 })
                 .catch(error => {
                     if(calons==null){
@@ -128,15 +121,12 @@ export default {
         checkFollowedCalon(){
             console.log(this.calons.length)
             this.calons.forEach((value, i) => {
-                this.calons[i].status = false
-                // console.log(`${this.calons[i].nama} => status: ${this.calons[i].status}`)
-
-                for(let j=0; j<this.followed_calon.length; j++){
+                this.followed_calon.forEach((value, j) => {
                     if(this.calons[i].id_calon == this.followed_calon[j].id_calon){
                         this.calons[i].status = true
                         console.log(`${this.calons[i].nama} => status: ${this.calons[i].status}`)
                     }
-                }
+                })
             })
         },
         

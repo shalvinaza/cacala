@@ -80,9 +80,6 @@ export default {
     },
     mounted(){
         this.fetchDPDCalons()
-        if(localStorage.getItem("token") != null){
-            this.fetchFollowedCalon()
-        }
     },
     methods : {
         fetchDPDCalons(){
@@ -90,6 +87,10 @@ export default {
             .then(response => response.json())
             .then(result => {
                 this.calons = result
+                
+                if(localStorage.getItem("token") != null){
+                    this.fetchFollowedCalon()
+                }
             })
             .catch(error => {
                 if(calons==null){
@@ -98,7 +99,7 @@ export default {
             });
         },
 
-        fetchFollowedCalon(){
+        fetchFollowedCalon() {
             const headers = { token: localStorage.token }
             fetch(FOLLOWED_CALON_API_URL, { headers })
                 .then(response => response.json())
@@ -113,15 +114,12 @@ export default {
         checkFollowedCalon(){
             console.log(this.calons.length)
             this.calons.forEach((value, i) => {
-                this.calons[i].status = false
-                // console.log(`${this.calons[i].nama} => status: ${this.calons[i].status}`)
-
-                for(let j=0; j<this.followed_calon.length; j++){
+                this.followed_calon.forEach((value, j) => {
                     if(this.calons[i].id_calon == this.followed_calon[j].id_calon){
                         this.calons[i].status = true
                         console.log(`${this.calons[i].nama} => status: ${this.calons[i].status}`)
                     }
-                }
+                })
             })
         },
 

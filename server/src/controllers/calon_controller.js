@@ -170,6 +170,7 @@ exports.selectCalonByKota = async (req, res) => {
    
             j = 0
             calon.rows[i] = {...calon.rows[i], partai: partai.rows}
+            calon.rows[i] = {...calon.rows[i], status: false}
          }
       
          res.json(calon.rows)
@@ -198,6 +199,7 @@ exports.selectCalonByJabatan = async (req, res) => {
    
             j = 0
             calon.rows[i] = {...calon.rows[i], partai: partai.rows}
+            calon.rows[i] = {...calon.rows[i], status: false}
          }
       
          res.json(calon.rows)
@@ -226,6 +228,7 @@ exports.selectCalonByPartai = async (req, res) => {
    
             j = 0
             calon.rows[i] = {...calon.rows[i], partai: partai.rows}
+            calon.rows[i] = {...calon.rows[i], status: false}
          }
       
          res.json(calon.rows)
@@ -329,6 +332,7 @@ exports.selectCalonDPRDKotaByKota = async (req, res) => {
    
             j = 0
             calon.rows[i] = {...calon.rows[i], partai: partai.rows}
+            calon.rows[i] = {...calon.rows[i], status: false}
          }
       
          res.json(calon.rows)
@@ -357,6 +361,7 @@ exports.selectCalonDPRDProvByProv = async (req, res) => {
    
             j = 0
             calon.rows[i] = {...calon.rows[i], partai: partai.rows}
+            calon.rows[i] = {...calon.rows[i], status: false}
          }
       
          res.json(calon.rows)
@@ -385,6 +390,7 @@ exports.selectCalonDPRDProvByKota = async (req, res) => {
    
             j = 0
             calon.rows[i] = {...calon.rows[i], partai: partai.rows}
+            calon.rows[i] = {...calon.rows[i], status: false}
          }
       
          res.json(calon.rows)
@@ -413,6 +419,7 @@ exports.selectCalonDPRRIByProv = async (req, res) => {
    
             j = 0
             calon.rows[i] = {...calon.rows[i], partai: partai.rows}
+            calon.rows[i] = {...calon.rows[i], status: false}
          }
       
       res.json(calon.rows)
@@ -439,8 +446,8 @@ exports.selectCalonDPDByProv = async (req, res) => {
                 [calon.rows[i].id_calon]
             )
    
-            j = 0
             calon.rows[i] = {...calon.rows[i], partai: partai.rows}
+            calon.rows[i] = {...calon.rows[i], status: false}
          }
       
          res.json(calon.rows)

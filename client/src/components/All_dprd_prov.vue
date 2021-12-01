@@ -1,7 +1,6 @@
 <template>
     <div class="container">
         <h1 class="text-center pb-4 mb-4">Calon DPRD Provinsi {{provinsi.provinsi}}</h1>
-        <button @click="checkFollowedCalon()">Show if followed</button>   
         <a class="dropdown-toggle btn btn-outline-orange2 me-3" href="#" id="navbarDropdown" data-bs-toggle="dropdown">
             Daerah Pilih
         </a>
@@ -12,9 +11,9 @@
         <a class="dropdown-toggle btn btn-outline-orange2" href="#" id="navbarDropdown" data-bs-toggle="dropdown">
             Partai
         </a>
-        <div class="dropdown-menu">
-            <li><a class="dropdown-item" style="color:black" href="#">Partai 1</a></li>
-            <li><a class="dropdown-item" style="color:black" href="#">Partai 2</a></li>
+        <div class="dropdown-menu" v-for="(prt) in partai" :key="prt.id_partai">
+            <li><a class="dropdown-item" style="color:black" href="#">{{prt.nama_partai}}</a></li>
+            <!-- <li><a class="dropdown-item" style="color:black" href="#">Partai 2</a></li> -->
         </div>
         <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
             <div class="col" v-for="(calon,index) in calons" :key="calon.id_calon">
@@ -43,7 +42,7 @@
                         <div class="d-flex justify-content-center justify-content-between">
                             <router-link :to="{ name: 'Detail_calon', params: { id_admin: calon.id_admin}}" class="btn btn-outline-orange">Detail</router-link>
                             <span v-if="isLoggedIn">
-                                <span v-if="calon.status">
+                                <span v-if="calon.status == true">
                                     <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status)">Berhenti</button>  
                                 </span>
                                 <span v-else>
@@ -75,20 +74,21 @@ export default {
         user: [],
         provinsi: [],
         kota: [],
-        followed_calon: []
+        followed_calon: [],
+        partai: []
     }),
     computed: {
         isLoggedIn: function() {return localStorage.getItem("token") != null},
     },
     // beforeMount(){
     //     },
-    created(){
+    mounted(){
         this.fetchDPRDProvCalons()
-        if(localStorage.getItem("token") != null){
-            this.fetchFollowedCalon()
-        }
         this.fetchProvinsiName()
         this.fetchKotaName()
+        // if(localStorage.getItem("token") != null){
+        //     this.fetchFollowedCalon()
+        // }
     },
     methods : {
         fetchKotaName(){
@@ -122,6 +122,9 @@ export default {
                 .then(response => response.json())
                 .then(result => {
                     this.calons = result
+                    if(localStorage.getItem("token") != null){
+                        this.fetchFollowedCalon()
+                    }
                 })
                 .catch(error => {
                     if(calons==null){
@@ -139,7 +142,36 @@ export default {
                     this.checkFollowedCalon()
                     var parsedobj = JSON.parse(JSON.stringify(result))
                     console.log(parsedobj)
+                    // console.log(`followed calon: ${this.followed_calon.length}`)
+                    // console.log(`calon: ${this.calons.length}`)
                 })
+        },
+
+        checkFollowedCalon(){
+            console.log(this.calons.length)
+            this.calons.forEach((value, i) => {
+                //this.calons[i].status = false
+                // console.log(`${this.calons[i].nama} => status: ${this.calons[i].status}`)
+
+                this.followed_calon.forEach((value, j) => {
+                    if(this.calons[i].id_calon == this.followed_calon[j].id_calon){
+                        this.calons[i].status = true
+                        console.log(`${this.calons[i].nama} => status: ${this.calons[i].status}`)
+                    }
+                })
+            })
+        },
+
+        fetchPartai(){
+            const PARTAI_API_URL = `http://localhost:3000/partai`
+        
+            fetch(PARTAI_API_URL)
+            .then(response => response.json())
+            .then(result => {
+                this.partai = result
+                    var parsedobj = JSON.parse(JSON.stringify(result))
+                    console.log(parsedobj)
+            })  
         },
 
         goToLogin(){
@@ -174,21 +206,6 @@ export default {
                 .catch((error) => {
                     console.error(error)
                 })
-        },
-
-        checkFollowedCalon(){
-            console.log(this.calons.length)
-            this.calons.forEach((value, i) => {
-                this.calons[i].status = false
-                // console.log(`${this.calons[i].nama} => status: ${this.calons[i].status}`)
-
-                for(let j=0; j<this.followed_calon.length; j++){
-                    if(this.calons[i].id_calon == this.followed_calon[j].id_calon){
-                        this.calons[i].status = true
-                        console.log(`${this.calons[i].nama} => status: ${this.calons[i].status}`)
-                    }
-                }
-            })
         },
     },
 }
