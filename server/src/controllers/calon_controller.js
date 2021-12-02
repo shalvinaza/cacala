@@ -306,7 +306,7 @@ exports.addRiwayatPekerjaanCalon = async (req, res) => {
 exports.selectCalonByAdmin = async (req, res) => {
    try{
       const calon = await pool.query(
-         'select c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, j.jabatan_tujuan, k.kota, p.provinsi, pend.nama_institusi, pend.detail_pendidikan, pend.tahun_mulai_pendidikan, pend.tahun_selesai_pendidikan, pek.nama_pekerjaan, pek.detail_pekerjaan, pek.tahun_mulai_pekerjaan, pek.tahun_selesai_pekerjaan FROM admins a JOIN calon c on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan JOIN kota k on c.id_dapil_kota = k.id_kota JOIN provinsi p on k.id_provinsi = p.id_provinsi JOIN riwayat_pendidikan pend on pend.id_calon = c.id_calon JOIN riwayat_pekerjaan pek on pek.id_calon = c.id_calon  WHERE a.id_admin = $1;', [
+         'select c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, j.jabatan_tujuan, k.kota, p.provinsi FROM admins a JOIN calon c on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan JOIN kota k on c.id_dapil_kota = k.id_kota JOIN provinsi p on k.id_provinsi = p.id_provinsi  WHERE a.id_admin = $1;', [
          req.user
       ])
 
@@ -316,12 +316,21 @@ exports.selectCalonByAdmin = async (req, res) => {
          id_calon = calon.rows[i].id_calon
 
          partai = await pool.query(
-            "select partai.nama_partai, partai.logo_partai FROM partai_calon JOIN calon ON partai_calon.id_calon = calon.id_calon JOIN partai ON partai_calon.id_partai = partai.id_partai WHERE partai_calon.id_calon = $1;",
+            "select partai.* FROM partai_calon JOIN calon ON partai_calon.id_calon = calon.id_calon JOIN partai ON partai_calon.id_partai = partai.id_partai WHERE partai_calon.id_calon = $1;",
              [calon.rows[i].id_calon]
          )
 
-         j = 0
-         calon.rows[i] = {...calon.rows[i], partai: partai.rows}
+         pendidikan = await pool.query(
+            "select pen.* FROM riwayat_pendidikan pen JOIN calon c ON pen.id_calon = c.id_calon WHERE pen.id_calon = $1",
+            [id_calon]
+         )
+
+         pekerjaan = await pool.query(
+            "select pek.* FROM riwayat_pekerjaan pek JOIN calon c ON pek.id_calon = c.id_calon WHERE pek.id_calon = $1",
+            [id_calon]
+         )
+
+         calon.rows[i] = {...calon.rows[i], partai: partai.rows, riwayat_pendidikan: pendidikan.rows, riwayat_pekerjaan: pekerjaan.rows}
       }
 
       res.json(calon.rows[0])

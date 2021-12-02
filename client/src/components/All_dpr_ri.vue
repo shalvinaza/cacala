@@ -12,8 +12,7 @@
             Partai
         </a>
         <div class="dropdown-menu">
-            <li><a class="dropdown-item" style="color:black" href="#">Partai 1</a></li>
-            <li><a class="dropdown-item" style="color:black" href="#">Partai 2</a></li>
+            <li><a class="dropdown-item" style="color:black" href="#" v-for="(prt) in partai" :key="prt.id_partai">{{prt.nama_partai}}</a></li>
         </div>
         <div class="row row-cols-2 row-cols-md-4 g-4 mt-3">
             <div class="col" v-for="(calon,index) in calons" :key="calon.id_calon">
@@ -68,15 +67,22 @@ export default {
     data : () => ({
         no_data: false,
         calons: [],
-        followed_calon: []
+        followed_calon: [],
+        partai: []
     }),
     computed: {
         isLoggedIn: function() {return localStorage.getItem("token") != null}
     },
     mounted(){
-        this.fetchDPRRICalons()
+        this.fetchDPRRICalons(),
+        this.fetchPartai()
     },
     methods : {
+        fetchProvinsi(){
+            const PROV_API_URL = `${process.env.VUE_APP_API_URL}/dapil/provinsi`
+            fetch()
+        },
+
         fetchDPRRICalons(){
             fetch(DPD_API_URL)
             .then(response => response.json())
@@ -115,6 +121,18 @@ export default {
                     }
                 })
             })
+        },
+
+        fetchPartai(){
+            const PARTAI_API_URL = `${process.env.VUE_APP_API_URL}/partai`
+        
+            fetch(PARTAI_API_URL)
+                .then(response => response.json())
+                .then(result => {
+                    this.partai = result
+                    var parsedobj = JSON.parse(JSON.stringify(result))
+                    console.log(parsedobj)
+            })  
         },
 
         goToLogin(){

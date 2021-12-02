@@ -5,8 +5,7 @@
             Partai
         </a>
         <div class="dropdown-menu">
-            <li><a class="dropdown-item" style="color:black" href="#">Partai 1</a></li>
-            <li><a class="dropdown-item" style="color:black" href="#">Partai 2</a></li>
+            <li><a class="dropdown-item" style="color:black" href="#" v-for="(prt) in partai" :key="prt.id_partai">{{prt.nama_partai}}</a></li>
         </div>
         <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
             <div class="col" v-for="(calon,index) in calons" :key="calon.id_calon">
@@ -61,7 +60,8 @@ export default {
         calons: [],
         user: [],
         kota: [],
-        followed_calon: []
+        followed_calon: [],
+        partai: []
     }),
     computed: {
         isLoggedIn: function() {return localStorage.getItem("token") != null}
@@ -69,6 +69,7 @@ export default {
     mounted(){
         this.fetchDPRDKabCalons()
         this.fetchKotaName()
+        this.fetchPartai()
     },
     methods : {
         fetchKotaName(){
@@ -123,6 +124,18 @@ export default {
                     }
                 })
             })
+        },
+
+        fetchPartai(){
+            const PARTAI_API_URL = `${process.env.VUE_APP_API_URL}/partai`
+        
+            fetch(PARTAI_API_URL)
+                .then(response => response.json())
+                .then(result => {
+                    this.partai = result
+                    var parsedobj = JSON.parse(JSON.stringify(result))
+                    console.log(parsedobj)
+            })  
         },
         
         goToLogin(){

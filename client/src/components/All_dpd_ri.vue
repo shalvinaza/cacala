@@ -12,8 +12,7 @@
             Partai
         </a>
         <div class="dropdown-menu">
-            <li><a class="dropdown-item" style="color:black" href="#">Partai 1</a></li>
-            <li><a class="dropdown-item" style="color:black" href="#">Partai 2</a></li>
+            <li><a class="dropdown-item" style="color:black" href="#" v-for="(prt) in partai" :key="prt.id_partai">{{prt.nama_partai}}</a></li>
         </div>
         <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
             <div class="col" v-for="(calon,index) in calons" :key="calon.id_calon">
