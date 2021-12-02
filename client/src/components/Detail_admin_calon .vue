@@ -1,17 +1,15 @@
 <template>
     <div class="container">
-        <div class="row row-cols-3 row-cols-md-3">
-            <div class="col-md-3">
-            <div class="row row-cols-1 row-cols-md-1">
-            <div class="col left-col d-flex justify-content-center mb-4" v-for="(calon) in calon" :key="calon.id_admin">
+        <div class="row">
+            <div class="col-md-3 left-col d-flex justify-content-center">
                 <div class="p-4 br-15" style="background: #EDEDE9; max-height:1430px">
-                    <img :src=calon.foto class="profil-calon-detail mb-4" alt="{{calon.nama}}">
+                    <img :src=calon.foto class="profil-calon-detail mb-4" alt="dpr 2">
                     <h5 class="text-center">{{calon.nama}}</h5>
                     <p class="mb-5 text-center">Calon {{calon.jabatan_tujuan}}</p>
                     <div class="row align-items-start">
                         <h6 class="col">Partai</h6>
-                        <div class="col d-flex flex-wrap justify-content-end">
-                            <img v-for="partai in calon.partai" :key="partai.nama_partai" :src=partai.logo_partai class="img-partai me-2" alt="{{partai.nama_partai}}">
+                        <div class="col d-flex flex-wrap justify-content-end" v-for="(partai) in calon.partai" :key="partai.nama_partai">
+                            <img :src=partai.logo_partai class="img-partai m-1" alt="{{partai.nama_partai}}">
                         </div>
                     </div>
                     <div class="row align-items-start">
@@ -23,12 +21,12 @@
                     <div class="row align-items-start end-row-section">
                         <h6 class="col">Nomor Urut</h6>
                         <div class="col d-flex flex-wrap justify-content-end">
-                            <p>{{calon.no_urut}}</p>
+                            <p>1</p>
                         </div>
                     </div>
                     <div class="mt-4 pb-3 end-row-section">
                         <h5 class="mb-3">Riwayat Pendidikan</h5>
-                        <div class="mb-3" v-for="pendidikan in calon.riwayat_pendidikan" :key="pendidikan.id_pendidikan">
+                        <div class="mb-3" v-for="(pendidikan) in calon.riwayat_pendidikan" :key="pendidikan.id_pendidikan">
                             <h6>{{pendidikan.nama_institusi}}</h6>
                             <p class="mb-2">{{pendidikan.detail_pendidikan}}</p>
                             <i class="far fa-calendar-alt"></i> <span>{{pendidikan.tahun_mulai_pendidikan}}</span> - <span>{{pendidikan.tahun_selesai_pendidikan}}</span>
@@ -42,8 +40,6 @@
                             <i class="far fa-calendar-alt"></i> <span>{{pekerjaan.tahun_mulai_pekerjaan}}</span> - <span>{{pekerjaan.tahun_selesai_pekerjaan}}</span>
                         </div>
                     </div>
-                </div>
-                </div>
                 </div>
             </div>
             <!-- this is just for divider -->
@@ -87,16 +83,16 @@
                                 <form>
                                     <div class="forms-inputs mb-4"> 
                                         <span>Judul unggahan</span> 
-                                        <input class="w-100 p-3" autocomplete="off" type="text" v-model="newform.judul" placeholder="Ketik email di sini">
+                                        <input class="w-100 p-3" autocomplete="off" type="text" v-model="form.judul" placeholder="Ketik email di sini">
                                     </div>
                                     <div class="forms-inputs mb-3"> 
                                         <span>Teks unggahan</span>
-                                        <textarea class="w-100 p-3" autocomplete="off" v-model="newform.teks" placeholder="Ketik kata sandi di sini"></textarea>
+                                        <textarea class="w-100 p-3" autocomplete="off" v-model="form.teks" placeholder="Ketik kata sandi di sini"></textarea>
                                     </div>
                                     <div class="d-flex align-items-center">
                                         <span class="card-text icons me-3"><i class="fas fa-images"></i></span>
                                         <span class="card-text icons flex-grow-2 w-100"><i class="fas fa-video"></i></span>
-                                        <button type="submit" class="btn bg-light-orange br-10" @click="update(newform)">Perbarui</button>
+                                        <button type="submit" class="btn bg-light-orange br-10" @click="update(form)">Perbarui</button>
                                     </div>
                                 </form>  
                         </Popup>
@@ -174,14 +170,9 @@ export default {
     },
     data: function () {
         return {
-             calon: [],
+             calon: "",
              posts: [],
              form : {
-                 judul:'',
-                 waktu:'',
-                 teks:''
-             },
-            newform : {
                  judul:'',
                  waktu:'',
                  teks:''
@@ -242,24 +233,24 @@ export default {
         edit(post){
             this.updateSubmit = true
             axios.get(`${process.env.VUE_APP_API_URL}/post/`+ post.id_post).then(result =>{
-                this.newform.id = post.id_post
-                this.newform.judul = post.judul
-                this.newform.teks = post.teks
+                this.form.id = post.id_post
+                this.form.judul = post.judul
+                this.form.teks = post.teks
             })  
         },
-        update(newform){
+        update(form){
             axios.defaults.headers.common["token"] = localStorage.token
-            return axios.put(`${process.env.VUE_APP_API_URL}/post/` + newform.id, {
-                judul : this.newform.judul,
-                waktu : this.newform.waktu,
-                teks : this.newform.teks
+            return axios.put(`${process.env.VUE_APP_API_URL}/post/` + form.id, {
+                judul : this.form.judul,
+                waktu : this.form.waktu,
+                teks : this.form.teks
             })
             .then(result =>{
                 updateSubmit = false
                 this.load()
-                this.newform.judul =''
-                this.newform.waktu = ''
-                this.newform.teks = ''
+                this.form.judul =''
+                this.form.waktu = ''
+                this.form.teks = ''
             })
             .catch((err)=>{
                 console.log(err);
