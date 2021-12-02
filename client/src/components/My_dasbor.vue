@@ -12,7 +12,7 @@
       <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
             <div class="col" v-for="(calon,index) in calons" :key="calon.id_calon">
                 <div class="card h-100">
-                    <img src="../assets/images/dpr.jpg" class="card-img-top" alt="dpr 2">
+                    <img :src=calon.foto class="card-img-top" alt="dpr 2">
                     <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
                         <h5>{{index + 1}}</h5>
                     </div>
@@ -21,8 +21,8 @@
                         <p class="card-subtitle text-center text-muted">Calon {{calon.jabatan_tujuan}}</p>
                         <div class="row align-items-start mt-3">
                             <p class="col d-flex flex-wrap card-title">Partai</p>
-                            <div class="col d-flex flex-wrap justify-content-end">
-                                <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="dpr 2">
+                            <div class="col d-flex flex-wrap justify-content-end" v-for="(partai) in calon.partai" :key="partai.nama_partai">
+                                <img :src=partai.logo_partai class="img-partai m-1" alt="{{partai.nama_partai}}">
                             </div>
                         </div>
                         <div class="row align-items-start mb-2">
@@ -52,8 +52,12 @@ export default {
         no_data: false,
         calons: [],
     }),
-    beforeMount(){
-        const headers = { token: localStorage.token }
+    mounted(){
+        this.fetchFollowedCalon()
+    },
+    methods : {
+        fetchFollowedCalon(){
+            const headers = { token: localStorage.token }
         fetch(FOLLOWED_CALON_API_URL, { headers })
             .then(response => response.json())
             .then(result => {
@@ -66,8 +70,8 @@ export default {
                     this.no_data = true;
                 }
             });
-    },
-    methods : {
+        },
+
         goToDetail(){
         this.$router.push('/detail_calon');
         },

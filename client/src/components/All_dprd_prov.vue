@@ -42,13 +42,8 @@
                         <div class="d-flex justify-content-center justify-content-between">
                             <router-link :to="{ name: 'Detail_calon', params: { id_admin: calon.id_admin}}" class="btn btn-outline-orange">Detail</router-link>
                             <span v-if="isLoggedIn">
-                                <span v-if="calon.status == true">
-                                    <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status)">Berhenti</button>  
-                                </span>
-                                <span v-else>
-                                    <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon, calon.status)">Ikuti</button> 
-                                    <!-- <button @click="followedCalon(calon.id_calon)">Show if followed</button>  -->
-                                </span> 
+                                <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="!calon.status">Ikuti</button>
+                                <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="calon.status">Berhenti</button>
                             </span>    
                             <span v-else>
                                 <button class="btn btn-outline-blue" @click="goToLogin()">Ikuti</button> 
@@ -64,12 +59,14 @@
 
 <script>
 import axios from 'axios'
-const FOLLOWED_CALON_API_URL = `http://localhost:3000/user/followed`
+const FOLLOWED_CALON_API_URL = `${process.env.VUE_APP_API_URL}/user/followed`
 
 export default {
     name: 'All_dprd_kab_kota',
     data : () => ({
         no_data: false,
+        follow: false,
+        unfollow: false,
         calons: [],
         user: [],
         provinsi: [],
@@ -92,20 +89,20 @@ export default {
     },
     methods : {
         fetchKotaName(){
-            const KOTA_API_URL = `http://localhost:3000/dapil/kota/provinsi/${this.$route.params.id_provinsi}`
+            const KOTA_API_URL = `${process.env.VUE_APP_API_URL}/dapil/kota/provinsi/${this.$route.params.id_provinsi}`
         
             fetch(KOTA_API_URL)
             .then(response => response.json())
             .then(result => {
                 this.kota = result 
-                var parsedobj = JSON.parse(JSON.stringify(result))
-                console.log(parsedobj)
+                // var parsedobj = JSON.parse(JSON.stringify(result))
+                // console.log(parsedobj)
             })
         },
 
         
         fetchProvinsiName(){
-            const PROV_API_URL = `http://localhost:3000/dapil/provinsi/${this.$route.params.id_provinsi}`
+            const PROV_API_URL = `${process.env.VUE_APP_API_URL}/dapil/provinsi/${this.$route.params.id_provinsi}`
         
             fetch(PROV_API_URL)
             .then(response => response.json())
@@ -116,7 +113,7 @@ export default {
 
         fetchDPRDProvCalons(){
             const id_provinsi = this.$route.params.id_provinsi;
-            const DRPD_PROV_API_URL = `http://localhost:3000/calon/dprdProv/${id_provinsi}` 
+            const DRPD_PROV_API_URL = `${process.env.VUE_APP_API_URL}/calon/dprdProv/${id_provinsi}` 
 
             fetch(DRPD_PROV_API_URL)
                 .then(response => response.json())
@@ -140,8 +137,8 @@ export default {
                 .then(result => {
                     this.followed_calon = result
                     this.checkFollowedCalon()
-                    var parsedobj = JSON.parse(JSON.stringify(result))
-                    console.log(parsedobj)
+                    // var parsedobj = JSON.parse(JSON.stringify(result))
+                    // console.log(parsedobj)
                     // console.log(`followed calon: ${this.followed_calon.length}`)
                     // console.log(`calon: ${this.calons.length}`)
                 })
@@ -163,15 +160,15 @@ export default {
         },
 
         fetchPartai(){
-            const PARTAI_API_URL = `http://localhost:3000/partai`
+            const PARTAI_API_URL = `${process.env.VUE_APP_API_URL}/partai`
         
             fetch(PARTAI_API_URL)
             .then(response => response.json())
             .then(result => {
                 this.partai = result
-                    var parsedobj = JSON.parse(JSON.stringify(result))
-                    console.log(parsedobj)
-            })  
+                // var parsedobj = JSON.parse(JSON.stringify(result))
+                // console.log(parsedobj)
+        })  
         },
 
         goToLogin(){
@@ -179,35 +176,61 @@ export default {
         },
 
         followCalon(id_calon, status){
-            const FOLLOW_API_URL = `http://localhost:3000/user/${id_calon}`
+            const FOLLOW_API_URL = `${process.env.VUE_APP_API_URL}/user/${id_calon}`
             axios.defaults.headers.common["token"] = localStorage.token
             
             axios.post(FOLLOW_API_URL)
                 .then(() => {
-                    //this.$router.push("/dasbor_saya")
-                    status = true
+                    console.log(status)
                 })
                 .catch((error) => {
                     console.error(error)
                 })
-
-            console.log(localStorage.token)
         },
 
         unfollowCalon(id_calon, status){
-            const UNFOLLOW_API_URL = `http://localhost:3000/user/unfollow/${id_calon}`
+            const UNFOLLOW_API_URL = `${process.env.VUE_APP_API_URL}/user/unfollow/${id_calon}`
             axios.defaults.headers.common["token"] = localStorage.token
 
             axios.delete(UNFOLLOW_API_URL)
                 .then(() => {
-                    // window.location = "/dasbor_saya"
-                    status = false
+                   console.log("calon unfollowed!")
                 })
                 .catch((error) => {
                     console.error(error)
                 })
         },
-    },
+        
+        // follUnfoll(id_calon, status){
+        //     const FOLLOW_API_URL = `${process.env.VUE_APP_API_URL}/user/${id_calon}`
+        //     const UNFOLLOW_API_URL = `${process.env.VUE_APP_API_URL}/user/unfollow/${id_calon}`
+        //     axios.defaults.headers.common["token"] = localStorage.token
+
+        //     //belum follow => follow
+        //     if(!status){
+        //         axios.post(FOLLOW_API_URL)
+        //             .then(() => {
+        //                 //this.$router.push("/dasbor_saya")
+        //                 status = !status
+        //                 console.log(status)
+        //                 // this.$refs.btnToggle.innerText = status?'Ikuti':'Berhenti'
+        //             })
+        //             .catch((error) => {
+        //                 console.error(error)
+        //             })
+        //         console.log("calon unfollowed!")
+        //     } else { //sudah follow => unfollow
+        //         axios.delete(UNFOLLOW_API_URL)
+        //             .then(() => {
+        //                 // window.location = "/dasbor_saya"
+        //                 status = !status
+        //             })
+        //             .catch((error) => {
+        //                 console.error(error)
+        //             })
+        //     }
+        // }
+    }
 }
 </script>
 

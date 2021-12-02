@@ -42,13 +42,8 @@
                         <div class="d-flex justify-content-center justify-content-between">
                             <router-link :to="{ name: 'Detail_calon', params: { id_admin: calon.id_admin}}" class="btn btn-outline-orange">Detail</router-link>
                             <span v-if="isLoggedIn">
-                                <span v-if="calon.status">
-                                    <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status)">Berhenti</button>  
-                                </span>
-                                <span v-else>
-                                    <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon, calon.status)">Ikuti</button> 
-                                    <!-- <button @click="followedCalon(calon.id_calon)">Show if followed</button>  -->
-                                </span> 
+                                <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="!calon.status">Ikuti</button>
+                                <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="calon.status">Berhenti</button>
                             </span>       
                             <span v-else>
                                 <button class="btn btn-outline-blue" @click="goToLogin()">Ikuti</button> 
@@ -64,8 +59,8 @@
 
 <script>
 import axios from 'axios'
-const DPD_API_URL = `http://localhost:3000/calon/jabatan/ab55ff16-0673-4c8b-a572-bf282f75d9cf`
-const FOLLOWED_CALON_API_URL = `http://localhost:3000/user/followed`
+const DPD_API_URL = `${process.env.VUE_APP_API_URL}/calon/jabatan/ab55ff16-0673-4c8b-a572-bf282f75d9cf`
+const FOLLOWED_CALON_API_URL = `${process.env.VUE_APP_API_URL}/user/followed`
 
 
 export default {
@@ -127,29 +122,25 @@ export default {
         },
 
         followCalon(id_calon, status){
-            const FOLLOW_API_URL = `http://localhost:3000/user/${id_calon}`
+            const FOLLOW_API_URL = `${process.env.VUE_APP_API_URL}/user/${id_calon}`
             axios.defaults.headers.common["token"] = localStorage.token
             
             axios.post(FOLLOW_API_URL)
                 .then(() => {
-                    //this.$router.push("/dasbor_saya")
-                    status = true
+                    console.log(status)
                 })
                 .catch((error) => {
                     console.error(error)
                 })
-
-            console.log(localStorage.token)
         },
 
         unfollowCalon(id_calon, status){
-            const UNFOLLOW_API_URL = `http://localhost:3000/user/unfollow/${id_calon}`
+            const UNFOLLOW_API_URL = `${process.env.VUE_APP_API_URL}/user/unfollow/${id_calon}`
             axios.defaults.headers.common["token"] = localStorage.token
 
             axios.delete(UNFOLLOW_API_URL)
                 .then(() => {
-                    // window.location = "/dasbor_saya"
-                    status = false
+                   console.log("calon unfollowed!")
                 })
                 .catch((error) => {
                     console.error(error)
