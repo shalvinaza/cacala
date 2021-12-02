@@ -2,12 +2,12 @@
   <div class="container">
       <h1 class="text-center pb-4 mb-4">Calon yang Diikuti</h1>
       <div class="d-flex d-inline-row pb-3 mb-4">
-          <a href="#" class="me-3" style="color: #D65A40;">Semua</a>
-          <a href="#" class="me-3">Presiden</a>
-          <a href="#" class="me-3">DPR RI</a>
-          <a href="#" class="me-3">DPD RI</a>
-          <a href="#" class="me-3">DPRD Provinsi</a>
-          <a href="#" class="me-3">DPRD Kabupaten/Kota</a>
+          <a   class="me-3" style="color: #D65A40;">Semua</a>
+          <a   class="me-3">Presiden</a>
+          <a   class="me-3">DPR RI</a>
+          <a   class="me-3">DPD RI</a>
+          <a   class="me-3">DPRD Provinsi</a>
+          <a   class="me-3">DPRD Kabupaten/Kota</a>
       </div>
       <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
             <div class="col" v-for="(calon,index) in calons" :key="calon.id_calon">

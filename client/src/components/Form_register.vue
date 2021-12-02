@@ -36,7 +36,7 @@
                 </form>
                 <!-- </div> -->
                 <div class="mb-4">
-                    <span>Sudah punya akun?</span> <a style="color:#D65A40" href="/login">Masuk Sekarang</a>
+                    <span>Sudah punya akun?</span> <a style="color:#D65A40" @click="goToLogin()">Masuk Sekarang</a>
                 </div>
             </div>
           </div>
@@ -87,6 +87,9 @@ export default {
             if (password.length > 7) {
                 return true;
                 }
+        },
+        goToLogin(){
+            this.$router.push('/login')
         },
         submit : function(){
             this.validate();

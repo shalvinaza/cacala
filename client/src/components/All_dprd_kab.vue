@@ -1,11 +1,11 @@
 <template>
     <div class="container">
         <h1 class="text-center pb-4 mb-4">Calon DPRD Kabupaten/Kota {{kota.kota}}</h1>
-        <a class="dropdown-toggle btn btn-outline-orange2" href="#" id="navbarDropdown" data-bs-toggle="dropdown">
+        <a class="dropdown-toggle btn btn-outline-orange2"   id="navbarDropdown" data-bs-toggle="dropdown">
             Partai
         </a>
         <div class="dropdown-menu">
-            <li><a class="dropdown-item" style="color:black" href="#" v-for="(prt) in partai" :key="prt.id_partai">{{prt.nama_partai}}</a></li>
+            <li><a class="dropdown-item" style="color:black"   v-for="(prt) in partai" :key="prt.id_partai">{{prt.nama_partai}}</a></li>
         </div>
         <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
             <div class="col" v-for="(calon,index) in calons" :key="calon.id_calon">

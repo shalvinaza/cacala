@@ -12,7 +12,7 @@
                 <router-link to="/dpr_ri" class="nav-item nav-link">DPR RI</router-link>
                 <router-link to="/dpd_ri" class="nav-link">DPD RI</router-link>
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle txt-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a class="nav-link dropdown-toggle txt-white"   id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     DPRD Provinsi
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -24,7 +24,7 @@
                   </div>
                 </li>
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle txt-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a class="nav-link dropdown-toggle txt-white"   id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     DPRD Kabupaten/Kota
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">

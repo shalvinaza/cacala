@@ -9,7 +9,7 @@
                     <i class="fab fa-facebook-square me-2"></i>
                     <i class="fab fa-twitter-square me-2"></i>
                     <i class="fab fa-instagram-square me-2"></i>
-                    <a href="#">Kontak Pengaduan</a>
+                    <a  >Kontak Pengaduan</a>
                 </div>
             </div>
         </div>

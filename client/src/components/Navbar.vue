@@ -12,7 +12,7 @@
                 <router-link to="/dpr_ri" class="nav-item nav-link">DPR RI</router-link>
                 <router-link to="/dpd_ri" class="nav-link">DPD RI</router-link>
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle txt-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a class="nav-link dropdown-toggle txt-white"   id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     DPRD Provinsi
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -24,7 +24,7 @@
                   </div>
                 </li>
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle txt-white" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a class="nav-link dropdown-toggle txt-white"   id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     DPRD Kabupaten/Kota
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -45,12 +45,12 @@
                   Cari</button>
               <span v-if="isLoggedIn">
                 <div class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle nav-profil" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a class="nav-link dropdown-toggle nav-profil"   id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                       <i class="far fa-user-circle nav-profil"></i>
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <li><a class="dropdown-item" style="color:black" href="/profil_user">Profil Saya</a></li>
-                      <li><a class="dropdown-item" style="color:black" @click="logUserOut" href="#">Keluar</a></li>
+                      <li><a class="dropdown-item" style="color:black" @click="goToProfil()">Profil Saya</a></li>
+                      <li><a class="dropdown-item" style="color:black" @click="logUserOut">Keluar</a></li>
                   </div>
                 </div>
               </span>
@@ -95,7 +95,9 @@ export default {
     goToLogin(){
       this.$router.push('/login');
     },
-
+    goToProfil(){
+      this.$router.push('/profil_user');
+    },
     logUserOut(){
       localStorage.removeItem('token')
       this.$router.push('/login')
