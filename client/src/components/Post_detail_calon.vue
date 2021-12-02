@@ -62,6 +62,20 @@
                         </div>
                     </div>
                     <div class="p-4">
+                        <span v-for="post in posts"  :key="post.id_post">
+                            <div class="card w-100 postingan p-3 mb-3">
+                                <div class="card-body p-0">
+                                    <h5 class="card-title text-center">{{post.judul}}</h5>
+                                    <div class="d-flex end-row-section w-100 p-0 mb-3 pb-2">
+                                        <p class="card-text text-muted m-0 flex-grow-2 w-100" style=""><i class="far fa-calendar-alt"></i>  <small>{{post.waktu}}</small></p>
+                                        <span class="card-text icons me-2" @click="edit(post)" ><i class="fas fa-edit"></i></span>
+                                        <span class="card-text icons" @click="del(post)"><i class="fas fa-trash"></i></span>
+                                    </div>
+                                    <!-- <img src="../assets/images/poster_post.jpg" class="w-100 img-poster-post mb-3" alt="..."> -->
+                                    <p class="card-text">{{post.teks}}</p>
+                                </div>
+                            </div>
+                        </span>
                         <!-- posts just text-->
                         <div class="card w-100 postingan p-3 mb-3">
                             <div class="card-body p-0">
@@ -108,11 +122,11 @@ export default {
     name :'Post_detail_calon',
     data : () => ({
         no_data: false,
-        calons: []
+        calons: [],
+        posts: []
     }),
-    created(){
+    mounted(){
         const id_admin = this.$route.params.id_admin;
-        const DPD_API_URL = `http://localhost:3000/calon/` + id_admin;
         fetch(`${process.env.VUE_APP_API_URL}/calon/${id_admin}`)
             .then(response => response.json())
             .then(result => {
@@ -123,6 +137,17 @@ export default {
                     this.no_data = true;
                 }
             });
+        fetch(`${process.env.VUE_APP_API_URL}/post/user/${id_admin}`)
+            .then(response => response.json())
+            .then(result => {
+                this.posts = result;
+            })
+            .catch(error => {
+                if(posts==null){
+                    this.no_data = true;
+                }
+            });
+        
     }
 }
 </script>
