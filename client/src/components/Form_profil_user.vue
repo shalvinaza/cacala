@@ -77,7 +77,7 @@ export default {
             password: this.user.password            
         })
         .then(result =>{
-            window.location = "/profil_user"
+            this.$router.push('/profil_user')
             this.user=''
         })
         },
