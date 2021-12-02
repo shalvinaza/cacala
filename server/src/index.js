@@ -29,5 +29,5 @@ app.use("/dapil", dapilRoute)
 app.use("/partai", partaiRoute)
 
 app.listen(process.env.PORT || 3000, () => {
-   console.log("server is running on port 3000")
+   console.log("server is running on port %d in $s mode", this.address().port, app.settings.env)
 })
