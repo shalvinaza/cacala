@@ -1,15 +1,15 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-md-3 left-col d-flex justify-content-center" v-for="(calon,index) in calons" :key="calon.id_admin">
+            <div class="col-md-3 left-col d-flex justify-content-center" v-for="(calon) in calons" :key="calon.id_admin">
                 <div class="p-4 br-15" style="background: #EDEDE9; max-height:1430px">
-                    <img src="../assets/images/dpr.jpg" class="profil-calon-detail mb-4" alt="dpr 2">
+                    <img :src=calon.foto class="profil-calon-detail mb-4" alt="dpr 2">
                     <h5 class="text-center">{{calon.nama}}</h5>
                     <p class="mb-5 text-center">Calon {{calon.jabatan_tujuan}}</p>
                     <div class="row align-items-start">
                         <h6 class="col">Partai</h6>
-                        <div class="col d-flex flex-wrap justify-content-end">
-                            <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="dpr 2">
+                        <div class="col d-flex flex-wrap justify-content-end" v-for="(partai) in calon.partai" :key="partai.nama_partai">
+                            <img :src=partai.logo_partai class="img-partai m-1" alt="{{partai.nama_partai}}">
                         </div>
                     </div>
                     <div class="row align-items-start">
@@ -21,38 +21,24 @@
                     <div class="row align-items-start end-row-section">
                         <h6 class="col">Nomor Urut</h6>
                         <div class="col d-flex flex-wrap justify-content-end">
-                            <p>{{index + 1}}</p>
+                            <p>{{calon.no_urut}}</p>
                         </div>
                     </div>
                     <div class="mt-4 pb-3 end-row-section">
                         <h5 class="mb-3">Riwayat Pendidikan</h5>
-                        <h6>{{calon.nama_institusi}}</h6>
-                        <p class="mb-2">{{calon.detail_pendidikan}}</p>
-                        <i class="far fa-calendar-alt"></i> <span>{{calon.tahun_mulai_pendidikan}}</span> - <span>{{calon.tahun_selesai_pendidikan}}</span>
-
-                        <h6 class="mt-3">SMA Negeri 5</h6>
-                        <p class="mb-2">Kota Bandung</p>
-                        <span><i class="far fa-calendar-alt"></i> 1997 - 2000</span>
-
-                        
-                        <h6 class="mt-3">SMP Negeri 20</h6>
-                        <p class="mb-2">Kota Bandung</p>
-                        <span><i class="far fa-calendar-alt"></i> 1994 - 1997</span>
+                        <div class="mb-3" v-for="(pendidikan) in calon.riwayat_pendidikan" :key="pendidikan.id_pendidikan">
+                            <h6>{{pendidikan.nama_institusi}}</h6>
+                            <p class="mb-2">{{pendidikan.detail_pendidikan}}</p>
+                            <i class="far fa-calendar-alt"></i> <span>{{pendidikan.tahun_mulai_pendidikan}}</span> - <span>{{pendidikan.tahun_selesai_pendidikan}}</span>
+                        </div>
                     </div>
                     <div class="mt-4 pb-3">
                         <h5 class="mb-3">Riwayat Pekerjaan</h5>
-                        <h6>{{calon.nama_pekerjaan}}</h6>
-                        <p class="mb-2">{{calon.detail_pekerjaan}}</p>
-                        <i class="far fa-calendar-alt"></i> <span>{{calon.tahun_mulai_pekerjaan}}</span> - <span>{{calon.tahun_selesai_pekerjaan}}</span>
-
-                        <h6 class="mt-3">Kepala Cabang</h6>
-                        <p class="mb-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-                        <span><i class="far fa-calendar-alt"></i> 1997 - 2000</span>
-
-                        
-                        <h6 class="mt-3">Manajer Produk</h6>
-                        <p class="mb-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-                        <span><i class="far fa-calendar-alt"></i> 1994 - 1997</span>
+                        <div v-for="(pekerjaan) in calon.riwayat_pekerjaan" :key="pekerjaan.id_pekerjaan">
+                            <h6>{{pekerjaan.nama_pekerjaan}}</h6>
+                            <p class="mb-2">{{pekerjaan.detail_pekerjaan}}</p>
+                            <i class="far fa-calendar-alt"></i> <span>{{pekerjaan.tahun_mulai_pekerjaan}}</span> - <span>{{pekerjaan.tahun_selesai_pekerjaan}}</span>
+                        </div>
                     </div>
                 </div>
             </div>

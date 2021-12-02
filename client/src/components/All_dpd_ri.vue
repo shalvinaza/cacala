@@ -68,15 +68,29 @@ export default {
     data : () => ({
         no_data: false,
         calons: [],
-        followed_calon: []
+        followed_calon: [],
+        partai: []
     }),
     computed: {
         isLoggedIn: function() {return localStorage.getItem("token") != null}
     },
     mounted(){
-        this.fetchDPDCalons()
+        this.fetchDPDCalons(),
+        this.fetchPartai()
     },
     methods : {
+        fetchPartai(){
+            const PARTAI_API_URL = `${process.env.VUE_APP_API_URL}/partai`
+        
+            fetch(PARTAI_API_URL)
+                .then(response => response.json())
+                .then(result => {
+                    this.partai = result
+                    var parsedobj = JSON.parse(JSON.stringify(result))
+                    console.log(parsedobj)
+            })  
+        },
+
         fetchDPDCalons(){
             fetch(DPD_API_URL)
             .then(response => response.json())

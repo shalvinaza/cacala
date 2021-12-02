@@ -4,16 +4,14 @@
         <a class="dropdown-toggle btn btn-outline-orange2 me-3" href="#" id="navbarDropdown" data-bs-toggle="dropdown">
             Daerah Pilih
         </a>
-        <div class="dropdown-menu" v-for="(kta) in kota" :key="kta.id_kota">
-            <li><a class="dropdown-item" style="color:black" href="#">{{kta.kota}}</a></li>
-            <!-- <li><a class="dropdown-item" style="color:black" href="#">Kota 2</a></li> -->
+        <div class="dropdown-menu">
+            <li v-for="(kta) in kota" :key="kta.id_kota"><a class="dropdown-item" style="color:black" href="#">{{kta.kota}}</a></li>
         </div>
         <a class="dropdown-toggle btn btn-outline-orange2" href="#" id="navbarDropdown" data-bs-toggle="dropdown">
             Partai
         </a>
-        <div class="dropdown-menu" v-for="(prt) in partai" :key="prt.id_partai">
-            <li><a class="dropdown-item" style="color:black" href="#">{{prt.nama_partai}}</a></li>
-            <!-- <li><a class="dropdown-item" style="color:black" href="#">Partai 2</a></li> -->
+        <div class="dropdown-menu">
+            <li><a class="dropdown-item" style="color:black" href="#" v-for="(prt) in partai" :key="prt.id_partai">{{prt.nama_partai}}</a></li>
         </div>
         <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
             <div class="col" v-for="(calon,index) in calons" :key="calon.id_calon">
@@ -83,6 +81,7 @@ export default {
         this.fetchDPRDProvCalons()
         this.fetchProvinsiName()
         this.fetchKotaName()
+        this.fetchPartai()
         // if(localStorage.getItem("token") != null){
         //     this.fetchFollowedCalon()
         // }
@@ -95,12 +94,11 @@ export default {
             .then(response => response.json())
             .then(result => {
                 this.kota = result 
-                // var parsedobj = JSON.parse(JSON.stringify(result))
-                // console.log(parsedobj)
+                var parsedobj = JSON.parse(JSON.stringify(result))
+                console.log(parsedobj)
             })
         },
-
-        
+    
         fetchProvinsiName(){
             const PROV_API_URL = `${process.env.VUE_APP_API_URL}/dapil/provinsi/${this.$route.params.id_provinsi}`
         
@@ -166,8 +164,8 @@ export default {
             .then(response => response.json())
             .then(result => {
                 this.partai = result
-                // var parsedobj = JSON.parse(JSON.stringify(result))
-                // console.log(parsedobj)
+                var parsedobj = JSON.parse(JSON.stringify(result))
+                console.log(parsedobj)
         })  
         },
 
