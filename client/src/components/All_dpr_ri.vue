@@ -5,8 +5,7 @@
             Daerah Pilih
         </a>
         <div class="dropdown-menu">
-            <li><a class="dropdown-item" style="color:black" href="#">Kota 1</a></li>
-            <li><a class="dropdown-item" style="color:black" href="#">Kota 2</a></li>
+            <li v-for="(prov) in provinsi" :key="prov.id_provinsi"><a class="dropdown-item" style="color:black" href="#">{{prov.provinsi}}</a></li>
         </div>
         <a class="dropdown-toggle btn btn-outline-orange2" href="#" id="navbarDropdown" data-bs-toggle="dropdown">
             Partai
@@ -68,7 +67,8 @@ export default {
         no_data: false,
         calons: [],
         followed_calon: [],
-        partai: []
+        partai: [],
+        provinsi: []
     }),
     computed: {
         isLoggedIn: function() {return localStorage.getItem("token") != null}
@@ -76,11 +76,16 @@ export default {
     mounted(){
         this.fetchDPRRICalons(),
         this.fetchPartai()
+        this.fetchProvinsi()
     },
     methods : {
         fetchProvinsi(){
             const PROV_API_URL = `${process.env.VUE_APP_API_URL}/dapil/provinsi`
-            fetch()
+            fetch(PROV_API_URL)
+                .then(response => response.json())
+                .then(result => {
+                    this.provinsi = result
+                })
         },
 
         fetchDPRRICalons(){
