@@ -1,7 +1,9 @@
 <template>
     <div class="container">
-        <div class="row">
-            <div class="col-md-3 left-col d-flex justify-content-center">
+        <div class="row row-cols-3 row-cols-md-3">
+            <div class="col-md-3">
+            <div class="row row-cols-1 row-cols-md-1">
+            <div class="col left-col d-flex justify-content-center mb-4" v-for="(calon) in calon" :key="calon.id_admin">
                 <div class="p-4 br-15" style="background: #EDEDE9; max-height:1430px">
                     <img :src=calon.foto class="profil-calon-detail mb-4" alt="{{calon.nama}}">
                     <h5 class="text-center">{{calon.nama}}</h5>
@@ -40,6 +42,8 @@
                             <i class="far fa-calendar-alt"></i> <span>{{pekerjaan.tahun_mulai_pekerjaan}}</span> - <span>{{pekerjaan.tahun_selesai_pekerjaan}}</span>
                         </div>
                     </div>
+                </div>
+                </div>
                 </div>
             </div>
             <!-- this is just for divider -->
@@ -170,7 +174,7 @@ export default {
     },
     data: function () {
         return {
-             calon: "",
+             calon: [],
              posts: [],
              form : {
                  judul:'',
