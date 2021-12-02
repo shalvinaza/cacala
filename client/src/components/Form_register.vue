@@ -99,12 +99,13 @@ export default {
       if (this.register.password.length > 0){
         axios.post(REGISTER_API_URL, this.register)
         .then(response => {
-          localStorage.setItem('token',response.data.token)
+        //   localStorage.setItem('token',response.data.token);
+          this.$router.push('/login')
 
-          if (localStorage.getItem('token') != null){
-            this.$emit('loggedIn')
-            this.$router.push('/')    
-          }
+        //   if (localStorage.getItem('token') != null){
+        //     this.$emit('loggedIn')
+        //     this.$router.push('/')    
+        //   }
         })
         .catch(error => {
             console.error(error)

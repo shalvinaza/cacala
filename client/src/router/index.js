@@ -48,7 +48,8 @@ const routes = [
   {
     path: '/dasbor_saya',
     name: 'Dasbor',
-    component: Dasbor
+    component: Dasbor,
+    meta: {requiresAuth: true}
   },
   {
     path: '/login',
@@ -79,7 +80,8 @@ const routes = [
   {
     path: '/detail_admin_calon',
     name: 'Detail_admin_calon',
-    component: Detail_admin_calon
+    component: Detail_admin_calon,
+    meta: {admin: true}
   },
   // {
   //   path: '/update_post/:id_post',
@@ -103,7 +105,21 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if(to.matched.some(record => record.meta.guest)){
+  if(to.matched.some(record => record.meta.requiresAuth)){
+    if(localStorage.getItem("token") == null){
+      next({
+        path: "/"
+      }) 
+    } else next()
+  }
+  else if(to.matched.some(record => record.meta.admin)){
+    if(localStorage.getItem("token") == null){
+      next({
+        path: "/"
+      }) 
+    } else next()
+  }
+  else if(to.matched.some(record => record.meta.guest)){
     if(localStorage.getItem("token") == null){
       next()
     } else{

@@ -26,9 +26,9 @@ exports.register = async (req, res) => {
       )
 
       //5. generating our jwt token
-      const token = jwtGenerator(newUser.rows[0].id_user)
+      // const token = jwtGenerator(newUser.rows[0].id_user)
 
-      res.json({ token })
+      res.json("User successfully registered")
    } catch (err){
       console.error(err.message)
       res.status(500).send("Server Error")
