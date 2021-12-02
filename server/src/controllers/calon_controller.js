@@ -333,7 +333,7 @@ exports.selectCalonByAdmin = async (req, res) => {
          calon.rows[i] = {...calon.rows[i], partai: partai.rows, riwayat_pendidikan: pendidikan.rows, riwayat_pekerjaan: pekerjaan.rows}
       }
 
-      res.json(calon.rows[0])
+      res.json(calon.rows)
    } catch(err) {
       res.json({ message: err })
    }
