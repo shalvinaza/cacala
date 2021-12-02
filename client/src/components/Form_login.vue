@@ -27,7 +27,7 @@
                 </form>
                 <!-- </div> -->
                 <div class="mb-4">
-                    <span>Belum punya akun?</span> <a style="color:#D65A40" href="/register">Daftar Sekarang</a>
+                    <span>Belum punya akun?</span> <a style="color:#D65A40" @click="goToRegister()">Daftar Sekarang</a>
                 </div>
                 <button type="button" @click="goToLoginAdmin()" class="btn btn-outline-orange2 w-100 br-10">Masuk sebagai admin</button> 
             </div>
@@ -80,6 +80,9 @@ export default {
         },
         goToLoginAdmin(){
             this.$router.push('/login_admin');
+        },
+        goToRegister(){
+            this.$router.push('/register');
         },
         loginUser(e){
             e.preventDefault()
