@@ -1,1 +1,1 @@
-web: npm start
+web: npm start --network-timeout 100000
