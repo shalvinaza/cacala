@@ -164,8 +164,8 @@
 <script>
 import Popup from './Popup.vue'
 import axios from 'axios'
-const ADMIN_API_URL = `http://localhost:3000/admin/`
-const CALON_API_URL = `http://localhost:3000/calon/admin`
+const ADMIN_API_URL = `${process.env.VUE_APP_API_URL}/admin/`
+const CALON_API_URL = `${process.env.VUE_APP_API_URL}/calon/admin`
 
 export default {
     name :'Post_detail_calon',
@@ -207,7 +207,7 @@ export default {
     },
     methods: {
         load(){
-            const GET_POST_API_URL = `http://localhost:3000/post/`
+            const GET_POST_API_URL = `${process.env.VUE_APP_API_URL}/post/`
             axios.defaults.headers.common["token"] = localStorage.token
             axios.get(GET_POST_API_URL)
                 .then(result => {
@@ -221,7 +221,7 @@ export default {
                 })
         },
         addPost(){
-            const POST_POSTS_API_URL = `http://localhost:3000/post/`
+            const POST_POSTS_API_URL = `${process.env.VUE_APP_API_URL}/post/`
             axios.defaults.headers.common["token"] = localStorage.token
             axios.post(POST_POSTS_API_URL,this.form)
                 .then(result => {
@@ -233,7 +233,7 @@ export default {
             
         },
         del(post){
-            axios.delete('http://localhost:3000/post/'+ post.id_post).then(result =>{
+            axios.delete(`${process.env.VUE_APP_API_URL}/post/`+ post.id_post).then(result =>{
                 this.load()
                 let index = this.posts.indexOf(form.name)
                 this.posts.splice(index,1)
@@ -241,7 +241,7 @@ export default {
         },
         edit(post){
             this.updateSubmit = true
-            axios.get('http://localhost:3000/post/'+ post.id_post).then(result =>{
+            axios.get(`${process.env.VUE_APP_API_URL}/post/`+ post.id_post).then(result =>{
                 this.newform.id = post.id_post
                 this.newform.judul = post.judul
                 this.newform.teks = post.teks
@@ -249,7 +249,7 @@ export default {
         },
         update(newform){
             axios.defaults.headers.common["token"] = localStorage.token
-            return axios.put('http://localhost:3000/post/' + newform.id, {
+            return axios.put(`${process.env.VUE_APP_API_URL}/post/` + newform.id, {
                 judul : this.newform.judul,
                 waktu : this.newform.waktu,
                 teks : this.newform.teks

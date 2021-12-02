@@ -54,7 +54,7 @@ export default {
     // },
     mounted(){
         const headers = { token: localStorage.token };
-        const GET_USER_API_URL = `http://localhost:3000/user`
+        const GET_USER_API_URL = `${process.env.VUE_APP_API_URL}/user`
         fetch(GET_USER_API_URL, {headers})
             .then(response => response.json())
             .then(result => {
@@ -71,7 +71,7 @@ export default {
         // },
         updateUser(){
         axios.defaults.headers.common["token"] = localStorage.token
-        return axios.put('http://localhost:3000/user',{
+        return axios.put(`${process.env.VUE_APP_API_URL}/user`,{
             username: this.user.username,
             email: this.user.email,
             password: this.user.password            
@@ -83,7 +83,7 @@ export default {
         },
         del(user){
             const id_user = this.user.id_user
-            const DEL_USER_API_URL = `http://localhost:3000/user/delete/`
+            const DEL_USER_API_URL = `${process.env.VUE_APP_API_URL}/user/delete/`
             axios.defaults.headers.common["token"] = localStorage.token
             axios.delete(DEL_USER_API_URL + id_user)
             .then(res =>{

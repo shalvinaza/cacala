@@ -44,7 +44,7 @@
 
 <script>
 import axios from 'axios'
-const FOLLOWED_CALON_API_URL = `http://localhost:3000/user/followed`
+const FOLLOWED_CALON_API_URL = `${process.env.VUE_APP_API_URL}/user/followed`
 
 export default {
     name:'My_dasbor',
@@ -77,7 +77,7 @@ export default {
         },
 
         unfollowCalon(id_calon){
-            const UNFOLLOW_API_URL = `http://localhost:3000/user/unfollow/${id_calon}`
+            const UNFOLLOW_API_URL = `${process.env.VUE_APP_API_URL}/user/unfollow/${id_calon}`
             axios.defaults.headers.common["token"] = localStorage.token
 
             axios.delete(UNFOLLOW_API_URL)

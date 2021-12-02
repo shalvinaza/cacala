@@ -50,8 +50,8 @@
 <script>
 import axios from 'axios'
 
-const PROVINSI_API_URL = `http://localhost:3000/dapil/provinsi`
-const KOTA_API_URL = `http://localhost:3000/dapil/kota`
+const PROVINSI_API_URL = `${process.env.VUE_APP_API_URL}/dapil/provinsi`
+const KOTA_API_URL = `${process.env.VUE_APP_API_URL}/dapil/kota`
 
 export default {
   name: 'Navbar1',

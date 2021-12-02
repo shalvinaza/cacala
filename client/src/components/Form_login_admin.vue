@@ -30,7 +30,7 @@
 
 <script>
 import axios from 'axios'
-const LOGIN_API_URL = `http://localhost:3000/auth/admins/login`
+const LOGIN_API_URL = `${process.env.VUE_APP_API_URL}/auth/admins/login`
 
 export default {
     name:'Form_login',

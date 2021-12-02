@@ -45,7 +45,7 @@
 
 <script>
 import axios from 'axios'
-const REGISTER_API_URL = `http://localhost:3000/auth/users/register`
+const REGISTER_API_URL = `${process.env.VUE_APP_API_URL}/auth/users/register`
 
 export default {
     name:'Form_login',
