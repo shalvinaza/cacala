@@ -18,9 +18,7 @@
                             <div class="row align-items-start mb-4">
                                 <p class="col-md-5 d-flex flex-wrap card-title">Partai Koalisi</p>
                                 <div class="col-md-7 d-flex flex-wrap justify-content-end">
-                                    <div v-for="(partai) in calon.partai" :key="partai.nama_partai">
-                                        <img :src=partai.logo_partai class="img-partai m-1" alt="{{partai.nama_partai}}">
-                                    </div>
+                                    <img v-for="(partai) in calon.partai" :key="partai.nama_partai" :src=partai.logo_partai class="img-partai m-1" alt="{{partai.nama_partai}}">
                                 </div>
                             </div>
                             <div class="d-flex justify-content-center justify-content-between">

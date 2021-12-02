@@ -20,9 +20,9 @@
                         <div class="row align-items-start mt-3">
                             <p class="col d-flex flex-wrap card-title">Partai</p>
                             <div class="col d-flex flex-wrap justify-content-end">
-                                <div v-for="(partai) in calon.partai" :key="partai.nama_partai">
-                                    <img :src=partai.logo_partai class="img-partai m-1" alt="{{partai.nama_partai}}">
-                                </div>
+                            <div class="col d-flex flex-wrap justify-content-end">
+                                <img v-for="(partai) in calon.partai" :key="partai.nama_partai" :src=partai.logo_partai class="img-partai m-1" alt="{{partai.nama_partai}}">
+                            </div>
                             </div>
                         </div>
                         <div class="row align-items-start mb-2">

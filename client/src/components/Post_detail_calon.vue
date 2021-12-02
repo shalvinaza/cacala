@@ -1,15 +1,17 @@
 <template>
     <div class="container">
-        <div class="row">
-            <div class="col-md-3 left-col d-flex justify-content-center" v-for="(calon) in calons" :key="calon.id_admin">
+        <div class="row row-cols-3 row-cols-md-3">
+            <div class="col-md-3">
+            <div class="row row-cols-1 row-cols-md-1">
+            <div class="col left-col d-flex justify-content-center mb-4" v-for="(calon) in calons" :key="calon.id_admin">
                 <div class="p-4 br-15" style="background: #EDEDE9; max-height:1430px">
                     <img :src=calon.foto class="profil-calon-detail mb-4" alt="dpr 2">
                     <h5 class="text-center">{{calon.nama}}</h5>
                     <p class="mb-5 text-center">Calon {{calon.jabatan_tujuan}}</p>
                     <div class="row align-items-start">
                         <h6 class="col">Partai</h6>
-                        <div class="col d-flex flex-wrap justify-content-end" v-for="(partai) in calon.partai" :key="partai.nama_partai">
-                            <img :src=partai.logo_partai class="img-partai m-1" alt="{{partai.nama_partai}}">
+                        <div class="col d-flex flex-wrap justify-content-end">
+                            <img v-for="partai in calon.partai" :key="partai.nama_partai" :src=partai.logo_partai class="img-partai me-2" alt="{{partai.nama_partai}}">
                         </div>
                     </div>
                     <div class="row align-items-start">
@@ -42,17 +44,21 @@
                     </div>
                 </div>
             </div>
+
+            </div>
+
+            </div>
             <!-- this is just for divider -->
             <div class="col-md-1">
             </div>
             <!-- end of divider -->
-            <div class="col-md-8 right-col">
+            <div class="col-md-8 right-col" v-for="calon in calons" :key="calon.id_calon">
                 <div class="row">
                 <!-- poster dan slogan -->
                     <div class="card text-white poster-calon mb-2 text-center">
                         <img src="../assets/images/poster.jpg" class="poster-calon" alt="dpr 2">
                         <div class="card-img-overlay d-flex justify-content-start poster-caption">
-                            <p class="card-text w-100">“Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...”</p>
+                            <p class="card-text w-100">{{calon.slogan}}</p>
                         </div>
                     </div>
                     <div class="p-4">

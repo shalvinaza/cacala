@@ -3,13 +3,13 @@
         <div class="row">
             <div class="col-md-3 left-col d-flex justify-content-center">
                 <div class="p-4 br-15" style="background: #EDEDE9; max-height:1430px">
-                    <img src="../assets/images/dpr.jpg" class="profil-calon-detail mb-4" alt="dpr 2">
+                    <img :src=calon.foto class="profil-calon-detail mb-4" alt="{{calon.nama}}">
                     <h5 class="text-center">{{calon.nama}}</h5>
                     <p class="mb-5 text-center">Calon {{calon.jabatan_tujuan}}</p>
                     <div class="row align-items-start">
                         <h6 class="col">Partai</h6>
                         <div class="col d-flex flex-wrap justify-content-end">
-                            <img src="../assets/images/logo_partai.png" class="img-partai m-1" alt="dpr 2">
+                            <img v-for="partai in calon.partai" :key="partai.nama_partai" :src=partai.logo_partai class="img-partai me-2" alt="{{partai.nama_partai}}">
                         </div>
                     </div>
                     <div class="row align-items-start">
@@ -21,38 +21,24 @@
                     <div class="row align-items-start end-row-section">
                         <h6 class="col">Nomor Urut</h6>
                         <div class="col d-flex flex-wrap justify-content-end">
-                            <p>1</p>
+                            <p>{{calon.no_urut}}</p>
                         </div>
                     </div>
                     <div class="mt-4 pb-3 end-row-section">
                         <h5 class="mb-3">Riwayat Pendidikan</h5>
-                        <h6>{{calon.nama_institusi}}</h6>
-                        <p class="mb-2">{{calon.detail_pendidikan}}</p>
-                        <i class="far fa-calendar-alt"></i> <span>{{calon.tahun_mulai_pendidikan}}</span> - <span>{{calon.tahun_selesai_pendidikan}}</span>
-
-                        <h6 class="mt-3">SMA Negeri 5</h6>
-                        <p class="mb-2">Kota Bandung</p>
-                        <span><i class="far fa-calendar-alt"></i> 1997 - 2000</span>
-
-                        
-                        <h6 class="mt-3">SMP Negeri 20</h6>
-                        <p class="mb-2">Kota Bandung</p>
-                        <span><i class="far fa-calendar-alt"></i> 1994 - 1997</span>
+                        <div class="mb-3" v-for="pendidikan in calon.riwayat_pendidikan" :key="pendidikan.id_pendidikan">
+                            <h6>{{pendidikan.nama_institusi}}</h6>
+                            <p class="mb-2">{{pendidikan.detail_pendidikan}}</p>
+                            <i class="far fa-calendar-alt"></i> <span>{{pendidikan.tahun_mulai_pendidikan}}</span> - <span>{{pendidikan.tahun_selesai_pendidikan}}</span>
+                        </div>
                     </div>
                     <div class="mt-4 pb-3">
                         <h5 class="mb-3">Riwayat Pekerjaan</h5>
-                        <h6>{{calon.nama_pekerjaan}}</h6>
-                        <p class="mb-2">{{calon.detail_pekerjaan}}</p>
-                        <i class="far fa-calendar-alt"></i> <span>{{calon.tahun_mulai_pekerjaan}}</span> - <span>{{calon.tahun_selesai_pekerjaan}}</span>
-
-                        <h6 class="mt-3">Kepala Cabang</h6>
-                        <p class="mb-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-                        <span><i class="far fa-calendar-alt"></i> 1997 - 2000</span>
-
-                        
-                        <h6 class="mt-3">Manajer Produk</h6>
-                        <p class="mb-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-                        <span><i class="far fa-calendar-alt"></i> 1994 - 1997</span>
+                        <div v-for="(pekerjaan) in calon.riwayat_pekerjaan" :key="pekerjaan.id_pekerjaan">
+                            <h6>{{pekerjaan.nama_pekerjaan}}</h6>
+                            <p class="mb-2">{{pekerjaan.detail_pekerjaan}}</p>
+                            <i class="far fa-calendar-alt"></i> <span>{{pekerjaan.tahun_mulai_pekerjaan}}</span> - <span>{{pekerjaan.tahun_selesai_pekerjaan}}</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -97,16 +83,16 @@
                                 <form>
                                     <div class="forms-inputs mb-4"> 
                                         <span>Judul unggahan</span> 
-                                        <input class="w-100 p-3" autocomplete="off" type="text" v-model="form.judul" placeholder="Ketik email di sini">
+                                        <input class="w-100 p-3" autocomplete="off" type="text" v-model="newform.judul" placeholder="Ketik email di sini">
                                     </div>
                                     <div class="forms-inputs mb-3"> 
                                         <span>Teks unggahan</span>
-                                        <textarea class="w-100 p-3" autocomplete="off" v-model="form.teks" placeholder="Ketik kata sandi di sini"></textarea>
+                                        <textarea class="w-100 p-3" autocomplete="off" v-model="newform.teks" placeholder="Ketik kata sandi di sini"></textarea>
                                     </div>
                                     <div class="d-flex align-items-center">
                                         <span class="card-text icons me-3"><i class="fas fa-images"></i></span>
                                         <span class="card-text icons flex-grow-2 w-100"><i class="fas fa-video"></i></span>
-                                        <button type="submit" class="btn bg-light-orange br-10" @click="update(form)">Perbarui</button>
+                                        <button type="submit" class="btn bg-light-orange br-10" @click="update(newform)">Perbarui</button>
                                     </div>
                                 </form>  
                         </Popup>
@@ -191,6 +177,11 @@ export default {
                  waktu:'',
                  teks:''
              },
+            newform : {
+                 judul:'',
+                 waktu:'',
+                 teks:''
+             },
              updateSubmit: false
         }   
     },
@@ -247,24 +238,24 @@ export default {
         edit(post){
             this.updateSubmit = true
             axios.get('http://localhost:3000/post/'+ post.id_post).then(result =>{
-                this.form.id = post.id_post
-                this.form.judul = post.judul
-                this.form.teks = post.teks
+                this.newform.id = post.id_post
+                this.newform.judul = post.judul
+                this.newform.teks = post.teks
             })  
         },
-        update(form){
+        update(newform){
             axios.defaults.headers.common["token"] = localStorage.token
-            return axios.put('http://localhost:3000/post/' + form.id, {
-                judul : this.form.judul,
-                waktu : this.form.waktu,
-                teks : this.form.teks
+            return axios.put('http://localhost:3000/post/' + newform.id, {
+                judul : this.newform.judul,
+                waktu : this.newform.waktu,
+                teks : this.newform.teks
             })
             .then(result =>{
                 updateSubmit = false
                 this.load()
-                this.form.judul =''
-                this.form.waktu = ''
-                this.form.teks = ''
+                this.newform.judul =''
+                this.newform.waktu = ''
+                this.newform.teks = ''
             })
             .catch((err)=>{
                 console.log(err);
