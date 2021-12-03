@@ -52,13 +52,13 @@
             <div class="col-md-1">
             </div>
             <!-- end of divider -->
-            <div class="col-md-8 right-col" v-for="calon in calons" :key="calon.id_calon">
+            <div class="col-md-8 right-col">
                 <div class="row">
                 <!-- poster dan slogan -->
                     <div class="card text-white poster-calon mb-2 text-center">
                         <img src="../assets/images/poster.jpg" class="poster-calon" alt="dpr 2">
                         <div class="card-img-overlay d-flex justify-content-start poster-caption">
-                            <p class="card-text w-100">{{calon.slogan}}</p>
+                            <p class="card-text w-100" v-for="(calon) in calons" :key="calon.id_admin">{{calon.slogan}}</p>
                         </div>
                     </div>
                     <div class="p-4">
@@ -113,10 +113,6 @@
 
 <script>
 import axios from 'axios'
-
-// this.id_calon = this.$route.params.id_calon;
-// const CALON_API_URL = `${process.env.VUE_APP_API_URL}/calon/` + id_calon;
-// const DPD_API_URL = `http://localhost:3000/calon/` + id_calon;
 
 export default {
     name :'Post_detail_calon',

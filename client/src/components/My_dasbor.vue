@@ -82,7 +82,7 @@ export default {
 
             axios.delete(UNFOLLOW_API_URL)
                 .then(() => {
-                    window.location = "/dasbor_saya"
+                    this.$router.go()
                 })
                 .catch((error) => {
                     console.error(error)

@@ -1,15 +1,17 @@
 <template>
     <div class="container">
-        <div class="row">
-            <div class="col-md-3 left-col d-flex justify-content-center">
+        <div class="row row-cols-3 row-cols-md-3">
+            <div class="col-md-3 p-0">
+            <div class="row row-cols-1 row-cols-md-1">
+            <div class="col left-col d-flex justify-content-center mb-4" v-for="(calon) in calon" :key="calon.id_admin">
                 <div class="p-4 br-15" style="background: #EDEDE9; max-height:1430px">
                     <img :src=calon.foto class="profil-calon-detail mb-4" alt="dpr 2">
                     <h5 class="text-center">{{calon.nama}}</h5>
                     <p class="mb-5 text-center">Calon {{calon.jabatan_tujuan}}</p>
                     <div class="row align-items-start">
                         <h6 class="col">Partai</h6>
-                        <div class="col d-flex flex-wrap justify-content-end" v-for="(partai) in calon.partai" :key="partai.nama_partai">
-                            <img :src=partai.logo_partai class="img-partai m-1" alt="{{partai.nama_partai}}">
+                        <div class="col d-flex flex-wrap justify-content-end">
+                            <img v-for="(partai) in calon.partai" :key="partai.nama_partai" :src=partai.logo_partai class="img-partai m-1" alt="{{partai.nama_partai}}">
                         </div>
                     </div>
                     <div class="row align-items-start">
@@ -42,6 +44,8 @@
                     </div>
                 </div>
             </div>
+            </div>
+            </div>
             <!-- this is just for divider -->
             <div class="col-md-1">
             </div>
@@ -52,7 +56,7 @@
                     <div class="card text-white poster-calon mb-2 text-center">
                         <img src="../assets/images/poster.jpg" class="poster-calon" alt="dpr 2">
                         <div class="card-img-overlay d-flex justify-content-start poster-caption">
-                        <p class="card-text me-3 w-100">{{calon.slogan}}</p>
+                        <p class="card-text me-3 w-100" v-for="(calon) in calon" :key="calon.id_admin">{{calon.slogan}}</p>
                             <span class="card-text icons"><i class="fas fa-edit"></i></span>
                         </div>
                     </div>
@@ -170,7 +174,7 @@ export default {
     },
     data: function () {
         return {
-             calon: "",
+             calon: [],
              posts: [],
              form : {
                  judul:'',
@@ -226,7 +230,7 @@ export default {
         del(post){
             axios.delete(`${process.env.VUE_APP_API_URL}/post/`+ post.id_post).then(result =>{
                 this.load()
-                let index = this.posts.indexOf(form.name)
+                let index = this.posts.indexOf(post.name)
                 this.posts.splice(index,1)
             })            
         },

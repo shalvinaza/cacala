@@ -19,7 +19,7 @@
                     </div>
                     <div class="forms-inputs mb-4"> 
                         <span>Kata Sandi Baru</span>
-                        <input autocomplete="off" type="password" v-model="user.password" v-bind:class="{'form-control':true}" placeholder="Ketik kata sandi sekarang">
+                        <input autocomplete="off" type="password" v-model="password" v-bind:class="{'form-control':true}" placeholder="Ketik kata sandi sekarang">
                     </div>
                     <div class="forms-inputs mb-4"> 
                         <span>Konfirmasi Kata Sandi</span>
@@ -74,10 +74,9 @@ export default {
         return axios.put(`${process.env.VUE_APP_API_URL}/user`,{
             username: this.user.username,
             email: this.user.email,
-            password: this.user.password            
+            password: this.password            
         })
         .then(result =>{
-            this.$route.params.pathMatch
             this.$router.go()
             this.user=''
         })
