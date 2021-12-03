@@ -4,14 +4,9 @@ const path = require('path')
 
 const app = express()
 
-if (process.env.NODE_ENV === "production") {
-    app.use(express.static("dist"));
-    app.get("/", function (req, res) {
-       res.sendFile(path.join(__dirname, "dist/index.html"));
-  });
-  }
+app.use('/', serveStatic(path.join(__dirname,'/dist')))
 
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 9090
 app.listen(port)
 
 console.log('Listening on port: ' + port)
