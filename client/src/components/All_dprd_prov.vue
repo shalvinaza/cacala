@@ -5,7 +5,7 @@
             Daerah Pilih
         </a>
         <div class="dropdown-menu">
-            <li v-for="(kta) in kota" :key="kta.id_kota"><a class="dropdown-item" style="color:black"  >{{kta.kota}}</a></li>
+            <li v-for="(kta) in kota" :key="kta.id_kota"><a class="dropdown-item" style="color:black">{{kta.kota}}</a></li>
         </div>
         <a class="dropdown-toggle btn btn-outline-orange2"   id="navbarDropdown" data-bs-toggle="dropdown">
             Partai
@@ -13,7 +13,8 @@
         <div class="dropdown-menu">
             <li><a class="dropdown-item" style="color:black"   v-for="(prt) in partai" :key="prt.id_partai">{{prt.nama_partai}}</a></li>
         </div>
-        <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
+        <div class="all-calon">
+                    <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
             <div class="col" v-for="(calon,index) in calons" :key="calon.id_calon">
                 <div class="card h-100">
                     <img :src=calon.foto class="card-img-top" alt="dpr 2">
@@ -48,6 +49,7 @@
                     </div>
                 </div>
             </div>
+        </div>
         </div>
         
     </div>

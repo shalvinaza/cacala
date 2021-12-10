@@ -15,7 +15,7 @@ router.delete("/:id_calon", controller.deleteCalon)
 router.get("/kota/:id_kota", controller.selectCalonByKota)
 router.get("/jabatan/:id_jabatan", controller.selectCalonByJabatan)
 
-router.get("/partai/:id_partai", controller.selectCalonByPartai)
+// router.get("/:id_jabatan/:id_partai", controller.selectCalonByPartai)
 //router.get("/partai", controller.selectPartai)
 
 router.post("/riwayat-pendidikan", controller.addRiwayatPendidikanCalon)
@@ -26,5 +26,8 @@ router.get("/dprdProv/:id_provinsi", controller.selectCalonDPRDProvByProv)
 router.get("/dprdProv/kota/:id_kota", controller.selectCalonDPRDProvByKota)
 router.get("/dprRI/provinsi/:id_provinsi", controller.selectCalonDPRRIByProv)
 router.get("/dpd/provinsi/:id_provinsi", controller.selectCalonDPDByProv)
+router.get("/search/:str", controller.selectForSearch)
+
+router.get("/:id_jabatan/:id_partai", controller.selectCalonByPartai)
 
 module.exports = router

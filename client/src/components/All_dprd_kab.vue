@@ -194,7 +194,6 @@ export default {
 h1{
     letter-spacing: 0.10em;
     font-weight: 700;
-    border-bottom: 2px solid black;
 }
 .card{
     background-color: #F2F0E1;

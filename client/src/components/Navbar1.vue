@@ -37,7 +37,7 @@
                 </li>
             </div>
             <div class="d-flex">
-              <button class="btn bg-light-orange text-white br-10" type="button">
+              <button class="btn bg-light-orange text-white br-10" type="button" @click="goToSearch()">
                 <i class="fas fa-search me-1"></i>
                   Cari</button>
             </div>
@@ -59,6 +59,11 @@ export default {
     provinsi: [],
     kota: []
   }),
+  methods:{
+    goToSearch(){
+      this.$router.push('/search/')
+    }
+  },
   mounted(){
     fetch(PROVINSI_API_URL)
       .then(response => response.json())

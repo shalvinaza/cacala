@@ -40,7 +40,7 @@
                 </span>
             </div>
             <div class="d-flex align-items-center">
-              <button class="btn bg-light-orange text-white me-3 br-10" type="button">
+              <button class="btn bg-light-orange text-white me-3 br-10" type="button" @click="goToSearch()">
                 <i class="fas fa-search me-1"></i>
                   Cari</button>
               <span v-if="isLoggedIn">
@@ -101,6 +101,9 @@ export default {
     logUserOut(){
       localStorage.removeItem('token')
       this.$router.push('/login')
+    },
+    goToSearch(){
+      this.$router.push('/search/')
     }
   }
   

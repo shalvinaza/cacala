@@ -38,6 +38,9 @@ export default {
     logUserOut(){
       localStorage.removeItem('token')
       this.$router.push('/login_admin')
+    },
+    goToSearch(){
+      this.$router.push('/search/')
     }
   }
   

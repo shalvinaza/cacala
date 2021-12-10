@@ -10,11 +10,11 @@
           <a   class="me-3">DPRD Kabupaten/Kota</a>
       </div>
       <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
-            <div class="col" v-for="(calon,index) in calons" :key="calon.id_calon">
+            <div class="col" v-for="calon in calons" :key="calon.id_calon">
                 <div class="card h-100">
                     <img :src=calon.foto class="card-img-top" alt="dpr 2">
                     <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
-                        <h5>{{index + 1}}</h5>
+                        <h5>{{calon.no_urut}}</h5>
                     </div>
                     <div class="card-body p-4">
                         <h5 class="card-title text-center">{{calon.nama}}</h5>
@@ -33,7 +33,7 @@
                         </div>
                         <div class="d-flex justify-content-between">
                             <button class="btn btn-outline-orange" @click="goToDetail()">Detail</button>
-                            <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon)">Berhenti Mengikuti</button>                          
+                            <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon)">Berhenti</button>                          
                         </div>
                     </div>
                 </div>
@@ -117,7 +117,8 @@ h1{
     /* min-height: 35rem; */
 }
 .card-img-top{
-    border-radius: 15px 15px 0 0;   
+    border-radius: 15px 15px 0 0;  
+    max-height: 250px; 
 }
 .img-partai{
     max-width: 22px;
@@ -133,5 +134,8 @@ h1{
     min-height: 50px;
     border-radius: 40px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.btn-outline-orange, .btn-outline-blue{
+    min-width: 5rem;
 }
 </style>

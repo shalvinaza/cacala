@@ -12,7 +12,7 @@ import Profil_user from '../views/Profil_user.vue'
 import Dasbor from '../views/Dasbor.vue'
 import Detail_calon from '../views/Detail_calon.vue'
 import Detail_admin_calon from '../views/Admin_calon.vue'
-// import Popup from '../components/Popup.vue'
+import Search from '../views/Search.vue'
 
 const routes = [
   {
@@ -83,20 +83,11 @@ const routes = [
     component: Detail_admin_calon,
     meta: {admin: true}
   },
-  // {
-  //   path: '/update_post/:id_post',
-  //   name: 'Popup',
-  //   component: Popup
-  // }
-
-  // {
-  //   path: '/about',
-  //   name: 'About',
-  //   // route level code-splitting
-  //   // this generates a separate chunk (about.[hash].js) for this route
-  //   // which is lazy-loaded when the route is visited.
-  //   component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  // }
+  {
+    path: '/search/',
+    name: 'Search',
+    component: Search
+  }
 ]
 
 const router = createRouter({
