@@ -76,7 +76,7 @@ export default {
     methods: {
         async getData(){
             // const search = this.$route.params.search;
-            await axios.get(`http://localhost:3000/calon/search/${this.search}`)
+            await axios.get(`${process.env.VUE_APP_API_URL}/calon/search/${this.search}`)
             .then((result)=>{
                 this.calons = result.data
                 var parsedobj = JSON.parse(JSON.stringify(result))

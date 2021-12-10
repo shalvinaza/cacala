@@ -83,16 +83,16 @@
                                 <form>
                                     <div class="forms-inputs mb-4"> 
                                         <span>Judul unggahan</span> 
-                                        <input class="w-100 p-3" autocomplete="off" type="text" v-model="form.judul" placeholder="Ketik email di sini">
+                                        <input class="w-100 p-3" autocomplete="off" type="text" v-model="formUpdate.judul" placeholder="Ketik judul di sini">
                                     </div>
                                     <div class="forms-inputs mb-3"> 
                                         <span>Teks unggahan</span>
-                                        <textarea class="w-100 p-3" autocomplete="off" v-model="form.teks" placeholder="Ketik kata sandi di sini"></textarea>
+                                        <textarea class="w-100 p-3" autocomplete="off" v-model="formUpdate.teks" placeholder="Ketik teks di sini"></textarea>
                                     </div>
                                     <div class="d-flex align-items-center">
                                         <span class="card-text icons me-3"><i class="fas fa-images"></i></span>
                                         <span class="card-text icons flex-grow-2 w-100"><i class="fas fa-video"></i></span>
-                                        <button type="submit" class="btn bg-light-orange br-10" @click="update(form)">Perbarui</button>
+                                        <button type="submit" class="btn bg-light-orange br-10" @click="update(formUpdate)">Perbarui</button>
                                     </div>
                                 </form>  
                         </Popup>
@@ -177,6 +177,11 @@ export default {
                  waktu:'',
                  teks:''
              },
+            formUpdate : {
+                 judul:'',
+                 waktu:'',
+                 teks:''
+             },
              updateSubmit: false
         }   
     },
@@ -233,24 +238,24 @@ export default {
         edit(post){
             this.updateSubmit = true
             axios.get(`${process.env.VUE_APP_API_URL}/post/`+ post.id_post).then(result =>{
-                this.form.id = post.id_post
-                this.form.judul = post.judul
-                this.form.teks = post.teks
+                this.formUpdate.id = post.id_post
+                this.formUpdate.judul = post.judul
+                this.formUpdate.teks = post.teks
             })  
         },
-        update(form){
+        update(formUpdate){
             axios.defaults.headers.common["token"] = localStorage.token
-            return axios.put(`${process.env.VUE_APP_API_URL}/post/` + form.id, {
-                judul : this.form.judul,
-                waktu : this.form.waktu,
-                teks : this.form.teks
+            return axios.put(`${process.env.VUE_APP_API_URL}/post/` + formUpdate.id, {
+                judul : this.formUpdate.judul,
+                waktu : this.formUpdate.waktu,
+                teks : this.formUpdate.teks
             })
             .then(result =>{
                 updateSubmit = false
                 this.load()
-                this.form.judul =''
-                this.form.waktu = ''
-                this.form.teks = ''
+                this.formUpdate.judul =''
+                this.formUpdate.waktu = ''
+                this.formUpdate.teks = ''
             })
             .catch((err)=>{
                 console.log(err);
