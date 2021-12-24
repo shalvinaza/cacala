@@ -1,12 +1,12 @@
 <template>
     <div class="container">
         <h1 class="text-center pb-4 mb-4">Calon DPRD Kabupaten/Kota {{kota.kota}}</h1>
-        <a class="dropdown-toggle btn btn-outline-orange2"   id="navbarDropdown" data-bs-toggle="dropdown">
-            Partai
-        </a>
-        <div class="dropdown-menu">
-            <li><a class="dropdown-item" style="color:black"   v-for="(prt) in partai" :key="prt.id_partai">{{prt.nama_partai}}</a></li>
-        </div>
+        <select class="btn-outline-orange2" name="partai" id="partai" v-model="selectedPartai">
+            <option class="dropdown-item" value="">Partai</option>
+            <option class="dropdown-item" v-for="prt in partai" v-bind:key="prt.id_partai">
+            {{ prt.nama_partai }}
+            </option>
+        </select> 
         <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
             <div class="col" v-for="(calon,index) in calons" :key="calon.id_calon">
                 <div class="card h-100">
@@ -61,12 +61,20 @@ export default {
         user: [],
         kota: [],
         followed_calon: [],
-        partai: []
+        partai: [],
+        selectedPartai : ''
     }),
     computed: {
-        isLoggedIn: function() {return localStorage.getItem("token") != null}
+        isLoggedIn: function() {return localStorage.getItem("token") != null},
+        filteredKota : function(){
+            if(this.selectedPartai != null){
+                return this.calons.filter((calon) => {
+                    return calon.nama_partai.match(this.selectedPartai);
+                })
+            }
+        }
     },
-    mounted(){
+    created(){
         this.fetchDPRDKabCalons()
         this.fetchKotaName()
         this.fetchPartai()
@@ -226,5 +234,14 @@ h1{
     min-height: 50px;
     border-radius: 40px;
     box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.25);
+}
+.btn-outline-orange2{
+    min-height: 3rem;
+    padding: 0.5rem;
+    border-color: #DDA18C;
+}
+.dropdown-item{
+    background-color: white;
+    border-color: white;
 }
 </style>

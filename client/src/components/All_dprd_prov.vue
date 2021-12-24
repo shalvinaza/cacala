@@ -1,21 +1,25 @@
 <template>
     <div class="container">
         <h1 class="text-center pb-4 mb-4">Calon DPRD Provinsi {{provinsi.provinsi}}</h1>
-        <a class="dropdown-toggle btn btn-outline-orange2 me-3"   id="navbarDropdown" data-bs-toggle="dropdown">
-            Daerah Pilih
-        </a>
-        <div class="dropdown-menu">
-            <li v-for="(kta) in kota" :key="kta.id_kota"><a class="dropdown-item" style="color:black">{{kta.kota}}</a></li>
-        </div>
-        <a class="dropdown-toggle btn btn-outline-orange2"   id="navbarDropdown" data-bs-toggle="dropdown">
-            Partai
-        </a>
-        <div class="dropdown-menu">
-            <li><a class="dropdown-item" style="color:black"   v-for="(prt) in partai" :key="prt.id_partai">{{prt.nama_partai}}</a></li>
-        </div>
+
+        <!-- percobaan select -->
+        <select class="btn-outline-orange2 me-3" name="dapil" id="dapil" v-model="selectedKota">
+            <option class="dropdown-item" value="">Daerah Pilih</option>
+            <option class="dropdown-item" v-for="kta in kota" v-bind:key="kta.id_kota">
+            {{ kta.kota }}
+            </option>
+        </select> 
+        <select class="btn-outline-orange2" name="partai" id="partai" v-model="selectedPartai">
+            <option class="dropdown-item" value="">Partai</option>
+            <option class="dropdown-item" v-for="prt in partai" v-bind:key="prt.id_partai">
+            {{ prt.nama_partai }}
+            </option>
+        </select> 
+
+        <!-- all calon literally -->
         <div class="all-calon">
-                    <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
-            <div class="col" v-for="(calon,index) in calons" :key="calon.id_calon">
+            <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
+            <div class="col" v-for="(calon,index) in filteredKota" :key="calon.id_calon">
                 <div class="card h-100">
                     <img :src=calon.foto class="card-img-top" alt="dpr 2">
                     <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
@@ -28,6 +32,7 @@
                             <p class="col d-flex flex-wrap card-title">Partai</p>
                             <div class="col d-flex flex-wrap justify-content-end">
                                 <img v-for="partai in calon.partai" :key="partai.nama_partai" :src=partai.logo_partai class="img-partai m-1" alt="{{partai.nama_partai}}">
+                                <!-- <p v-for="partai in calon.partai" :key="partai.id_partai" class="img-partai m-1">{{partai.nama_partai}}</p> -->
                             </div>
                         </div>
                         <div class="row align-items-start mb-2">
@@ -70,14 +75,26 @@ export default {
         provinsi: [],
         kota: [],
         followed_calon: [],
-        partai: []
+        partai: [],
+        selectedKota: '',
+        selectedPartai : ''
     }),
     computed: {
         isLoggedIn: function() {return localStorage.getItem("token") != null},
+        filteredKota : function(){
+            if(this.selectedKota != null){
+                return this.calons.filter((calon) => {
+                    return calon.kota.match(this.selectedKota);
+                })
+            }
+            if(this.selectedPartai != null){
+                return this.calons.filter((calon) => {
+                    return calon.nama_partai.match(this.selectedPartai);
+                })
+            }
+        }
     },
-    // beforeMount(){
-    //     },
-    mounted(){
+    created(){
         this.fetchDPRDProvCalons()
         this.fetchProvinsiName()
         this.fetchKotaName()
@@ -199,35 +216,6 @@ export default {
                 })
         },
         
-        // follUnfoll(id_calon, status){
-        //     const FOLLOW_API_URL = `${process.env.VUE_APP_API_URL}/user/${id_calon}`
-        //     const UNFOLLOW_API_URL = `${process.env.VUE_APP_API_URL}/user/unfollow/${id_calon}`
-        //     axios.defaults.headers.common["token"] = localStorage.token
-
-        //     //belum follow => follow
-        //     if(!status){
-        //         axios.post(FOLLOW_API_URL)
-        //             .then(() => {
-        //                 //this.$router.push("/dasbor_saya")
-        //                 status = !status
-        //                 console.log(status)
-        //                 // this.$refs.btnToggle.innerText = status?'Ikuti':'Berhenti'
-        //             })
-        //             .catch((error) => {
-        //                 console.error(error)
-        //             })
-        //         console.log("calon unfollowed!")
-        //     } else { //sudah follow => unfollow
-        //         axios.delete(UNFOLLOW_API_URL)
-        //             .then(() => {
-        //                 // window.location = "/dasbor_saya"
-        //                 status = !status
-        //             })
-        //             .catch((error) => {
-        //                 console.error(error)
-        //             })
-        //     }
-        // }
     }
 }
 </script>
@@ -269,5 +257,14 @@ h1{
     min-height: 50px;
     border-radius: 40px;
     box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.25);
+}
+.btn-outline-orange2{
+    min-height: 3rem;
+    padding: 0.5rem;
+    border-color: #DDA18C;
+}
+.dropdown-item{
+    background-color: white;
+    border-color: white;
 }
 </style>
