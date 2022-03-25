@@ -73,16 +73,35 @@ export default {
     computed: {
         isLoggedIn: function() {return localStorage.getItem("token") != null},
         filteredKota : function(){
-            if(this.selectedKota != null){
+            if(this.selectedKota && this.selectedKota !== null){
+                if(this.selectedPartai && this.selectedPartai !== null){
+                    return this.calons.filter((calon) => {
+                        let foundPartai = calon.partai.findIndex((prt) => {
+                            return prt.nama_partai.match(this.selectedPartai)
+                        })
+                        return foundPartai !== -1
+                    });
+                }
                 return this.calons.filter((calon) => {
                     return calon.provinsi.match(this.selectedKota);
                 })
             }
-            if(this.selectedPartai != null){
+            else if(this.selectedPartai && this.selectedPartai !== null){
                 return this.calons.filter((calon) => {
-                    return calon.nama_partai.match(this.selectedPartai);
-                })
+                    let foundPartai = calon.partai.findIndex((prt) => {
+                        return prt.nama_partai.match(this.selectedPartai)
+                    })
+                    return foundPartai !== -1
+                });
             }
+            // if(this.filterCategory && this.filterCategory !== 'all') {
+            //     posts = posts.filter((p) => {
+            //     let foundCategory = p.category_array.findIndex((c) => {
+            //         return c.slug === this.filterCategory
+            //     })
+            //     return foundCategory !== -1
+            //     })
+            // }
         }
     },
     created(){
