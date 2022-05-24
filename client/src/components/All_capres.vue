@@ -41,7 +41,7 @@
 
 <script>
 import axios from 'axios'
-const PRESIDEN_API_URL = `${process.env.VUE_APP_API_URL}/calon/jabatan/4afc1348-c4a3-4c3c-a355-dcd938614b13`
+const PRESIDEN_API_URL = `${process.env.VUE_APP_API_URL}/calon/jabatan/1470e05d-6f8d-476f-9d42-09ef4a23e5cc`
 const FOLLOWED_CALON_API_URL = `${process.env.VUE_APP_API_URL}/user/followed`
 
 export default {

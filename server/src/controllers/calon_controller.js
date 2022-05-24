@@ -219,7 +219,7 @@ exports.selectCalonByJabatan = async (req, res) => {
    const { id_jabatan } = req.params
    try{
       const calon = await pool.query(
-         "SELECT calon.id_calon, calon.nama, calon.foto, calon.slogan, calon.no_urut, admins.id_admin, jabatan.jabatan_tujuan, FROM calon JOIN admins on calon.id_admin = admins.id_admin JOIN jabatan on calon.id_jabatan = jabatan.id_jabatan WHERE calon.id_jabatan = $1 ORDER BY no_urut;",[
+         "SELECT calon.id_calon, calon.nama, calon.foto, calon.slogan, calon.no_urut, admins.id_admin, jabatan.jabatan_tujuan FROM calon JOIN admins on calon.id_admin = admins.id_admin JOIN jabatan on calon.id_jabatan = jabatan.id_jabatan WHERE calon.id_jabatan = $1 ORDER BY no_urut;",[
             id_jabatan
          ])
 

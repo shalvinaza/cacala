@@ -44,11 +44,11 @@
                                 <div class="row align-items-start mb-2">
                                     <p class="col d-flex flex-wrap card-title">Daerah Pilih</p>
                                     <div class="col d-flex flex-wrap justify-content-end">
-                                        <p>{{calon.kota}}</p>
+                                        <p v-for="dapil in calon.dapil" :key="dapil.id_dapil">{{dapil.kota}}</p>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                    <router-link :to="{ name: 'Detail_calon', params: { id_admin: calon.id_admin}}" class="btn btn-outline-orange">Detail</router-link>
+                                    <router-link :to="{ path: 'Detail_calon', params: { id_admin: calon.id_admin}}" class="btn btn-outline-orange">Detail</router-link>
                                     <span v-if="isLoggedIn">
                                         <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon), calon.status = !calon.status" v-show="!calon.status">Ikuti</button>
                                         <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon), calon.status = !calon.status" v-show="calon.status">Berhenti</button>
@@ -118,7 +118,7 @@
 import axios from 'axios'
 const _ = require('lodash')
 
-const DPD_API_URL = `${process.env.VUE_APP_API_URL}/calon/jabatan/51978294-1f8a-4c8c-acbf-f3cc013c16d3`
+const DPD_API_URL = `${process.env.VUE_APP_API_URL}/calon/jabatan/7a9b46a5-efe7-4f9b-80e7-4b54636810ad`
 const FOLLOWED_CALON_API_URL = `${process.env.VUE_APP_API_URL}/user/followed`
 
 export default {
@@ -193,19 +193,19 @@ export default {
         // }
     },
     created(){
-        this.fetchDPDCalons(),
+        this.fetchDPDCalons()
         // this.fetchPartai(),
-        this.fetchProvinsi()
+        // this.fetchProvinsi()
     },
     methods : {
-        fetchProvinsi(){
-            const PROV_API_URL = `${process.env.VUE_APP_API_URL}/dapil/provinsi`
-            fetch(PROV_API_URL)
-                .then(response => response.json())
-                .then(result => {
-                    this.provinsi = result
-                })
-        },
+        // fetchProvinsi(){
+        //     const PROV_API_URL = `${process.env.VUE_APP_API_URL}/dapil/provinsi`
+        //     fetch(PROV_API_URL)
+        //         .then(response => response.json())
+        //         .then(result => {
+        //             this.provinsi = result
+        //         })
+        // },
 
         // fetchPartai(){
         //     const PARTAI_API_URL = `${process.env.VUE_APP_API_URL}/partai`
