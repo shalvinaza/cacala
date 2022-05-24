@@ -15,4 +15,15 @@ router.delete("/kota/:id_kota", controller.deleteKota)
 router.get("/kota/:id_kota", controller.selectKotaById)
 router.get("/kota/provinsi/:id_provinsi", controller.selectKotaByIdProvinsi)
 
+router.get("/kecamatan", controller.selectAllKecamatan)
+router.post("/kecamatan/", controller.addKecamatan)
+router.put("/kecamatan/:id_kecamatan", controller.updateKecamatan)
+router.delete("/kecamatan/:id_kecamatan", controller.deleteKecamatan)
+router.get("/kecamatan/:id_kecamatan", controller.selectKecamatanById)
+router.get("/kecamatan/kota/:id_kota", controller.selectKecamatanByIdKota)
+router.get("/kota/:id_calon", controller.selectKotaCalon)
+router.get("/kecamatan/:id_calon", controller.selectKecamatanCalon)
+router.post("/kota", controller.addKotaToDapil)
+router.post("/kecamatan", controller.addKecamatanToDapil)
+
 module.exports = router

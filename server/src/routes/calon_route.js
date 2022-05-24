@@ -23,9 +23,9 @@ router.post("/riwayat-pekerjaan", controller.addRiwayatPekerjaanCalon)
 
 router.get("/dprdKota/:id_kota", controller.selectCalonDPRDKotaByKota)
 router.get("/dprdProv/:id_provinsi", controller.selectCalonDPRDProvByProv)
-router.get("/dprdProv/kota/:id_kota", controller.selectCalonDPRDProvByKota)
-router.get("/dprRI/provinsi/:id_provinsi", controller.selectCalonDPRRIByProv)
-router.get("/dpd/provinsi/:id_provinsi", controller.selectCalonDPDByProv)
+// router.get("/dprdProv/kota/:id_kota", controller.selectCalonDPRDProvByKota)
+// router.get("/dprRI/provinsi/:id_provinsi", controller.selectCalonDPRRIByProv)
+// router.get("/dpd/provinsi/:id_provinsi", controller.selectCalonDPDByProv)
 router.get("/search/:str", controller.selectForSearch)
 
 router.get("/:id_jabatan/:id_partai", controller.selectCalonByPartai)

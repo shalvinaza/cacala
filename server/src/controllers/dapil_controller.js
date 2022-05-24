@@ -164,3 +164,156 @@ exports.selectKotaByIdProvinsi = async (req, res) => {
 		res.json({ message: err })
 	}
 }
+
+exports.selectAllKecamatan = async (req, res) => {
+	try{
+		const kecamatan = await pool.query(
+			"SELECT * from kecamatan, kota where kecamatan.id_kota = kota.id_kota ORDER BY kecamatan"
+		)
+
+		res.json(kecamatan.rows)
+	} catch(err){
+		res.json({ message: err })
+	}
+}
+
+ exports.addKecamatan = async (req, res) => {
+	try{
+		const { id_kota } = req.body
+		const { kecamatan } = req.body
+
+		const add_kecamatan = await pool.query(
+			"INSERT INTO kecamatan(id_kota, kecamatan) VALUES($1, $2) RETURNING *",
+			[id_kota, kecamatan]
+		)
+
+		res.json(add_kecamatan)
+	} catch(err) {
+		console.error(err.message)
+	}
+}
+
+exports.updateKecamatan = async (req, res) => {
+	try{
+		const { id_kecamatan } = req.params
+		const { id_kota } = req.body
+		const { kecamatan } = req.body
+
+		const update_kecamatan = await pool.query(
+			"UPDATE kecamatan SET id_kota = $1, kecamatan = $2 WHERE id_kecamatan = $3",
+			[id_kota, kecamatan, id_kecamatan]
+		)
+
+		res.json(update_kecamatan)
+	} catch(err) {
+		console.error(err.message)
+	}
+}
+
+exports.deleteKecamatan = async (req, res) => {
+	try{
+		const { id_kecamatan } = req.params
+
+		const kecamatan = await pool.query(
+			"DELETE FROM kecmatan WHERE id_kecamatan = $1", [
+				id_kecamatan
+			]
+		)
+
+		res.json("Kecamatan is deleted")
+	} catch (err) {
+		res.json({ message: err })
+	}
+}
+
+exports.selectKecamatanById = async (req, res) => {
+	try{
+		const {id_kecamatan} = req.params
+
+		const kecamatan = await pool.query(
+			"SELECT * from kecamatan WHERE id_kecamatan = $1",
+			[id_kecamatan]
+		)
+
+		res.json(kecamatan.rows[0])
+	} catch(err){
+		res.json({ message: err })
+	}
+}
+
+exports.selectKecamatanByIdKota = async (req, res) => {
+	try{
+		const {id_kota} = req.params
+
+		const kecamatan = await pool.query(
+			"SELECT * from kecamatan WHERE id_kota = $1",
+			[id_kota]
+		)
+
+		res.json(kecamatan.rows)
+	} catch(err){
+		res.json({ message: err })
+	}
+}
+
+exports.addKotaToDapil = async (req, res) => {
+	try{
+	   const { id_calon } = req.body
+	   const { id_kota } = req.body
+ 
+	   const kota = await pool.query(
+		  "INSERT INTO dapil_calon(id_calon, id_kota) VALUES($1, $2) RETURNING *",
+		  [id_calon, id_kota]
+	   )
+ 
+	   res.json(kota)
+	} catch(err) {
+	   console.error(err.message)
+	}
+ }
+
+ exports.addKecamatanToDapil = async (req, res) => {
+	try{
+	   const { id_calon } = req.body
+	   const { id_kecamatan } = req.body
+ 
+	   const kecamatan = await pool.query(
+		  "INSERT INTO dapil_calon(id_calon, id_kecamatan) VALUES($1, $2) RETURNING *",
+		  [id_calon, id_kecamatan]
+	   )
+ 
+	   res.json(kecamatan)
+	} catch(err) {
+	   console.error(err.message)
+	}
+ }
+
+ exports.selectKotaCalon = async (req, res) => {
+    try{
+        const { id_calon } = req.params 
+
+       const kota = await pool.query(
+          "select kota.kota FROM dapil_calon JOIN calon ON dapil_calon.id_calon = calon.id_calon JOIN kota ON dapil_calon.id_kota = kota.id_kota WHERE dapil_calon.id_calon = $1;",
+          [id_calon]
+       )
+ 
+       res.json(kota.rows)
+    } catch(err){
+       res.json({ message: err })
+    }
+ }
+
+ exports.selectKecamatanCalon = async (req, res) => {
+    try{
+        const { id_calon } = req.params 
+
+       const kecamatan = await pool.query(
+          "select kecamatan.kecamatan FROM dapil_calon JOIN calon ON dapil_calon.id_calon = calon.id_calon JOIN kecamatan ON dapil_calon.id_kecamatan = kecamatan.id_kecamatan WHERE dapil_calon.id_calon = $1;",
+          [id_calon]
+       )
+ 
+       res.json(kecamatan.rows)
+    } catch(err){
+       res.json({ message: err })
+    }
+ }
