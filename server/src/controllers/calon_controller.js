@@ -31,7 +31,7 @@ exports.selectAllCalon = async (req, res) => {
             [id_calon]
          )
 
-         calon.rows[i] = {...calon.rows[i], partai: partai.rows, dapil: dapil.rows, riwayat_pendidikan: pendidikan.rows, riwayat_pekerjaan: pekerjaan.rows}
+         calon.rows[i] = {...calon.rows[i], partai: partai.rows, dapil_calon: dapil.rows, riwayat_pendidikan: pendidikan.rows, riwayat_pekerjaan: pekerjaan.rows}
       }
 
       res.json(calon.rows)
