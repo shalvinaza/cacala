@@ -112,7 +112,7 @@ exports.selectCalonByIdCalon = async (req, res) => {
          )
 
          dapil = await pool.query(
-            "select dapil.* FROM dapil_calon JOIN calon ON dapil_calon.id_calon = calon.id_calon JOIN kecamatan ON dapil_calon.id_kecamatan = kecamatan.id_kecamatan JOIN kota ON dapil_calon.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil_calon.id_calon = $1;",
+            "select dapil.* FROM dapil_calon dapil JOIN calon ON dapil.id_calon = calon.id_calon JOIN kecamatan ON dapil.id_kecamatan = kecamatan.id_kecamatan JOIN kota ON dapil.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil.id_calon = $1;",
              [calon.rows[i].id_calon]
          )
 
@@ -158,7 +158,7 @@ exports.selectCalonByUser = async (req, res) => {
          )
 
          dapil = await pool.query(
-            "select dapil.* FROM dapil_calon JOIN calon ON dapil_calon.id_calon = calon.id_calon JOIN kecamatan ON dapil_calon.id_kecamatan = kecamatan.id_kecamatan JOIN kota ON dapil_calon.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil_calon.id_calon = $1;",
+            "select dapil.* FROM dapil_calon dapil JOIN calon ON dapil.id_calon = calon.id_calon JOIN kecamatan ON dapil.id_kecamatan = kecamatan.id_kecamatan JOIN kota ON dapil.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil.id_calon = $1;",
              [calon.rows[i].id_calon]
          )
 
@@ -200,7 +200,7 @@ exports.selectCalonByKota = async (req, res) => {
             )
 
             dapil = await pool.query(
-               "select dapil.* FROM dapil_calon JOIN calon ON dapil_calon.id_calon = calon.id_calon JOIN kecamatan ON dapil_calon.id_kecamatan = kecamatan.id_kecamatan JOIN kota ON dapil_calon.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil_calon.id_calon = $1;",
+               "select dapil.* FROM dapil_calon dapil JOIN calon ON dapil.id_calon = calon.id_calon JOIN kecamatan ON dapil.id_kecamatan = kecamatan.id_kecamatan JOIN kota ON dapil.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil.id_calon = $1;",
                 [calon.rows[i].id_calon]
             )
    
@@ -234,7 +234,7 @@ exports.selectCalonByJabatan = async (req, res) => {
             )
 
             dapil = await pool.query(
-               "select dapil.* FROM dapil_calon JOIN calon ON dapil_calon.id_calon = calon.id_calon JOIN kecamatan ON dapil_calon.id_kecamatan = kecamatan.id_kecamatan JOIN kota ON dapil_calon.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil_calon.id_calon = $1;",
+               "select dapil.* FROM dapil_calon dapil JOIN calon ON dapil.id_calon = calon.id_calon JOIN kecamatan ON dapil.id_kecamatan = kecamatan.id_kecamatan JOIN kota ON dapil.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil.id_calon = $1;",
                 [calon.rows[i].id_calon]
             )
    
@@ -269,7 +269,7 @@ exports.selectCalonByPartai = async (req, res) => {
             )
 
             dapil = await pool.query(
-               "select dapil.* FROM dapil_calon JOIN calon ON dapil_calon.id_calon = calon.id_calon JOIN kecamatan ON dapil_calon.id_kecamatan = kecamatan.id_kecamatan JOIN kota ON dapil_calon.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil_calon.id_calon = $1;",
+               "select dapil.* FROM dapil_calon dapil JOIN calon ON dapil.id_calon = calon.id_calon JOIN kecamatan ON dapil.id_kecamatan = kecamatan.id_kecamatan JOIN kota ON dapil.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil.id_calon = $1;",
                 [calon.rows[i].id_calon]
             )
    
@@ -350,7 +350,7 @@ exports.selectCalonByAdmin = async (req, res) => {
          )
 
          dapil = await pool.query(
-            "select dapil.* FROM dapil_calon JOIN calon ON dapil_calon.id_calon = calon.id_calon JOIN kecamatan ON dapil_calon.id_kecamatan = kecamatan.id_kecamatan JOIN kota ON dapil_calon.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil_calon.id_calon = $1;",
+            "select dapil.* FROM dapil_calon dapil JOIN calon ON dapil.id_calon = calon.id_calon JOIN kecamatan ON dapil.id_kecamatan = kecamatan.id_kecamatan JOIN kota ON dapil.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil.id_calon = $1;",
              [calon.rows[i].id_calon]
          )
 
@@ -392,7 +392,7 @@ exports.selectCalonDPRDKotaByKota = async (req, res) => {
             )
 
             dapil = await pool.query(
-               "select dapil.* FROM dapil_calon JOIN calon ON dapil_calon.id_calon = calon.id_calon JOIN kecamatan ON dapil_calon.id_kecamatan = kecamatan.id_kecamatan JOIN kota ON dapil_calon.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil_calon.id_calon = $1;",
+               "select dapil.* FROM dapil_calon dapil JOIN calon ON dapil.id_calon = calon.id_calon JOIN kecamatan ON dapil.id_kecamatan = kecamatan.id_kecamatan JOIN kota ON dapil.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil.id_calon = $1;",
                 [calon.rows[i].id_calon]
             )
    
@@ -426,7 +426,7 @@ exports.selectCalonDPRDProvByProv = async (req, res) => {
             )
 
             dapil = await pool.query(
-               "select dapil.* FROM dapil_calon JOIN calon ON dapil_calon.id_calon = calon.id_calon JOIN kecamatan ON dapil_calon.id_kecamatan = kecamatan.id_kecamatan JOIN kota ON dapil_calon.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil_calon.id_calon = $1;",
+               "select dapil.* FROM dapil_calon dapil JOIN calon ON dapil.id_calon = calon.id_calon JOIN kecamatan ON dapil.id_kecamatan = kecamatan.id_kecamatan JOIN kota ON dapil.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil.id_calon = $1;",
                 [calon.rows[i].id_calon]
             )
    
@@ -545,7 +545,7 @@ exports.selectForSearch = async (req, res) => {
             )
 
             dapil = await pool.query(
-               "select dapil.* FROM dapil_calon JOIN calon ON dapil_calon.id_calon = calon.id_calon JOIN kecamatan ON dapil_calon.id_kecamatan = kecamatan.id_kecamatan JOIN kota ON dapil_calon.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil_calon.id_calon = $1;",
+               "select dapil.* FROM dapil_calon dapil JOIN calon ON dapil.id_calon = calon.id_calon JOIN kecamatan ON dapil.id_kecamatan = kecamatan.id_kecamatan JOIN kota ON dapil.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil.id_calon = $1;",
                 [calon.rows[i].id_calon]
             )
    
