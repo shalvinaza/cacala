@@ -1,5 +1,5 @@
 <template>
-  <div class="dprd_kab_kota">
+  <div class="dprd_kab_kota" id="dprd_kab">
     <Navbar/>
     <div class="content" style="padding:120px 0 70px 0">
         <All_dprd_kab/>

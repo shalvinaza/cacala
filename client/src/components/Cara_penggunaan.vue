@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid bg-dark-blue">
+    <div id="caraPenggunaan" class="container-fluid bg-dark-blue">
         <div class="container d-md-block align-items-center pt-5">
             <div class="row">
                 <h2 class="extra-bold mb-5" style="color:white">Cara Penggunaan</h2>

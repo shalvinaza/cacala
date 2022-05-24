@@ -1,24 +1,23 @@
 <template>
     <div class="container">
-        <h1 class="text-center pb-4 mb-4">Calon DPR Republik Indonesia</h1>
+        <h1 class="text-center pb-4 mb-4">Calon DPD Republik Indonesia</h1>
         <select class="btn-outline-orange2 me-3" name="dapil" id="dapil" v-model="selectedKota">
-            <option class="dropdown-item" value="">Daerah Pilih</option>
+            <option class="dropdown-item" value="dapil">Daerah Pilih</option>
             <option class="dropdown-item" v-for="(prov) in provinsi" :key="prov.id_provinsi">
             {{ prov.provinsi }}
             </option>
         </select> 
         <select class="btn-outline-orange2" name="partai" id="partai" v-model="selectedPartai">
-            <option class="dropdown-item" value="">Partai</option>
+            <option class="dropdown-item" value="partai">Partai</option>
             <option class="dropdown-item" v-for="prt in partai" v-bind:key="prt.id_partai">
             {{ prt.nama_partai }}
             </option>
         </select> 
-
-        <div class="row row-cols-2 row-cols-md-4 g-4 mt-3">
-            <div class="col" v-for="(calon,index) in calons" :key="calon.id_calon">
+        <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
+            <div class="col" v-for="(calon,index) in filteredKota" :key="calon.id_calon">
                 <div class="card h-100">
                     <img :src=calon.foto class="card-img-top" alt="dpr 2">
-                   <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
+                    <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
                         <h5>{{index + 1}}</h5>
                     </div>
                     <div class="card-body p-4">
@@ -27,7 +26,7 @@
                         <div class="row align-items-start mt-3">
                             <p class="col d-flex flex-wrap card-title">Partai</p>
                             <div class="col d-flex flex-wrap justify-content-end">
-                                <img v-for="(partai) in calon.partai" :key="partai.nama_partai" :src=partai.logo_partai class="img-partai m-1">
+                                <img v-for="(partai) in calon.partai" :key="partai.nama_partai" :src=partai.logo_partai class="img-partai m-1" alt="{{partai.nama_partai}}">
                             </div>
                         </div>
                         <div class="row align-items-start mb-2">
@@ -36,15 +35,15 @@
                                 <p>{{calon.kota}}</p>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-center justify-content-between">
+                        <div class="d-flex justify-content-between">
                             <router-link :to="{ name: 'Detail_calon', params: { id_admin: calon.id_admin}}" class="btn btn-outline-orange">Detail</router-link>
                             <span v-if="isLoggedIn">
-                                <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="!calon.status">Ikuti</button>
-                                <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="calon.status">Berhenti</button>
+                                <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon), calon.status = !calon.status" v-show="!calon.status">Ikuti</button>
+                                <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon), calon.status = !calon.status" v-show="calon.status">Berhenti</button>
                             </span>       
                             <span v-else>
                                 <button class="btn btn-outline-blue" @click="goToLogin()">Ikuti</button> 
-                            </span>                          
+                            </span>                        
                         </div>
                     </div>
                 </div>
@@ -56,39 +55,76 @@
 
 <script>
 import axios from 'axios'
-const DPD_API_URL = `${process.env.VUE_APP_API_URL}/calon/jabatan/ab55ff16-0673-4c8b-a572-bf282f75d9cf`
+
+const DPD_API_URL = `${process.env.VUE_APP_API_URL}/calon/jabatan/51978294-1f8a-4c8c-acbf-f3cc013c16d3`
 const FOLLOWED_CALON_API_URL = `${process.env.VUE_APP_API_URL}/user/followed`
 
-
 export default {
-    name: 'All_dpr_ri',
+    name: 'All_dpd_ri',
     data : () => ({
         no_data: false,
         calons: [],
         followed_calon: [],
         partai: [],
         provinsi: [],
-        selectedPartai: '',
-        selectedKota : ''
+        selectedKota: '',
+        selectedPartai: ''
     }),
     computed: {
         isLoggedIn: function() {return localStorage.getItem("token") != null},
-        // filteredKota : function(){
-        //     if(this.selectedKota != null){
-        //         return this.calons.filter((calon) => {
-        //             return calon.provinsi.match(this.selectedKota);
-        //         })
-        //     }
-        //     if(this.selectedPartai != null){
-        //         return this.calons.filter((calon) => {
-        //             return calon.nama_partai.match(this.selectedPartai);
-        //         })
-        //     }
-        // }
+        filteredKota : function(){
+            var hasil;
+            // if(this.selectedKota && this.selectedKota !== 'dapil'){
+            //     if(this.selectedPartai && this.selectedPartai){
+            //         return this.calons.filter((calon) => {
+            //             let foundPartai = calon.partai.findIndex((prt) => {
+            //                 return prt.nama_partai.match(this.selectedPartai)
+            //             })
+            //             return foundPartai !== -1
+            //         });
+            //     }
+            //     return this.calons.filter((calon) => {
+            //         return calon.provinsi.match(this.selectedKota);
+            //     })
+            // }
+            // if(this.selectedKota && this.selectedPartai){
+            //     return this.calons.filter((calon) => {
+            //         let dapil = calon.provinsi.match(this.selectedKota)
+            //         let foundPartai = calon.partai.findIndex((prt) => {
+            //             let part = prt.nama_partai.match(this.selectedPartai)
+            //         })
+            //         return foundPartai !== -1
+            //     })
+            // }
+            if(this.selectedKota && this.selectedKota != 'dapil'){
+                return this.calons.filter((calon) => {
+                    // return calon.provinsi.match(this.selectedKota);
+                    return hasil = calon.provinsi.match(this.selectedKota)
+                })
+            }
+            if(this.selectedPartai && this.selectedPartai != 'partai'){
+                return this.calons.filter((calon) => {
+                    let foundPartai = calon.partai.findIndex((prt) => {
+                        return hasil = prt.nama_partai.match(this.selectedPartai)
+                    })
+                    return foundPartai !== -1
+                })
+            }
+
+            return hasil;
+            // if(this.filterCategory && this.filterCategory !== 'all') {
+            //     posts = posts.filter((p) => {
+            //     let foundCategory = p.category_array.findIndex((c) => {
+            //         return c.slug === this.filterCategory
+            //     })
+            //     return foundCategory !== -1
+            //     })
+            // }
+        }
     },
     created(){
-        this.fetchDPRRICalons(),
-        this.fetchPartai()
+        this.fetchDPDCalons(),
+        this.fetchPartai(),
         this.fetchProvinsi()
     },
     methods : {
@@ -101,18 +137,36 @@ export default {
                 })
         },
 
-        fetchDPRRICalons(){
+        fetchPartai(){
+            const PARTAI_API_URL = `${process.env.VUE_APP_API_URL}/partai`
+        
+            fetch(PARTAI_API_URL)
+                .then(response => response.json())
+                .then(result => {
+                    this.partai = result
+                    var parsedobj = JSON.parse(JSON.stringify(result))
+                    console.log(parsedobj)
+            })  
+        },
+
+        fetchDPDCalons(){
             fetch(DPD_API_URL)
             .then(response => response.json())
             .then(result => {
                 this.calons = result
+                
                 if(localStorage.getItem("token") != null){
                     this.fetchFollowedCalon()
                 }
             })
+            .catch(error => {
+                if(calons==null){
+                    this.no_data = true;
+                }
+            });
         },
 
-        fetchFollowedCalon(){
+        fetchFollowedCalon() {
             const headers = { token: localStorage.token }
             fetch(FOLLOWED_CALON_API_URL, { headers })
                 .then(response => response.json())
@@ -136,30 +190,15 @@ export default {
             })
         },
 
-        fetchPartai(){
-            const PARTAI_API_URL = `${process.env.VUE_APP_API_URL}/partai`
-        
-            fetch(PARTAI_API_URL)
-                .then(response => response.json())
-                .then(result => {
-                    this.partai = result
-                    var parsedobj = JSON.parse(JSON.stringify(result))
-                    console.log(parsedobj)
-            })  
-        },
-
         goToLogin(){
             this.$router.push('/login');
         },
 
-        followCalon(id_calon, status){
+        followCalon(id_calon){
             const FOLLOW_API_URL = `${process.env.VUE_APP_API_URL}/user/${id_calon}`
             axios.defaults.headers.common["token"] = localStorage.token
             
             axios.post(FOLLOW_API_URL)
-                .then(() => {
-                    console.log(status)
-                })
                 .catch((error) => {
                     console.error(error)
                 })
@@ -170,9 +209,6 @@ export default {
             axios.defaults.headers.common["token"] = localStorage.token
 
             axios.delete(UNFOLLOW_API_URL)
-                .then(() => {
-                   console.log("calon unfollowed!")
-                })
                 .catch((error) => {
                     console.error(error)
                 })

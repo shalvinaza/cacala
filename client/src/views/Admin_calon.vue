@@ -2,7 +2,7 @@
   <div class="admin_calon">
     <Navbar2/>
     <div class="content" style="padding:120px 0 70px 0">
-        <detail_admin_calon/>
+        <Detail_admin_calon/>
     </div>
     <Footer1/>
   </div>

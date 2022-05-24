@@ -15,7 +15,11 @@
                     </div>
                     <div class="forms-inputs mb-4"> 
                         <span>Kata Sandi</span>
-                        <input autocomplete="off" type="password" v-model="login.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(login.password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
+                        <div class="input-group">
+                            <input v-if="showPassword" autocomplete="off" minlength="8" type="text" v-model="login.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(login.password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
+                            <input v-else autocomplete="off" minlength="8" type="password" v-model="login.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(login.password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
+                            <button class=" button input-group-text showPass" @click="toggleShow"><i class="fas" :class="{ 'fa-eye-slash': showPassword, 'fa-eye': !showPassword }"></i> </button>
+                        </div>
                         <div class="invalid-feedback">Password minimal 8 karakter!</div>
                     </div>
                     <div class="mb-3"> 
@@ -43,7 +47,8 @@ export default {
             login: {
                 username : "",
                 password : ""
-            }
+            },
+            showPassword:false
             }
     },
     methods:{
@@ -72,6 +77,9 @@ export default {
         },
         goToLoginUser(){
             this.$router.push('/login');
+        },
+        toggleShow() {
+            this.showPassword = !this.showPassword;
         },
         loginAdmin(e){
             e.preventDefault()
@@ -123,6 +131,7 @@ p{
     left: 10px;
     background-color: #fff;
     padding: 5px 10px;
+    z-index: 1000;
 }
 
 .forms-inputs input {
@@ -131,7 +140,7 @@ p{
     border-radius:10px;
 }
 
-.forms-inputs input:focus {
+.forms-inputs input:focus, .showPass:focus{
     box-shadow: none;
     outline: none;
     border: 2px solid #D65A40;
@@ -148,5 +157,12 @@ p{
 
 .bxs-badge-check {
     font-size: 90px
+}
+.showPass{
+    height: 50px;
+    background: none;
+    border: 2px solid #9D9493;
+    border-left: 0px;
+    border-radius:10px;
 }
 </style>

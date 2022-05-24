@@ -21,7 +21,7 @@
                             <p class="col d-flex flex-wrap card-title">Partai</p>
                             <div class="col d-flex flex-wrap justify-content-end">
                             <div class="col d-flex flex-wrap justify-content-end">
-                                <img v-for="(partai) in calon.partai" :key="partai.nama_partai" :src=partai.logo_partai class="img-partai m-1" alt="{{partai.nama_partai}}">
+                                <img v-for="(partai) in calon.partai" :key="partai.nama_partai" :src=partai.logo_partai class="img-partai m-1">
                             </div>
                             </div>
                         </div>
@@ -66,13 +66,13 @@ export default {
     }),
     computed: {
         isLoggedIn: function() {return localStorage.getItem("token") != null},
-        filteredKota : function(){
-            if(this.selectedPartai != null){
-                return this.calons.filter((calon) => {
-                    return calon.nama_partai.match(this.selectedPartai);
-                })
-            }
-        }
+        // filteredKota : function(){
+        //     if(this.selectedPartai != null){
+        //         return this.calons.filter((calon) => {
+        //             return calon.nama_partai.match(this.selectedPartai);
+        //         })
+        //     }
+        // }
     },
     created(){
         this.fetchDPRDKabCalons()
@@ -103,11 +103,6 @@ export default {
                         this.fetchFollowedCalon()
                     }
                 })
-                .catch(error => {
-                    if(calons==null){
-                        this.no_data = true;
-                    }
-                });
         },
 
         fetchFollowedCalon(){
@@ -163,7 +158,7 @@ export default {
                 })
         },
 
-        unfollowCalon(id_calon, status){
+        unfollowCalon(id_calon){
             const UNFOLLOW_API_URL = `${process.env.VUE_APP_API_URL}/user/unfollow/${id_calon}`
             axios.defaults.headers.common["token"] = localStorage.token
 
@@ -212,6 +207,7 @@ h1{
 }
 .card-img-top{
     border-radius: 15px 15px 0 0;   
+    height: 250px;
 }
 .card-subtitle{
     padding-bottom: 0.5rem;

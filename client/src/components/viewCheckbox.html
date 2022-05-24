@@ -1,0 +1,19 @@
+<div id="app">
+  <div class="options">
+    <h3>Provinsi</h3>
+    <template v-for="option in provinsi">
+      <input :id="option" type="checkbox" :value="option" v-model="checked.provinsi"><label :for="option" >{{ option }}</label>
+    </template>
+    <h3>Partai</h3>
+    <template v-for="option in partai">
+      <input :id="option" type="checkbox" :value="option" v-model="checked.partai"><label :for="option" >{{ option }}</label>
+    </template>
+  </div>
+  <div class="shoes">
+    <div v-for="calon in calons" v-show="visible(calon.provinsi, calon.partai)">
+      <h3>{{ calon.name }}</h3>
+      <p>Provinsi: <template v-for="(provinsi, index) in calon.provinsi">{{ provinsi }}{{ index == calon.provinsi.length - 1 ? '' : ', ' }}</template></p>
+      <p>Partai: <template v-for="(partai, index) in calon.partai">{{ partai }}{{ index == calon.partai.length - 1 ? '' : ', ' }}</template></p>
+    </div>
+  </div>
+</div>

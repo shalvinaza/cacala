@@ -1,5 +1,5 @@
 <template>
-  <div class="dpd_ri">
+  <div class="dpd_ri" id="dpd_ri">
     <Navbar/>
     <div class="content" style="padding:120px 0 70px 0">
         <All_dpd_ri/>

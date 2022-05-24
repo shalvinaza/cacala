@@ -91,21 +91,55 @@ exports.getUser = async (req, res) => {
    }
 }
 
+// exports.updateUser = async (req, res) => {
+//    try{
+//       //const { id } = req.params
+//       const { username } = req.body
+//       const { email } = req.body
+//       const { password } = req.body
+
+//       //bcrypt user password
+//       const bcryptPass = await bcryptPassword(password)
+
+//       const user = await pool.query("UPDATE users SET username = $1, email = $2, password = $3 WHERE id_user = $4", [
+//          username, email, bcryptPass, req.user
+//       ])
+
+//       res.json("User detail is updated")
+//    } catch (err) {
+//       res.json({ message: err })
+//    }
+// }
+
 exports.updateUser = async (req, res) => {
    try{
       //const { id } = req.params
       const { username } = req.body
       const { email } = req.body
+
+      const user = await pool.query("UPDATE users SET username = $1, email = $2 WHERE id_user = $3", [
+         username, email, req.user
+      ])
+
+      res.json("User detail is updated")
+   } catch (err) {
+      res.json({ message: err })
+   }
+}
+
+exports.updateUserPass = async (req, res) => {
+   try{
+      //const { id } = req.params
       const { password } = req.body
 
       //bcrypt user password
       const bcryptPass = await bcryptPassword(password)
 
-      const user = await pool.query("UPDATE users SET username = $1, email = $2, password = $3 WHERE id_user = $4", [
-         username, email, bcryptPass, req.user
+      const user = await pool.query("UPDATE users SET password = $1 WHERE id_user = $2", [
+         password, bcryptPass, req.user
       ])
 
-      res.json("User detail is updated")
+      res.json("User password is updated")
    } catch (err) {
       res.json({ message: err })
    }

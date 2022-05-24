@@ -1,5 +1,5 @@
 <template>
-  <div class="presiden">
+  <div class="presiden" id="presiden">
     <Navbar/>
     <div class="content" style="padding:120px 0 70px 0">
         <All_capres/>

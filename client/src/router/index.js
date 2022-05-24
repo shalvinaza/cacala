@@ -1,5 +1,6 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
+import Vue from 'vue'
+import Router from 'vue-router'
+import HomePage from './../components/HomePage.vue'
 import Presiden from '../views/Presiden.vue'
 import Dpr_ri from '../views/Dpr_ri.vue'
 import Dpd_ri from '../views/Dpd_ri.vue'
@@ -14,111 +15,78 @@ import Detail_calon from '../views/Detail_calon.vue'
 import Detail_admin_calon from '../views/Admin_calon.vue'
 import Search from '../views/Search.vue'
 
-const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/presiden',
-    name: 'Presiden',
-    component: Presiden
-  },
-  {
-    path: '/dpr_ri',
-    name: 'Dpr_ri',
-    component: Dpr_ri
-  },
-  {
-    path: '/dpd_ri',
-    name: 'Dpd_ri',
-    component: Dpd_ri
-  },
-  {
-    path: '/dprd_prov/:id_provinsi',
-    name: 'Dprd_prov',
-    component: Dprd_prov
-  },
-  {
-    path: '/dprd_kab_kota/:id_kota',
-    name: 'Dprd_kab_kota',
-    component: Dprd_kab_kota
-  },
-  {
-    path: '/dasbor_saya',
-    name: 'Dasbor',
-    component: Dasbor,
-    meta: {requiresAuth: true}
-  },
-  {
-    path: '/login',
-    name: 'Login',
-    component: Login,
-    meta: {guest: true}
-  },
-  {
-    path: '/register',
-    name: 'Register',
-    component: Register
-  },
-  {
-    path: '/login_admin',
-    name: 'Login_admin',
-    component: Login_admin
-  },
-  {
-    path: '/profil_user',
-    name: 'Profil_user',
-    component: Profil_user
-  },
-  {
-    path: '/detail_calon/:id_admin',
-    name: 'Detail_calon',
-    component: Detail_calon
-  },
-  {
-    path: '/detail_admin_calon',
-    name: 'Detail_admin_calon',
-    component: Detail_admin_calon,
-    meta: {admin: true}
-  },
-  {
-    path: '/search/',
-    name: 'Search',
-    component: Search
-  }
-]
+Vue.use(Router)
 
-const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
+export default new Router({
+    routes: [
+      { path: '/', component: HomePage },
+      {
+        path: '/presiden',
+        name: 'Presiden',
+        component: Presiden
+      },
+      {
+        path: '/dpr_ri',
+        name: 'Dpr_ri',
+        component: Dpr_ri
+      },
+      {
+        path: '/dpd_ri',
+        name: 'Dpd_ri',
+        component: Dpd_ri
+      },
+      {
+        path: '/dprd_prov/:id_provinsi',
+        name: 'Dprd_prov',
+        component: Dprd_prov
+      },
+      {
+        path: '/dprd_kab_kota/:id_kota',
+        name: 'Dprd_kab_kota',
+        component: Dprd_kab_kota
+      },
+      {
+        path: '/dasbor_saya',
+        name: 'Dasbor',
+        component: Dasbor,
+        meta: {requiresAuth: true}
+      },
+      {
+        path: '/login',
+        name: 'Login',
+        component: Login,
+        meta: {guest: true}
+      },
+      {
+        path: '/register',
+        name: 'Register',
+        component: Register
+      },
+      {
+        path: '/login_admin',
+        name: 'Login_admin',
+        component: Login_admin
+      },
+      {
+        path: '/profil_user',
+        name: 'Profil_user',
+        component: Profil_user
+      },
+      {
+        path: '/detail_calon/:id_admin',
+        name: 'Detail_calon',
+        component: Detail_calon
+      },
+      {
+        path: '/detail_admin_calon',
+        name: 'Detail_admin_calon',
+        component: Detail_admin_calon,
+        meta: {admin: true}
+      },
+      {
+        path: '/search/',
+        name: 'Search',
+        component: Search
+      }
+    ]
 })
-
-router.beforeEach((to, from, next) => {
-  if(to.matched.some(record => record.meta.requiresAuth)){
-    if(localStorage.getItem("token") == null){
-      next({
-        path: "/"
-      }) 
-    } else next()
-  }
-  else if(to.matched.some(record => record.meta.admin)){
-    if(localStorage.getItem("token") == null){
-      next({
-        path: "/"
-      }) 
-    } else next()
-  }
-  else if(to.matched.some(record => record.meta.guest)){
-    if(localStorage.getItem("token") == null){
-      next()
-    } else{
-      next({ name: "Home" })
-    }
-  }else{
-    next()
-  }
-})
-
-export default router

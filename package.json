@@ -13,6 +13,10 @@
     "url": "git+https://github.com/shalvinaza/cacala"
   },
   "dependencies": {
-    "concurrently": "^6.2.0"
+    "concurrently": "^6.2.0",
+    "promise": "^8.1.0"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.181"
   }
 }

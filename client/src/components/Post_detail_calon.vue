@@ -11,7 +11,7 @@
                     <div class="row align-items-start">
                         <h6 class="col">Partai</h6>
                         <div class="col d-flex flex-wrap justify-content-end">
-                            <img v-for="partai in calon.partai" :key="partai.nama_partai" :src=partai.logo_partai class="img-partai me-2" alt="{{partai.nama_partai}}">
+                            <img v-for="partai in calon.partai" :key="partai.nama_partai" :src=partai.logo_partai class="img-partai me-2">
                         </div>
                     </div>
                     <div class="row align-items-start">
@@ -112,8 +112,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
     name :'Post_detail_calon',
     data : () => ({
@@ -128,21 +126,11 @@ export default {
             .then(result => {
                 this.calons = result;
             })
-            .catch(error => {
-                if(calons==null){
-                    this.no_data = true;
-                }
-            });
         fetch(`${process.env.VUE_APP_API_URL}/post/user/${id_admin}`)
             .then(response => response.json())
             .then(result => {
                 this.posts = result;
             })
-            .catch(error => {
-                if(posts==null){
-                    this.no_data = true;
-                }
-            });
         
     }
 }

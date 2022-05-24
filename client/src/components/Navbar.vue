@@ -1,18 +1,19 @@
 <template>
     <div class="container-fluid bg-dark-blue nav-shadow">
-      <nav class="container navbar navbar-expand-lg">
-        <a class="navbar-brand extra-bold" style="letter-spacing: 0.45em;" href="/">CACALA</a>
+      <nav class="container navbar navbar-expand-lg navbar-dark" id="navbar">
+        <a class="navbar-brand extra-bold" id="home" style="letter-spacing: 0.45em;" href="/">CACALA</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon" style="color:white"></span>
+          <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="navbar-nav me-auto mb-2 mb-lg-0">
-                <router-link to="/presiden" class="nav-item nav-link">Presiden</router-link>
-                <router-link to="/dpr_ri" class="nav-item nav-link">DPR RI</router-link>
-                <router-link to="/dpd_ri" class="nav-link">DPD RI</router-link>
+                <a href="/#caraPenggunaan" class="nav-link cara">Cara Penggunaan</a>
+                <router-link to="/presiden" class="nav-link pres">Presiden</router-link>
+                <router-link to="/dpr_ri" class="nav-link dprri">DPR RI</router-link>
+                <router-link to="/dpd_ri" class="nav-link dpdri">DPD RI</router-link>
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle txt-white"   id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a class="nav-link dropdown-toggle txt-white prov" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     DPRD Provinsi
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -24,7 +25,7 @@
                   </div>
                 </li>
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle txt-white"   id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a class="nav-link dropdown-toggle txt-white kab"   id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     DPRD Kabupaten/Kota
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -49,8 +50,8 @@
                       <i class="far fa-user-circle nav-profil"></i>
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                      <li><a class="dropdown-item" style="color:black" @click="goToProfil()">Profil Saya</a></li>
-                      <li><a class="dropdown-item" style="color:black" @click="logUserOut">Keluar</a></li>
+                      <li><a class="dropdown-item" style="color:black; cursor:pointer" @click="goToProfil()">Profil Saya</a></li>
+                      <li><a class="dropdown-item" style="color:black; cursor:pointer" @click="toggleShow()">Keluar</a></li>
                   </div>
                 </div>
               </span>
@@ -59,13 +60,21 @@
               </span>
             </div>
         </div>
+
+        <Popup v-if="openPopup" title="Apakah Anda yakin?" pesanPopup="Anda tidak dapat mengikuti calon maupun melihat dasbor setelah keluar">
+          <div class="d-flex justify-content-end">
+            <button class="bg-light-orange-pop me-2 br-10" @click="toggleShow()">Tidak</button>
+            <button class="btn-outline-orange" @click="logUserOut()">Iya</button>
+          </div>
+        </Popup>
+
       </nav>
 
     </div>
 </template>
 
 <script>
-import axios from 'axios'
+import Popup from './Berhasil.vue'
 
 const PROVINSI_API_URL = `${process.env.VUE_APP_API_URL}/dapil/provinsi`
 const KOTA_API_URL = `${process.env.VUE_APP_API_URL}/dapil/kota`
@@ -74,8 +83,12 @@ export default {
   name: 'Navbar',
   data: () => ({
     provinsi: [],
-    kota: []
+    kota: [],
+    openPopup: false
   }),
+  components:{
+    Popup
+  },
   computed: {
     isLoggedIn: function() {return localStorage.getItem("token") != null}
   },
@@ -98,6 +111,9 @@ export default {
     goToProfil(){
       this.$router.push('/profil_user');
     },
+    toggleShow(){
+      this.openPopup = !this.openPopup;
+    },
     logUserOut(){
       localStorage.removeItem('token')
       this.$router.push('/login')
@@ -112,10 +128,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-a, a:hover{
+a{
   color: white;
 }
-a:active{
+a:focus, a:hover{
   color: #D65A40;
 }
 .nav-profil{
@@ -125,5 +141,24 @@ a:active{
 }
 .nav-profil:hover{
     color: #D65A40;
+}
+.btn-outline-orange{
+    color:#DDA18C;
+    font-weight:400;
+    border: 1px solid #DDA18C;
+    min-width: 4rem;
+    background: white;
+}
+.bg-light-orange-pop:hover,.btn-outline-orange:hover{
+    color:white;
+    background-color: #D65A40;
+    border-color: #D65A40;
+}
+.bg-light-orange-pop{
+    font-weight:400;
+    border: 1px solid;
+    min-width: 4rem;
+    color: white;
+    background-color: #DDA18C;
 }
 </style>

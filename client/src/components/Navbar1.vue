@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid bg-dark-blue nav-shadow">
-      <nav class="container navbar navbar-expand-lg">
+      <nav class="container navbar navbar-expand-lg navbar-dark">
         <a class="navbar-brand extra-bold" style="letter-spacing: 0.45em;" href="/">CACALA</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon" style="color:white"></span>
@@ -8,6 +8,7 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <div class="navbar-nav me-auto mb-2 mb-lg-0">
+                <a href="/#caraPenggunaan" class="nav-item nav-link">Cara Penggunaan</a>
                 <router-link to="/presiden" class="nav-item nav-link">Presiden</router-link>
                 <router-link to="/dpr_ri" class="nav-item nav-link">DPR RI</router-link>
                 <router-link to="/dpd_ri" class="nav-link">DPD RI</router-link>
@@ -48,7 +49,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 
 const PROVINSI_API_URL = `${process.env.VUE_APP_API_URL}/dapil/provinsi`
 const KOTA_API_URL = `${process.env.VUE_APP_API_URL}/dapil/kota`
@@ -57,7 +57,8 @@ export default {
   name: 'Navbar1',
   data: () => ({
     provinsi: [],
-    kota: []
+    kota: [],
+    openPopup: false
   }),
   methods:{
     goToSearch(){

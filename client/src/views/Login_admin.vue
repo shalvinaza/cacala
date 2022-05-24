@@ -19,7 +19,6 @@ export default {
     components:{
       Navbar1,
       Form_login_admin,
-      Form_login_admin,
       Footer1
     }
 }

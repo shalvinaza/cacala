@@ -9,7 +9,7 @@
                     <div class="row align-items-start">
                         <h6 class="col">Partai</h6>
                         <div class="col d-flex flex-wrap justify-content-end">
-                            <img v-for="(partai) in calon.partai" :key="partai.nama_partai" :src=partai.logo_partai class="img-partai m-1" alt="{{partai.nama_partai}}">
+                            <img v-for="(partai) in calon.partai" :key="partai.nama_partai" :src=partai.logo_partai class="img-partai m-1">
                         </div>
                     </div>
                     <div class="row align-items-start">
@@ -104,7 +104,13 @@
                                     <div class="d-flex end-row-section w-100 p-0 mb-3 pb-2">
                                         <p class="card-text text-muted m-0 flex-grow-2 w-100" style=""><i class="far fa-calendar-alt"></i>  <small>{{post.waktu}}</small></p>
                                         <span class="card-text icons me-2" @click="edit(post)" ><i class="fas fa-edit"></i></span>
-                                        <span class="card-text icons" @click="del(post)"><i class="fas fa-trash"></i></span>
+                                        <span class="card-text icons" @click="toggleShow(post.id_post)"><i class="fas fa-trash"></i></span>
+                                        <Popup2 v-if="popupDel" title="Apakah Anda yakin?" pesanPopup="Unggahan yang akan dihapus tidak dapat dikembalikan"> 
+                                            <div class="d-flex justify-content-end">
+                                                <button class="bg-light-orange2 me-2 br-10" @click="toggleShow(post.id_post)">Tidak</button>
+                                                <button class="btn-outline-orange2" @click="del()">Iya</button>
+                                            </div>
+                                        </Popup2>
                                     </div>
                                     <!-- <img src="../assets/images/poster_post.jpg" class="w-100 img-poster-post mb-3" alt="..."> -->
                                     <p class="card-text">{{post.teks}}</p>
@@ -159,14 +165,15 @@
 
 <script>
 import Popup from './Popup.vue'
+import Popup2 from './Berhasil.vue'
 import axios from 'axios'
-const ADMIN_API_URL = `${process.env.VUE_APP_API_URL}/admin/`
 const CALON_API_URL = `${process.env.VUE_APP_API_URL}/calon/admin`
 
 export default {
     name :'Post_detail_calon',
     components:{
-        Popup
+        Popup,
+        Popup2
     },
     data: function () {
         return {
@@ -182,7 +189,9 @@ export default {
                  waktu:'',
                  teks:''
              },
-             updateSubmit: false
+             updateSubmit: false,
+             popupDel: false,
+             delPost: ''
         }   
     },
     mounted(){
@@ -194,11 +203,6 @@ export default {
                 var parsedobj = JSON.parse(JSON.stringify(result))
                 console.log(parsedobj)
             })
-            .catch(error => {
-                if(calons==null){
-                    this.no_data = true;
-                }
-            });
         this.load()
     },
     methods: {
@@ -220,7 +224,7 @@ export default {
             const POST_POSTS_API_URL = `${process.env.VUE_APP_API_URL}/post/`
             axios.defaults.headers.common["token"] = localStorage.token
             axios.post(POST_POSTS_API_URL,this.form)
-                .then(result => {
+                .then(() => {
                     this.load()
                     this.form.judul =''
                     this.form.waktu = ''
@@ -228,8 +232,10 @@ export default {
                 })
             
         },
-        del(post){
-            axios.delete(`${process.env.VUE_APP_API_URL}/post/`+ post.id_post).then(result =>{
+        del(form){
+            const post_id = this.delPost;
+            axios.delete(`${process.env.VUE_APP_API_URL}/post/`+ post_id).then(() =>{
+                this.popupDel = false
                 this.load()
                 let index = this.posts.indexOf(form.name)
                 this.posts.splice(index,1)
@@ -237,7 +243,7 @@ export default {
         },
         edit(post){
             this.updateSubmit = true
-            axios.get(`${process.env.VUE_APP_API_URL}/post/`+ post.id_post).then(result =>{
+            axios.get(`${process.env.VUE_APP_API_URL}/post/`+ post.id_post).then(() =>{
                 this.formUpdate.id = post.id_post
                 this.formUpdate.judul = post.judul
                 this.formUpdate.teks = post.teks
@@ -250,8 +256,8 @@ export default {
                 waktu : this.formUpdate.waktu,
                 teks : this.formUpdate.teks
             })
-            .then(result =>{
-                updateSubmit = false
+            .then(() =>{
+                this.updateSubmit = false
                 this.load()
                 this.formUpdate.judul =''
                 this.formUpdate.waktu = ''
@@ -262,8 +268,12 @@ export default {
             })
         },
         toggleModal(){
-            this.updateSubmit = !this.updateSubmit;
-        }
+            this.updateSubmit = !this.updateSubmit;  
+        },
+        toggleShow(id){
+            this.delPost = id;
+            this.popupDel = !this.popupDel;
+        },
     }
 }
 </script>
@@ -339,5 +349,24 @@ export default {
     box-shadow: none;
     outline: none;
     border: 2px solid #D65A40;
+}
+.btn-outline-orange2{
+    color:#DDA18C;
+    font-weight:400;
+    border: 1px solid #DDA18C ;
+    min-width: 4rem;
+    background: white;
+}
+.bg-light-orange2:hover,.btn-outline-orange2:hover{
+    color:white;
+    background-color: #D65A40;
+    border-color: #D65A40;
+}
+.bg-light-orange2{
+    color: white;
+     background-color: #DDA18C;
+    font-weight:400;
+    border: 1px solid #DDA18C;
+    min-width: 4rem;
 }
 </style>

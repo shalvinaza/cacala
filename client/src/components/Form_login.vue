@@ -17,7 +17,11 @@
                     </div>
                     <div class="forms-inputs mb-4"> 
                         <span>Kata Sandi</span>
-                        <input id="pass_user" autocomplete="off" type="password" v-model="login.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(login.password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
+                        <div class="input-group">
+                            <input v-if="showPassword" id="pass_user" autocomplete="off" minlength="8" type="text" v-model="login.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(login.password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
+                            <input v-else id="pass_user" autocomplete="off" minlength="8" type="password" v-model="login.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(login.password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
+                            <button class=" button input-group-text showPass" @click="toggleShow"><i class="fas" :class="{ 'fa-eye-slash': showPassword, 'fa-eye': !showPassword }"></i> </button>
+                        </div>
                         <div class="invalid-feedback">Password minimal 8 karakter!</div>
                     </div>
                     <div class="mb-3"> 
@@ -27,7 +31,7 @@
                 </form>
                 <!-- </div> -->
                 <div class="mb-4">
-                    <span>Belum punya akun?</span> <a style="color:#D65A40" @click="goToRegister()">Daftar Sekarang</a>
+                    <span>Belum punya akun?</span> <a class="buttonDaftar" style="color:#D65A40; cursor:pointer" @click="goToRegister()">Daftar Sekarang</a>
                 </div>
                 <button type="button" @click="goToLoginAdmin()" class="btn btn-outline-orange2 w-100 br-10">Masuk sebagai admin</button> 
             </div>
@@ -50,8 +54,14 @@ export default {
             login: {
                 email: "",
                 password: ""
-            }
+            },
+            showPassword: false
         }   
+    },
+    computed:{
+        buttonLabel() {
+            return (this.showPassword) ? "Hide" : "Show";
+        }
     },
     methods:{
         validate : function(){
@@ -70,13 +80,16 @@ export default {
         validPassword : function(password) {
             if (password.length > 7) {
                 return true;
-                }
+            }
         },
         submit : function(){
             this.validate();
             if(this.valid){
                 this.submitted = true;
             }
+        },
+        toggleShow() {
+            this.showPassword = !this.showPassword;
         },
         goToLoginAdmin(){
             this.$router.push('/login_admin');
@@ -133,13 +146,15 @@ p{
     left: 10px;
     background-color: #fff;
     padding: 5px 10px;
+    z-index: 1000;
 }
 .forms-inputs input {
     height: 50px;
     border: 2px solid #9D9493;
     border-radius:10px;
+    /* padding-top: 0.75rem; */
 }
-.forms-inputs input:focus {
+.forms-inputs input:focus, .showPass:focus {
     box-shadow: none;
     outline: none;
     border: 2px solid #D65A40;
@@ -153,5 +168,12 @@ p{
 }
 .bxs-badge-check {
     font-size: 90px
+}
+.showPass{
+    height: 50px;
+    background: none;
+    border: 2px solid #9D9493;
+    border-left: 0px;
+    border-radius:10px;
 }
 </style>

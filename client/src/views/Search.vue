@@ -25,7 +25,7 @@
                                 <p class="col d-flex flex-wrap card-title">Partai</p>
                                 <div class="col d-flex flex-wrap justify-content-end">
                                 <div class="col d-flex flex-wrap justify-content-end">
-                                    <img v-for="(partai) in calon.partai" :key="partai.nama_partai" :src=partai.logo_partai class="img-partai m-1" alt="{{partai.nama_partai}}">
+                                    <img v-for="(partai) in calon.partai" :key="partai.nama_partai" :src=partai.logo_partai class="img-partai m-1">
                                 </div>
                                 </div>
                             </div>

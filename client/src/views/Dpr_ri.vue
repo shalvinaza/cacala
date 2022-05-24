@@ -1,5 +1,5 @@
 <template>
-  <div class="dpr_ri">
+  <div class="dpr_ri" id="dpr_ri">
     <Navbar/>
     <div class="content" style="padding:120px 0 70px 0">
         <All_dpr_ri/>

@@ -22,7 +22,7 @@
                         <div class="row align-items-start mt-3">
                             <p class="col d-flex flex-wrap card-title">Partai</p>
                             <div class="col d-flex flex-wrap justify-content-end" v-for="(partai) in calon.partai" :key="partai.nama_partai">
-                                <img :src=partai.logo_partai class="img-partai m-1" alt="{{partai.nama_partai}}">
+                                <img :src=partai.logo_partai class="img-partai m-1">
                             </div>
                         </div>
                         <div class="row align-items-start mb-2">
@@ -65,11 +65,6 @@ export default {
                 var parsedobj = JSON.parse(JSON.stringify(result))
                 console.log(parsedobj)
             })
-            .catch(error => {
-                if(calons==null){
-                    this.no_data = true;
-                }
-            });
         },
 
         goToDetail(){

@@ -18,7 +18,7 @@
                             <div class="row align-items-start mb-4">
                                 <p class="col-md-5 d-flex flex-wrap card-title">Partai Koalisi</p>
                                 <div class="col-md-7 d-flex flex-wrap justify-content-end">
-                                    <img v-for="(partai) in calon.partai" :key="partai.nama_partai" :src=partai.logo_partai class="img-partai m-1" alt="{{partai.nama_partai}}">
+                                    <img v-for="(partai) in calon.partai" :key="partai.nama_partai" :src=partai.logo_partai class="img-partai m-1">
                                 </div>
                             </div>
                             <div class="d-flex justify-content-center justify-content-between">
@@ -67,11 +67,6 @@ export default {
                     this.fetchFollowedCalon()
                 }
             })
-            .catch(error => {
-                if(calons==null){
-                    this.no_data = true;
-                }
-            });
         },
 
         fetchFollowedCalon(){
@@ -115,7 +110,7 @@ export default {
                 })
         },
 
-        unfollowCalon(id_calon, status){
+        unfollowCalon(id_calon){
             const UNFOLLOW_API_URL = `${process.env.VUE_APP_API_URL}/user/unfollow/${id_calon}`
             axios.defaults.headers.common["token"] = localStorage.token
 
