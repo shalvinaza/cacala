@@ -23,7 +23,7 @@ router.get("/kecamatan/:id_kecamatan", controller.selectKecamatanById)
 router.get("/kecamatan/kota/:id_kota", controller.selectKecamatanByIdKota)
 router.get("/kota/:id_calon", controller.selectKotaCalon)
 router.get("/kecamatan/:id_calon", controller.selectKecamatanCalon)
-router.post("/kota", controller.addKotaToDapil)
-router.post("/kecamatan", controller.addKecamatanToDapil)
+router.post("/addKota", controller.addKotaToDapil)
+router.post("/addKecamatan", controller.addKecamatanToDapil)
 
 module.exports = router
