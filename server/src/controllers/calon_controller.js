@@ -239,12 +239,12 @@ exports.selectCalonByJabatan = async (req, res) => {
             )
 
             kota = await pool.query(
-               "select dapil.* FROM dapil_calon dapil JOIN calon ON dapil.id_calon = calon.id_calon JOIN kota ON dapil.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil.id_calon = $1;",
+               "select kota FROM dapil_calon dapil JOIN calon ON dapil.id_calon = calon.id_calon JOIN kota ON dapil.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil.id_calon = $1;",
                 [calon.rows[i].id_calon]
             )
    
             kecamatan = await pool.query(
-               "select dapil.* FROM dapil_calon dapil JOIN calon ON dapil.id_calon = calon.id_calon JOIN kecamatan ON dapil.id_kecamatan = kecamatan.id_kecamatan JOIN kota ON dapil.id_kota = kota.id_kota WHERE dapil.id_calon = $1;",
+               "select kecamatan FROM dapil_calon dapil JOIN calon ON dapil.id_calon = calon.id_calon JOIN kecamatan ON dapil.id_kecamatan = kecamatan.id_kecamatan JOIN kota ON dapil.id_kota = kota.id_kota WHERE dapil.id_calon = $1;",
                 [calon.rows[i].id_calon]
             )
    
