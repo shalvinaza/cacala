@@ -25,5 +25,6 @@ router.get("/kota/:id_calon", controller.selectKotaCalon)
 router.get("/kecamatan/:id_calon", controller.selectKecamatanCalon)
 router.post("/addKota", controller.addKotaToDapil)
 router.post("/addKecamatan", controller.addKecamatanToDapil)
+router.get("/calon/:id_calon", controller.selectDapilCalon)
 
 module.exports = router

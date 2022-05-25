@@ -319,3 +319,18 @@ exports.addKotaToDapil = async (req, res) => {
        res.json({ message: err })
     }
  }
+
+ exports.selectDapilCalon = async (req, res) => {
+    try{
+        const { id_calon } = req.params 
+
+       const partai = await pool.query(
+          "select kota.kota FROM dapil_calon JOIN calon ON dapil_calon.id_calon = calon.id_calon JOIN kota ON dapil_calon.id_kota = kota.id_kota WHERE dapil_calon.id_calon = $1;",
+          [id_calon]
+       )
+ 
+       res.json(partai.rows)
+    } catch(err){
+       res.json({ message: err })
+    }
+ }
