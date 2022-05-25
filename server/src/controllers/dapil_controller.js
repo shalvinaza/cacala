@@ -260,10 +260,11 @@ exports.addKotaToDapil = async (req, res) => {
 	try{
 	   const { id_calon } = req.body
 	   const { id_kota } = req.body
+	   const { id_kecamatan } = req.body
  
 	   const kota = await pool.query(
-		  "INSERT INTO dapil_calon(id_calon, id_kota) VALUES($1, $2) RETURNING *",
-		  [id_calon, id_kota]
+		  "INSERT INTO dapil_calon(id_calon, id_kota, id_kecamatan) VALUES($1, $2, $3) RETURNING *",
+		  [id_calon, id_kota,id_kecamatan]
 	   )
  
 	   res.json(kota)
@@ -275,11 +276,12 @@ exports.addKotaToDapil = async (req, res) => {
  exports.addKecamatanToDapil = async (req, res) => {
 	try{
 	   const { id_calon } = req.body
+	   const { id_kota } = req.body
 	   const { id_kecamatan } = req.body
  
 	   const kecamatan = await pool.query(
-		  "INSERT INTO dapil_calon(id_calon, id_kecamatan) VALUES($1, $2) RETURNING *",
-		  [id_calon, id_kecamatan]
+		  "INSERT INTO dapil_calon(id_calon, id_kota, id_kecamatan) VALUES($1, $2, $3) RETURNING *",
+		  [id_calon, id_kota, id_kecamatan]
 	   )
  
 	   res.json(kecamatan)
