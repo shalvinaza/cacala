@@ -16,8 +16,13 @@ exports.selectAllCalon = async (req, res) => {
              [calon.rows[i].id_calon]
          )
 
-         dapil = await pool.query(
-            "select dapil.* FROM dapil_calon dapil JOIN calon ON dapil.id_calon = calon.id_calon JOIN kecamatan ON dapil.id_kecamatan = kecamatan.id_kecamatan JOIN kota ON dapil.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil.id_calon = $1;",
+         kota = await pool.query(
+            "select dapil.* FROM dapil_calon dapil JOIN calon ON dapil.id_calon = calon.id_calon JOIN kota ON dapil.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil.id_calon = $1;",
+             [calon.rows[i].id_calon]
+         )
+
+         kecamatan = await pool.query(
+            "select dapil.* FROM dapil_calon dapil JOIN calon ON dapil.id_calon = calon.id_calon JOIN kecamatan ON dapil.id_kecamatan = kecamatan.id_kecamatan JOIN kota ON dapil.id_kota = kota.id_kota WHERE dapil.id_calon = $1;",
              [calon.rows[i].id_calon]
          )
 
@@ -31,7 +36,7 @@ exports.selectAllCalon = async (req, res) => {
             [id_calon]
          )
 
-         calon.rows[i] = {...calon.rows[i], partai: partai.rows, dapil: dapil.rows, riwayat_pendidikan: pendidikan.rows, riwayat_pekerjaan: pekerjaan.rows}
+         calon.rows[i] = {...calon.rows[i], partai: partai.rows, kota: kota.rows, kecamatan: kecamatan.rows, riwayat_pendidikan: pendidikan.rows, riwayat_pekerjaan: pekerjaan.rows}
       }
 
       res.json(calon.rows)

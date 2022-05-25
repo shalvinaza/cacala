@@ -44,7 +44,7 @@
                                 <div class="row align-items-start mb-2">
                                     <p class="col d-flex flex-wrap card-title">Daerah Pilih</p>
                                     <div class="col d-flex flex-wrap justify-content-end">
-                                        <p v-for="dapil in calon.dapil" :key="dapil.id_dapil">{{dapil.kota}}</p>
+                                        <p v-for="dapil in calon.kota" :key="dapil.id_dapil">{{dapil.kota}}</p>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-between">
