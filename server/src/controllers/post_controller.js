@@ -6,7 +6,7 @@ const app = express()
 
 const storage = multer.diskStorage({
    destination: function(req, file, cb){
-      cb(null, process.cwd() + "/uploads/");
+      cb(null, "server/uploads/");
    },
    filename: function(req, file, cb){
       cb(null, new Date().toISOString().replace(/\s+/g, "-") + file.originalname);
