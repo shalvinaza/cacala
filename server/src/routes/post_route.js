@@ -25,15 +25,20 @@ const app = express()
     }
     cb(null, true);
  }
+
+
+const filename = function(req, file, cb){
+    cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname);
+}
  
  const MAX_SIZE = 200000;
  
  const upload = multer({
     dest:'./uploads/',
     fileFilter,
+    filename,
     limits: {
-       fileSize: MAX_SIZE,
-       filename: new Date().toISOString().replace(/:/g, '-') + file.originalname
+       fileSize: MAX_SIZE
     }
  })
  
