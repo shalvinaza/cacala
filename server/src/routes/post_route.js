@@ -7,9 +7,9 @@ const multer = require("multer")
 const app = express()
 
 const storage = multer.diskStorage({
-    destination: function(req, file, cb){
-       cb(null,path.join(__dirname,'/uploads/'));
-    },
+    // destination: function(req, file, cb){
+    //    cb(null,path.join(__dirname,'/uploads/'));
+    // },
     filename: function(req, file, cb){
        cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname);
     }
@@ -29,6 +29,7 @@ const storage = multer.diskStorage({
  const MAX_SIZE = 200000;
  
  const upload = multer({
+    dest:'/uploads/',
     storage,
     fileFilter,
     limits: {
