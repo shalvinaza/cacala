@@ -21,7 +21,7 @@ const fileFilter = function(req, file, cb){
       error.code = "LIMIT_FILE_TYPES";
       return cb(error, false);
    }
-   cb(nulll, true);
+   cb(null, true);
 }
 
 const MAX_SIZE = 200000;
