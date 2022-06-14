@@ -1,9 +1,9 @@
-// const path = require('path')
+const path = require('path')
 const express = require("express")
 const router = express.Router()
 const controller = require("../controllers/post_controller")
 const authorization = require("../middleware/authorization")
-const multer= require("multer")
+const multer = require("multer")
 const app = express()
 
 const storage = multer.diskStorage({
@@ -29,7 +29,7 @@ const storage = multer.diskStorage({
  const MAX_SIZE = 200000;
  
  const upload = multer({
-    storage:storage,
+    storage,
     fileFilter,
     limits: {
        fileSize: MAX_SIZE
@@ -49,18 +49,18 @@ const storage = multer.diskStorage({
  })
  
 
-router.post("/", authorization, upload.array('foto'), async (req, res) => {
+router.post("/", authorization, upload.single('foto'), async (req, res) => {
     try{
-        const fotos = []
-        const url = req.protocol + '://' + req.get('host')
+        // const fotos = []
+        // const url = req.protocol + '://' + req.get('host')
   
-        for(let i = 0; i<req.foto.length; i++){
-           fotos.push(url + './server/uploads/' + req.foto[i].filename)
-        }
+        // for(let i = 0; i<req.foto.length; i++){
+        //    fotos.push(url + './server/uploads/' + req.foto[i].filename)
+        // }
   
         const { judul } = req.body
         const { teks } = req.body
-        const { foto } = fotos
+        const { foto } = req.file.filename
         const { video } = req.video
   
         const post = await pool.query(
