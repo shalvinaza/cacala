@@ -61,7 +61,7 @@ router.post("/", authorization, upload.single('foto'), async (req, res) => {
         const { judul } = req.body
         const { teks } = req.body
         const { foto } = req.file.filename
-        const { video } = req.video
+        const { video } = req.body
   
         const post = await pool.query(
            "INSERT INTO post(id_admin, judul, teks, foto, video) VALUES($1, $2, $3, $4, $5) RETURNING *",
