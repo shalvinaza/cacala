@@ -85,7 +85,7 @@ a:active{
 .btn-outline-orange{
     color:#DDA18C;
     font-weight:400;
-    border: 1px solid #DDA18C ;
+    border: 2px solid #DDA18C ;
     min-width: 4rem;
     background: white;
 }
@@ -96,7 +96,7 @@ a:active{
 }
 .bg-light-orange{
     font-weight:400;
-    border: 1px solid;
+    border: 2px solid #DDA18C ;
     min-width: 4rem;
 }
 </style>

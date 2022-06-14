@@ -42,12 +42,12 @@
             </div>
             <div class="d-flex align-items-center">
               <button class="btn bg-light-orange text-white me-3 br-10" type="button" @click="goToSearch()">
-                <i class="fas fa-search me-1"></i>
+                <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
                   Cari</button>
               <span v-if="isLoggedIn">
                 <div class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle nav-profil"   id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      <i class="far fa-user-circle nav-profil"></i>
+                      <font-awesome-icon icon="fa-solid fa-circle-user" />
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                       <li><a class="dropdown-item" style="color:black; cursor:pointer" @click="goToProfil()">Profil Saya</a></li>

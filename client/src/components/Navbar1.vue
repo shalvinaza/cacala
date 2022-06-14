@@ -39,7 +39,7 @@
             </div>
             <div class="d-flex">
               <button class="btn bg-light-orange text-white br-10" type="button" @click="goToSearch()">
-                <i class="fas fa-search me-1"></i>
+                <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
                   Cari</button>
             </div>
         </div>

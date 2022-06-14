@@ -58,11 +58,11 @@
                     </div>
                     <div class="p-4">
                         <!-- part create post -->
-                        <button type="button" class="btn bg-light-orange br-10 mb-3 d-md-block">Mulai siaran langsung</button>
+                        <!-- <button type="button" class="btn bg-light-orange br-10 mb-3 d-md-block">Mulai siaran langsung</button> -->
                         <div class="card w-100 postingan p-3 mb-3">
                             <div class="card-body p-0">
                                 <h5 class="card-title text-center mb-4">Apa kabar tebaru dari Anda?</h5>
-                                <form @submit.prevent="addPost">
+                                <form @submit.prevent="addPost" enctype="multipart/form-data">
                                     <div class="forms-inputs mb-4"> 
                                         <span>Judul unggahan</span> 
                                         <input class="w-100 p-3" autocomplete="off" type="text" v-model="form.judul" placeholder="Ketik judul di sini">
@@ -72,13 +72,42 @@
                                         <textarea class="w-100 p-3" autocomplete="off" v-model="form.teks" placeholder="Ketik teks di sini"></textarea>
                                     </div>
                                     <div class="d-flex align-items-center">
-                                        <span class="card-text icons me-3"><i class="fas fa-images"></i></span>
-                                        <span class="card-text icons flex-grow-2 w-100"><i class="fas fa-video"></i></span>
+                                        <span class="card-text icons me-3">
+                                            <input multiple type="file" id="inputFoto" style="display:none" ref="foto" @change="selectImage()"/><font-awesome-icon icon="fa-solid fa-images" @click="addFoto()"/>
+                                        </span>
+                                        <span class="card-text icons flex-grow-2 w-100">
+                                            <input type="file" id="inputVideo" style="display:none" ref="video" @change="selectVideo()"/><font-awesome-icon icon="fa-solid fa-video" @click="addVideo()"/>
+                                        </span>
+
                                         <button type="submit" class="btn bg-light-orange br-10">Unggah</button> 
                                     </div>
-                                </form>                           
+                                    <div class="d-flex flex-column field">
+                                        <div v-for="(file,index) in files" :key="index" :class="`level ${file.invalidMessage && 'has-text-danger'}`">
+                                            <div class="level-left">
+                                                <div class="level-item">
+                                                    {{file.name}}
+                                                    <span v-if="file.invalidMessage">&nbsp;- {{file.invalidMessage}}</span>
+                                                </div>
+                                            </div>
+                                            <div class="level-right">
+                                                <div class="level-item">
+                                                    <font-awesome-icon icon="fa-solid fa-xmark" class="delete" @click.prevent="files.splice(index,1);form.foto.splice(index,1)"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+      
+                                </form>                      
                             </div>
                         </div> 
+
+                        <div
+                            v-if="message"
+                            :class="`message ${error ? 'is-danger' : 'is-success'}`"
+                        >
+                            <div class="message-body mb-3">{{message}}</div>
+                        </div> 
+
                         <Popup v-if="updateSubmit" title="Edit Postingan" @toggle-modal="toggleModal">
                                 <form>
                                     <div class="forms-inputs mb-4"> 
@@ -90,8 +119,8 @@
                                         <textarea class="w-100 p-3" autocomplete="off" v-model="formUpdate.teks" placeholder="Ketik teks di sini"></textarea>
                                     </div>
                                     <div class="d-flex align-items-center">
-                                        <span class="card-text icons me-3"><i class="fas fa-images"></i></span>
-                                        <span class="card-text icons flex-grow-2 w-100"><i class="fas fa-video"></i></span>
+                                        <span class="card-text icons me-3"><font-awesome-icon icon="fa-solid fa-images" /></span>
+                                        <span class="card-text icons flex-grow-2 w-100"><font-awesome-icon icon="fa-solid fa-video" /></span>
                                         <button type="submit" class="btn bg-light-orange br-10" @click="update(formUpdate)">Perbarui</button>
                                     </div>
                                 </form>  
@@ -103,8 +132,8 @@
                                     <h5 class="card-title text-center">{{post.judul}}</h5>
                                     <div class="d-flex end-row-section w-100 p-0 mb-3 pb-2">
                                         <p class="card-text text-muted m-0 flex-grow-2 w-100" style=""><i class="far fa-calendar-alt"></i>  <small>{{post.waktu}}</small></p>
-                                        <span class="card-text icons me-2" @click="edit(post)" ><i class="fas fa-edit"></i></span>
-                                        <span class="card-text icons" @click="toggleShow(post.id_post)"><i class="fas fa-trash"></i></span>
+                                        <span class="card-text icons me-2" @click="edit(post)" ><font-awesome-icon icon="fa-solid fa-pen-to-square" /></span>
+                                        <span class="card-text icons" @click="toggleShow(post.id_post)"><font-awesome-icon icon="fa-solid fa-trash" /></span>
                                         <Popup2 v-if="popupDel" title="Apakah Anda yakin?" pesanPopup="Unggahan yang akan dihapus tidak dapat dikembalikan"> 
                                             <div class="d-flex justify-content-end">
                                                 <button class="bg-light-orange2 me-2 br-10" @click="toggleShow(post.id_post)">Tidak</button>
@@ -122,8 +151,8 @@
                                 <h5 class="card-title text-center">Judul Post</h5>
                                 <div class="d-flex end-row-section w-100 p-0 mb-3 pb-2">
                                     <p class="card-text text-muted m-0 flex-grow-2 w-100" style=""><i class="far fa-calendar-alt"></i>  <small>19/08/2021</small></p>
-                                    <span class="card-text icons me-2"><i class="fas fa-edit"></i></span>
-                                    <span class="card-text icons"><i class="fas fa-trash"></i></span>
+                                    <span class="card-text icons me-2"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></span>
+                                    <span class="card-text icons"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></span>
                                 </div>
                                 <!-- <img src="../assets/images/poster_post.jpg" class="w-100 img-poster-post mb-3" alt="..."> -->
                                 <p class="card-text">On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.</p>
@@ -135,8 +164,8 @@
                                 <h5 class="card-title text-center">Judul Post</h5>
                                 <div class="d-flex end-row-section w-100 p-0 mb-3 pb-2">
                                     <p class="card-text text-muted m-0 flex-grow-2 w-100" style=""><i class="far fa-calendar-alt"></i>  <small>19/08/2021</small></p>
-                                    <span class="card-text icons me-2"><i class="fas fa-edit"></i></span>
-                                    <span class="card-text icons"><i class="fas fa-trash"></i></span>
+                                    <span class="card-text icons me-2"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></span>
+                                    <span class="card-text icons"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></span>
                                 </div>
                                 <img src="../assets/images/poster_post2.jpg" class="w-100 img-poster-post mb-3" alt="...">
                                 <!-- <p class="card-text">On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.</p> -->
@@ -148,8 +177,8 @@
                                 <h5 class="card-title text-center">Judul Post</h5>
                                 <div class="d-flex end-row-section w-100 p-0 mb-3 pb-2">
                                     <p class="card-text text-muted m-0 flex-grow-2 w-100" style=""><i class="far fa-calendar-alt"></i>  <small>19/08/2021</small></p>
-                                    <span class="card-text icons me-2"><i class="fas fa-edit"></i></span>
-                                    <span class="card-text icons"><i class="fas fa-trash"></i></span>
+                                    <span class="card-text icons me-2"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></span>
+                                    <span class="card-text icons"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></span>
                                 </div>
                                 <img src="../assets/images/poster_post.jpg" class="w-100 img-poster-post mb-3" alt="...">
                                 <p class="card-text">On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.</p>
@@ -167,6 +196,8 @@
 import Popup from './Popup.vue'
 import Popup2 from './Berhasil.vue'
 import axios from 'axios'
+import _ from 'lodash'
+
 const CALON_API_URL = `${process.env.VUE_APP_API_URL}/calon/admin`
 
 export default {
@@ -182,16 +213,23 @@ export default {
              form : {
                  judul:'',
                  waktu:'',
-                 teks:''
+                 teks:'',
+                 foto: [],
+                 video:''
              },
+             files:[],
             formUpdate : {
                  judul:'',
                  waktu:'',
-                 teks:''
+                 teks:'',
+                 foto: [],
+                 video:''
              },
              updateSubmit: false,
              popupDel: false,
-             delPost: ''
+             delPost: '',
+             message: '',
+             error: false
         }   
     },
     mounted(){
@@ -220,17 +258,93 @@ export default {
                     console.log(err);
                 })
         },
-        addPost(){
+        addFoto(){
+            document.getElementById('inputFoto').click();
+        },
+        addVideo(){
+            document.getElementById('inputVideo').click();
+        },
+        selectImage(){
+            try{
+                const fotos = this.$refs.foto.files;
+                this.form.foto = [ ...this.form.foto, ...fotos];
+
+                this.files = [
+                    ...this.files,
+                    ..._.map(fotos, file => ({
+                        name: file.name,
+                        size:file.size,
+                        type: file.type,
+                        invalidMessage: this.validateImage(file)
+                    }))
+                ]
+            }catch(err){
+                console.log(err)
+            }
+        },
+
+        validateImage(file){
+            const MAX_SIZE = 200000;
+            const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+
+            if(file.size > MAX_SIZE){
+                return `File terlalu besar. Besar file maksimal ${MAX_SIZE / 1000}Kb`;
+            }
+            if(!allowedTypes.includes(file.type)){
+                return "Hanya boleh memilih gambar";
+            }
+
+            return "";
+        },
+        selectVideo(){
+            this.form.video = this.$refs.video.files[0];
+            this.error = false;
+            this.message = '';
+        },
+        async addPost(){
             const POST_POSTS_API_URL = `${process.env.VUE_APP_API_URL}/post/`
-            axios.defaults.headers.common["token"] = localStorage.token
-            axios.post(POST_POSTS_API_URL,this.form)
-                .then(() => {
-                    this.load()
-                    this.form.judul =''
-                    this.form.waktu = ''
-                    this.form.teks = ''
-                })
-            
+            const formData = new FormData();
+
+            formData.append('judul', this.form.judul);
+            formData.append('teks', this.form.teks);
+            formData.append('waktu', this.form.waktu);
+
+            _.forEach(this.form.foto, file => {
+                if(this.validateImage(file) === ""){
+                    formData.append('foto', file);
+                }
+            });
+            try {
+                axios.defaults.headers.common["token"] = localStorage.token
+                await axios.post(POST_POSTS_API_URL, formData);
+                this.message = "Berhasil diunggah";
+                this.load()
+                this.files = [];
+                this.form.judul =''
+                this.form.waktu = ''
+                this.form.teks = ''
+                this.form.foto = []
+                this.form.video = ''
+                this.error = false
+            }catch(err){
+                this.message = err.response.data.error;
+                this.error = true;
+            }
+            // try{
+            //     axios.post(POST_POSTS_API_URL,this.form)
+            //         this.load()
+            //         this.message = "Unggahan berhasil dikirim"
+            //         this.form.judul =''
+            //         this.form.waktu = ''
+            //         this.form.teks = ''
+            //         this.form.foto = []
+            //         this.form.video = ''
+            //         this.error = false
+            // } catch(err) {
+            //     this.message = err.response.data.error
+            //     this.error = true
+            //     // console.log(err)
+            // }
         },
         del(form){
             const post_id = this.delPost;
@@ -247,6 +361,9 @@ export default {
                 this.formUpdate.id = post.id_post
                 this.formUpdate.judul = post.judul
                 this.formUpdate.teks = post.teks
+                this.formUpdate.foto = post.foto
+                this.formUpdate.video = post.video
+                
             })  
         },
         update(formUpdate){
@@ -254,7 +371,9 @@ export default {
             return axios.put(`${process.env.VUE_APP_API_URL}/post/` + formUpdate.id, {
                 judul : this.formUpdate.judul,
                 waktu : this.formUpdate.waktu,
-                teks : this.formUpdate.teks
+                teks : this.formUpdate.teks,
+                foto : this.formUpdate.foto,
+                video : this.formUpdate.video
             })
             .then(() =>{
                 this.updateSubmit = false
@@ -262,6 +381,8 @@ export default {
                 this.formUpdate.judul =''
                 this.formUpdate.waktu = ''
                 this.formUpdate.teks = ''
+                this.formUpdate.foto = []
+                this.formUpdate.video = ''
             })
             .catch((err)=>{
                 console.log(err);

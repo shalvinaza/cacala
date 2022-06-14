@@ -28,7 +28,7 @@
                         <div class="input-group">
                             <input v-if="showPassword" autocomplete="off" minlength="8" type="text" v-model="register.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(register.password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
                             <input v-else autocomplete="off" minlength="8" type="password" v-model="register.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(register.password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
-                            <button class=" button input-group-text showPass" style="border-radius:0 10px 10px 0;" @click="toggleShow"><i class="fas" :class="{ 'fa-eye-slash': showPassword, 'fa-eye': !showPassword }"></i> </button>
+                            <button class=" button input-group-text showPass" style="border-radius:0 10px 10px 0;" @click="toggleShow"><font-awesome-icon icon="fa-solid fa-eye" v-if="showPassword" /> <font-awesome-icon icon="fa-solid fa-eye-slash" v-else /> </button>
                             <div class="invalid-feedback">Password minimal 8 karakter!</div>
                         </div>
                     </div>
@@ -37,7 +37,7 @@
                         <div class="input-group">
                             <input v-if="showPassword2" autocomplete="off" type="text" v-model="confirmPassword" v-bind:class="{'form-control':true, 'is-invalid' : !validConfirm(confirmPassword) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik ulang kata sandi di sini">
                             <input v-else autocomplete="off" minlength="8" type="password" v-model="confirmPassword" v-bind:class="{'form-control':true, 'is-invalid' : !validConfirm(confirmPassword) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik ulang kata sandi di sini">
-                            <button class=" button input-group-text showPass" style="border-radius:0 10px 10px 0;" @click="toggleShow2"><i class="fas" :class="{ 'fa-eye-slash': showPassword2, 'fa-eye': !showPassword2 }"></i> </button>
+                            <button class=" button input-group-text showPass" style="border-radius:0 10px 10px 0;" @click="toggleShow2"><font-awesome-icon icon="fa-solid fa-eye" v-if="showPassword2" /> <font-awesome-icon icon="fa-solid fa-eye-slash" v-else /> </button>
                             <div class="invalid-feedback">Password harus sama!</div>
                         </div>
                     </div>                    

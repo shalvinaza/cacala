@@ -17,16 +17,22 @@
         <div class="row">
             <div class="col-md-2 mt-3">
                 <h5 class="mt-3">Filter</h5>
-                <div class="form-check" v-for="option in partai" :key="option.id_partai">
-                    <input class="form-check-input" :id="option" type="checkbox" :value="option" v-model="selectedPartai" :key="option.id_partai">
-                    <label class="form-check-label" :for="option" :key="option.id_partai">{{ option.nama_partai }}</label>
+                <h7 class="mt-3">Partai</h7>
+                <div class="form-check" v-for="option in partai" :key="option.nama_partai">
+                    <input class="form-check-input" :id="option" type="checkbox" :value="option" v-model="checked.selectedPartai" :key="option.nama_partai">
+                    <label class="form-check-label" :for="option" :key="option.nama_partai">{{ option.nama_partai }}</label>
+                </div>
+                <h7 class="mt-3">Daerah pilih</h7>
+                <div class="form-check" v-for="option in kota" :key="option.kota">
+                    <input class="form-check-input" :id="option" type="checkbox" :value="option" v-model="checked.selectedKota" :key="option.kota">
+                    <label class="form-check-label" :for="option" :key="option.kota">{{ option.kota }}</label>
                 </div>
 
             </div>
 
             <div class="col-md-10">
                 <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
-                    <div class="col" id="my-table" v-for="(calon,index) in calons" :key="calon.id_calon" v-show="visible(calon.partai)">
+                    <div class="col" id="my-table" v-for="(calon,index) in calons" :key="calon.id_calon" v-show="visible(calon.partai,calon.kota)">
                         <div class="card h-100">
                             <img :src=calon.foto class="card-img-top" alt="dpr 2">
                             <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
@@ -44,7 +50,7 @@
                                 <div class="row align-items-start mb-2">
                                     <p class="col d-flex flex-wrap card-title">Daerah Pilih</p>
                                     <div class="col d-flex flex-wrap justify-content-end">
-                                        <p v-for="kta in calon.kota" :key="kta.id_dapil">{{kta}}</p>
+                                        <p v-for="kta in calon.kota" :key="kta.id_dapil">{{kta.kota}}</p>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-between">
@@ -128,8 +134,10 @@ export default {
         calons: [],
         followed_calon: [],
         provinsi: [],
-        selectedKota: '',
-        selectedPartai: [],
+        checked:{
+            selectedKota: [],
+            selectedPartai: [],
+        },
         exampleItems : [...Array(150).keys()].map(i => ({ id: (i+1), name: 'Nama ' + (i+1) })) ,
         perPage: 9,
         currentPage: 1,
@@ -140,6 +148,9 @@ export default {
         partai: function() {
             return this.available('partai').sort((a, b) => a < b ? -1 : 1);
         },
+        kota: function() {
+            return this.available('kota').sort((a, b) => a < b ? -1 : 1);
+        }
 
         // filteredKota : function(){
         //     if(this.selectedKota && this.selectedKota !== 'dapil'){
@@ -282,16 +293,24 @@ export default {
         available: function(category) {
             const categorySet = new Set([]);
             for (var i = 0; i < this.calons.length; i++) {
-                Array.from(this.calons[i][category]).forEach(el => categorySet.add(el));
+                this.calons[i][category].forEach(el => categorySet.add(el));
             }
             return [...categorySet];
         },
-        visible: function(partai) {
-            const partais = this.selectedPartai.length ? _.intersection(partai, this.selectedPartai).length : true;            
-            if (partais) {
+        visible: function(partai,kota) {
+            const partais = this.checked.selectedPartai.length ? _.intersection(partai, this.checked.selectedPartai).length : true;      
+            const kotas = this.checked.selectedKota.length ? _.intersection(kota, this.checked.selectedKota).length : true;        
+            if (partais && kotas) {
                 return true;
             } else {
                 return false;
+            }
+        },
+        filters: {
+            capitalize: function (value) {
+            if (!value) return '';
+            value = value.toString();
+            return value.charAt(0).toUpperCase() + value.slice(1);
             }
         }
     }

@@ -1,4 +1,50 @@
+const express = require("express")
 const { pool } = require("../dbConfig")
+const multer= require("multer")
+
+const app = express()
+
+const storage = multer.diskStorage({
+   destination: function(req, file, cb){
+      cb(null, './uploads/');
+   },
+   filename: function(req, file, cb){
+      cb(null, new Date().toISOString() + file.originalname);
+   }
+});
+
+const fileFilter = function(req, file, cb){
+   allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+
+   if(!allowedTypes.includes(file.mimetype)){
+      const error = new Error("Hanya dapat mengunggah foto");
+      error.code = "LIMIT_FILE_TYPES";
+      return cb(error, false);
+   }
+   cb(nulll, true);
+}
+
+const MAX_SIZE = 200000;
+
+const upload = multer({
+   storage:storage,
+   fileFilter,
+   limits: {
+      fileSize: MAX_SIZE
+   }
+})
+
+app.use(function(err, req, res, next){
+   if(err.code === "LIMIT_FILE_TYPES"){
+      res.status(422).json({error: "Hanya boleh memilih gambar"});
+      return;
+   }
+
+   if(err.code === "LIMIT_FILE_SIZE"){
+      res.status(422).json({error: `File terlalu besar. Besar file maksimal ${MAX_SIZE / 1000}Kb`});
+      return;
+   }
+})
 
 exports.selectPostByAdmin = async (req, res) => {
    try{
@@ -14,12 +60,18 @@ exports.selectPostByAdmin = async (req, res) => {
    }
 }
 
-exports.addPost = async (req, res) => {
+exports.addPost = upload.array('foto'), async (req, res) => {
    try{
+      const fotos = []
+
+      for(let i = 0; i<req.foto.length; i++){
+         fotos.push(req.foto[i].filename)
+      }
+
       const { judul } = req.body
       const { teks } = req.body
-      const { foto } = req.body
-      const { video } = req.body
+      const { foto } = fotos
+      const { video } = req.video
 
       const post = await pool.query(
          "INSERT INTO post(id_admin, judul, teks, foto, video) VALUES($1, $2, $3, $4, $5) RETURNING *",
@@ -93,5 +145,22 @@ exports.selectPostById = async (req, res) => {
       res.json(post.rows)
    } catch(err) {
       res.json({ message: err })
+   }
+}
+
+exports.addImage = async (req, res) => {
+   try{
+      const { id_post } = req.body
+      const { foto } = req.body
+      const { video } = req.body
+
+      const postImage = await pool.query(
+         "INSERT INTO images(id_post, foto, video) VALUES($1, lo_import($2), lo_import($3)) RETURNING *",
+         [id_post, foto, video]
+      )
+
+      res.json(postImage)
+   } catch(err) {
+      console.error(err.message)
    }
 }

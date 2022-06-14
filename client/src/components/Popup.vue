@@ -3,7 +3,7 @@
         <div class="col-md-6 popup-inner p-4">
             <div class="d-flex align-items-center justify-content-between mb-3">
               <h5>{{title}}</h5>
-              <span  @click.prevent="close"><i class="fas fa-times"></i></span>
+              <span  @click.prevent="close"><font-awesome-icon icon="fa-solid fa-xmark" /></span>
             </div>
             <div class="p-0">
                 <div class="">

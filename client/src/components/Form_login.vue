@@ -20,7 +20,7 @@
                         <div class="input-group">
                             <input v-if="showPassword" id="pass_user" autocomplete="off" minlength="8" type="text" v-model="login.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(login.password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
                             <input v-else id="pass_user" autocomplete="off" minlength="8" type="password" v-model="login.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(login.password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
-                            <button class=" button input-group-text showPass" @click="toggleShow"><i class="fas" :class="{ 'fa-eye-slash': showPassword, 'fa-eye': !showPassword }"></i> </button>
+                            <button class=" button input-group-text showPass" @click="toggleShow"> <font-awesome-icon icon="fa-solid fa-eye" v-if="showPassword" /> <font-awesome-icon icon="fa-solid fa-eye-slash" v-else /> </button>
                         </div>
                         <div class="invalid-feedback">Password minimal 8 karakter!</div>
                     </div>
