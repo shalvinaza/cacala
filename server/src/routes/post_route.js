@@ -61,7 +61,7 @@ router.post("/", authorization, upload.array('foto'), async (req, res) => {
   
         const { judul } = req.body
         const { teks } = req.body
-        const { foto } = req.file
+        const { foto } = req.file.filename
         const { video } = req.body
   
         const post = await pool.query(
