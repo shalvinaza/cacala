@@ -29,7 +29,7 @@ const storage = multer.diskStorage({
  const MAX_SIZE = 200000;
  
  const upload = multer({
-    dest:'/uploads/',
+    dest:'uploads/',
     storage,
     fileFilter,
     limits: {
@@ -61,7 +61,7 @@ router.post("/", authorization, upload.single('foto'), async (req, res) => {
   
         const { judul } = req.body
         const { teks } = req.body
-        const { foto } = req.file.filename
+        const { foto } = req.foto.filename
         const { video } = req.body
   
         const post = await pool.query(
