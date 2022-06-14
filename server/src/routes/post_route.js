@@ -1,4 +1,4 @@
-const path = require('path')
+// const path = require('path')
 const express = require("express")
 const router = express.Router()
 const controller = require("../controllers/post_controller")
@@ -8,7 +8,7 @@ const app = express()
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb){
-       cb(null, path.join(__dirname, './uploads'));
+       cb(null,'./server/uploads');
     },
     filename: function(req, file, cb){
        cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname);
@@ -52,9 +52,10 @@ const storage = multer.diskStorage({
 router.post("/", authorization, upload.array('foto'), async (req, res) => {
     try{
         const fotos = []
+        const url = req.protocol + '://' + req.get('host')
   
         for(let i = 0; i<req.foto.length; i++){
-           fotos.push(req.foto[i].filename)
+           fotos.push(url + './server/uploads/' + req.foto[i].filename)
         }
   
         const { judul } = req.body
