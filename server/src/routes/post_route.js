@@ -36,7 +36,6 @@ const filename = function(req, file, cb){
  const upload = multer({
     dest:'./uploads/',
     fileFilter,
-    filename,
     limits: {
        fileSize: MAX_SIZE
     }
@@ -65,7 +64,7 @@ router.post("/", authorization, upload.array('foto'), async (req, res) => {
         // }
         const { judul } = req.body
         const { teks } = req.body
-        const { foto } = req.foto.filename
+        const { foto } = req.foto
         const { video } = req.body
   
         const post = await pool.query(
