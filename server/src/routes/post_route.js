@@ -30,7 +30,6 @@ const app = express()
  
  const upload = multer({
     dest:'./uploads/',
-    storage:storage,
     fileFilter,
     limits: {
        fileSize: MAX_SIZE,
