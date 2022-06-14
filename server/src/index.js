@@ -8,7 +8,7 @@ require("dotenv/config")
 app.use(express.json()) //req.body
 app.use(cors())
 app.use(bodyParser.json())
-app.use(express.static(__dirname))
+// app.use(express.static(__dirname))
 
 //ROUTES//
 const authRoute = require("../src/routes/auth_route")
