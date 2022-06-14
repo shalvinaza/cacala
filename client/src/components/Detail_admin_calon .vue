@@ -82,7 +82,7 @@
                                         <button type="submit" class="btn bg-light-orange br-10">Unggah</button> 
                                     </div>
                                     <div class="d-flex flex-column field">
-                                        <div v-for="(file,index) in files" :key="index" :class="`level ${file.invalidMessage && 'has-text-danger'}`">
+                                        <div v-for="(file,index) in form.foto" :key="index" :class="`level ${file.invalidMessage && 'has-text-danger'}`">
                                             <div class="level-left">
                                                 <div class="level-item">
                                                     {{file.name}}
@@ -212,12 +212,11 @@ export default {
              posts: [],
              form : {
                  judul:'',
-                 waktu:'',
                  teks:'',
                  foto: [],
                  video:''
              },
-             files:[],
+            files:[],
             formUpdate : {
                  judul:'',
                  waktu:'',
@@ -307,7 +306,6 @@ export default {
 
             formData.append('judul', this.form.judul);
             formData.append('teks', this.form.teks);
-            formData.append('waktu', this.form.waktu);
 
             _.forEach(this.form.foto, file => {
                 if(this.validateImage(file) === ""){
@@ -319,9 +317,8 @@ export default {
                 await axios.post(POST_POSTS_API_URL, formData);
                 this.message = "Berhasil diunggah";
                 this.load()
-                this.files = [];
+                this.files = []
                 this.form.judul =''
-                this.form.waktu = ''
                 this.form.teks = ''
                 this.form.foto = []
                 this.form.video = ''

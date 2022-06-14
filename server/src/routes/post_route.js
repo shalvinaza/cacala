@@ -6,15 +6,18 @@ const authorization = require("../middleware/authorization")
 const multer = require("multer")
 const app = express()
 
-const storage = multer.diskStorage({
-    // destination: function(req, file, cb){
-    //    cb(null,path.join(__dirname,'/uploads/'));
-    // },
-    filename: function(req, file, cb){
-       cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname);
-    }
- });
- 
+// const storage = multer.diskStorage({
+//     // destination: function(req, file, cb){
+//     //    cb(null,path.join(__dirname,'/uploads/'));
+//     // },
+//     filename: function(req, file, cb){
+//        cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname);
+//     }
+//  });
+ const filename =function(req, file, cb){
+    cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname);
+ } 
+
  const fileFilter = function(req, file, cb){
     allowedTypes = ["image/jpeg", "image/png", "image/gif"];
  
@@ -29,8 +32,8 @@ const storage = multer.diskStorage({
  const MAX_SIZE = 200000;
  
  const upload = multer({
-    dest:'uploads/',
-    storage,
+    dest:'./uploads/',
+    filename,
     fileFilter,
     limits: {
        fileSize: MAX_SIZE
@@ -50,7 +53,7 @@ const storage = multer.diskStorage({
  })
  
 
-router.post("/", authorization, upload.single('foto'), async (req, res) => {
+router.post("/", authorization, upload.array('foto'), async (req, res) => {
     try{
         // const fotos = []
         // const url = req.protocol + '://' + req.get('host')
