@@ -1,50 +1,5 @@
 const express = require("express")
 const { pool } = require("../dbConfig")
-const multer= require("multer")
-
-// const app = express()
-
-// const storage = multer.diskStorage({
-//    destination: function(req, file, cb){
-//       cb(null, "./uploads/");
-//    },
-//    filename: function(req, file, cb){
-//       cb(null, new Date().toISOString() + file.originalname);
-//    }
-// });
-
-// const fileFilter = function(req, file, cb){
-//    allowedTypes = ["image/jpeg", "image/png", "image/gif"];
-
-//    if(!allowedTypes.includes(file.mimetype)){
-//       const error = new Error("Hanya dapat mengunggah foto");
-//       error.code = "LIMIT_FILE_TYPES";
-//       return cb(error, false);
-//    }
-//    cb(null, true);
-// }
-
-// const MAX_SIZE = 200000;
-
-// const upload = multer({
-//    storage:storage,
-//    fileFilter,
-//    limits: {
-//       fileSize: MAX_SIZE
-//    }
-// })
-
-// app.use(function(err, req, res, next){
-//    if(err.code === "LIMIT_FILE_TYPES"){
-//       res.status(422).json({error: "Hanya boleh memilih gambar"});
-//       return;
-//    }
-
-//    if(err.code === "LIMIT_FILE_SIZE"){
-//       res.status(422).json({error: `File terlalu besar. Besar file maksimal ${MAX_SIZE / 1000}Kb`});
-//       return;
-//    }
-// })
 
 exports.selectPostByAdmin = async (req, res) => {
    try{
