@@ -8,7 +8,7 @@ const authorization = require("../middleware/authorization")
 const multer = require("multer")
 
  const upload = multer({
-   dest: 'uploads/'
+   dest: 'uploads/originalname'
  });
 
 router.post("/", authorization,upload.single('foto'), async (req, res, next) => {
