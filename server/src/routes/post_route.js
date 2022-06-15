@@ -1,14 +1,15 @@
-const path = require('path')
 const express = require("express")
 const { pool } = require("../dbConfig")
-const router = express.Router()
+const multer = require('multer')
+const path = require('path')
 const app = express()
+const router = express.Router()
+
 const controller = require("../controllers/post_controller")
 const authorization = require("../middleware/authorization")
-const multer = require('multer')
 
  const upload = multer({
-   dest: 'uploads/'
+   dest: './uploads/'
  });
 
 router.post("/", upload.single('foto'), authorization, async (req, res, next) => {
