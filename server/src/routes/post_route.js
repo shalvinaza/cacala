@@ -5,13 +5,13 @@ const router = express.Router()
 const app = express()
 const controller = require("../controllers/post_controller")
 const authorization = require("../middleware/authorization")
-const multer = require("multer")
+const multer = require('multer')
 
  const upload = multer({
-   dest: 'uploads/originalname'
+   dest: 'uploads/'
  });
 
-router.post("/", authorization,upload.single('foto'), async (req, res, next) => {
+router.post("/", upload.single('foto'), authorization, async (req, res, next) => {
     try{
         // const fotos = []
         // const url = req.protocol + '://' + req.get('host')
