@@ -412,7 +412,7 @@ exports.selectCalonDPRDKotaByKota = async (req, res) => {
    const { id_kota } = req.params
    try{
       const calon = await pool.query(
-         "SELECT c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, j.jabatan_tujuan, k.kota FROM calon c JOIN admins a on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan JOIN dapil_calon ON dapil_calon.id_calon = c.id_calon JOIN kota k ON dapil_calon.id_kota = k.id_kota WHERE c.id_jabatan = '50e62ddc-3229-4f3e-a922-a68061c0bb1d' AND dapil_calon.id_kota = $1 ORDER BY no_urut;",[
+         "SELECT c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, j.jabatan_tujuan, k.kecamatan, kt.kota FROM calon c JOIN admins a on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan JOIN dapil_calon ON dapil_calon.id_calon = c.id_calon JOIN kecamatan k ON dapil_calon.id_kecamatan = k.id_kecamatan JOIN kota kt ON k.id_kota = kt.id_kota WHERE c.id_jabatan = '50e62ddc-3229-4f3e-a922-a68061c0bb1d' AND kt.id_kota = $1 ORDER BY no_urut;",[
             id_kota
          ])
 
