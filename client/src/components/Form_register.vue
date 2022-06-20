@@ -19,7 +19,7 @@
                     </div>
                     <div class="forms-inputs mb-4"> 
                         <span>Email</span> 
-                        <input id="email_user" autocomplete="off" type="text" v-model="register.email" v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(register.email) && emailBlured}" v-on:blur="emailBlured = true" placeholder="Ketik email di sini">
+                        <input id="email_user" @focus="error=false" autocomplete="off" type="text" v-model="register.email" v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(register.email) && emailBlured || error===true}" v-on:blur="emailBlured = true" placeholder="Ketik email di sini">
                         <div class="invalid-feedback">Email harus valid!</div>
                         <!-- <div v-if="signed" class="invalid-feedback">Email sudah terdaftar!</div> -->
                     </div>
@@ -42,7 +42,7 @@
                         </div>
                     </div>                    
                     <div class="mb-3"> 
-                        <button type="submit" class="btn bg-light-orange w-100 br-10">Daftar</button> 
+                        <button type="submit" @click="error=false" class="btn bg-light-orange w-100 br-10">Daftar</button> 
                     </div>
                 </form>
                 <!-- </div> -->
@@ -54,30 +54,40 @@
 
           <!-- popup -->
           <Popup v-if="openPopup" title="Registrasi berhasil" pesanPopup="Silahkan masuk ke dalam sistem">
-              <div class="d-flex justify-content-end">
-                  <button class="bg-light-orange-pop br-10" @click="goToLogin()">Oke</button>
-              </div>
+            <div class="d-flex justify-content-end">
+                <button class="bg-light-orange-pop br-10" @click="goToLogin()">Oke</button>
+            </div>
           </Popup>
+          <!-- <Popup v-if="error" title="Registrasi gagal" :pesanPopup="message">
+            <div class="d-flex justify-content-end">
+                <button class="bg-light-orange-pop br-10" @click="goToLogin">Masuk</button>
+                <button class="btn-outline-orange ms-2" @click="toggleError">Tutup</button>
+            </div>
+          </Popup> -->
+
+          <Alert v-if="error" variantName="danger" :messageProps="'Registrasi gagal, ' + message"/>
+
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import Popup from './Berhasil.vue'
+import Alert from './Pop_sukses.vue'
 const REGISTER_API_URL = `${process.env.VUE_APP_API_URL}/auth/users/register`
 const USERS_API_URL = `${process.env.VUE_APP_API_URL}/auth/users`
 
 export default {
     name:'Form_login',
     components:{
-        Popup
+        Popup,
+        Alert
     },
     data: function () {
         return {
             unameBlured : false,
             emailBlured : false,
             valid : false,
-            submitted : false,
             passwordBlured:false,
             register: {
                 username: "",
@@ -89,11 +99,12 @@ export default {
             confirmPassword: "",
             openPopup: false,
             users: [],
-            signed: false
+            message: "",
+            error: false,
         }
     },
     mounted(){
-        this.fetchUsers();
+        this.fetchUsers()
     },
     methods:{
         validate : function(){
@@ -154,12 +165,6 @@ export default {
         toggleShow2() {
             this.showPassword2 = !this.showPassword2;
         },
-        submit : function(){
-            this.validate();
-            if(this.valid){
-                this.submitted = true;
-            }
-        },
         fetchUsers(){
             fetch(USERS_API_URL)
             .then(response => response.json())
@@ -167,25 +172,21 @@ export default {
                 this.users = result
             })
         },
-        registerUser(e) {
+        async registerUser(e) {
             e.preventDefault()
-            this.validate();
+            this.validate()
             if (this.valid){
-                    axios.post(REGISTER_API_URL, this.register)
+                try{
+                    await axios.post(REGISTER_API_URL, this.register)
                     .then(() => {
-                    //   localStorage.setItem('token',response.data.token);
-                    // alert("Registrasi berhasil\n\n Silahkan masuk ke dalam sistem");
-                    // this.$router.push('/login');
-                    this.openPopup = true;
-
-                    //   if (localStorage.getItem('token') != null){
-                    //     this.$emit('loggedIn')
-                    //     this.$router.push('/')    
-                    //   }
-                })
-                .catch(error => {
-                    console.error(error)
-                })
+                        this.error = false;
+                        this.openPopup = true;
+                    })
+                } catch(err) {
+                    this.error = true;
+                    this.message = err.response.data;
+                    console.log(this.message)
+                }
             } 
         }
     }
@@ -248,18 +249,14 @@ p{
 .bxs-badge-check {
     font-size: 90px
 }
-/* .btn-outline-orange{
+.btn-outline-orange{
     color:#DDA18C;
-    border-color: #DDA18C;
+    font-weight:400;
+    border: 2px solid #DDA18C ;
     min-width: 4rem;
     background: white;
 }
-.btn-outline-orange:hover{
-    color:white;
-    background-color: #D65A40;
-    border-color: #D65A40;
-} */
-.bg-light-orange-pop:hover{
+.bg-light-orange-pop:hover,.btn-outline-orange:hover {
     color:white;
     background-color: #D65A40;
     border-color: #D65A40;

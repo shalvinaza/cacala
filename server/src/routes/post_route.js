@@ -7,8 +7,46 @@ const router = express.Router()
 
 const authorization = require("../middleware/authorization")
 
+const storage = multer.diskStorage({
+   destination: function(req, file, cb){
+      cb(null, './uploads/')
+   },
+   filename: function(req, file, cb){
+      cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname)
+   }
+})
+
+const fileFilter = function(req, file, cb){
+   allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+
+   if(!allowedTypes.includes(file.mimetype)){
+      const error = new Error("Hanya dapat mengunggah foto");
+      error.code = "LIMIT_FILE_TYPES";
+      return cb(error, false);
+   }
+   cb(null, true);
+}
+
+const MAX_SIZE = 200000;
+
+app.use(function(err, req, res, next){
+   if(err.code === "LIMIT_FILE_TYPES"){
+      res.status(422).json({error: "Hanya boleh memilih gambar"});
+      return;
+   }
+
+   if(err.code === "LIMIT_FILE_SIZE"){
+      res.status(422).json({error: `File terlalu besar. Besar file maksimal ${MAX_SIZE / 1000}Kb`});
+      return;
+   }
+})
+
 const upload = multer({
-   dest:'uploads/'
+   storage:storage,
+   fileFilter: fileFilter,
+   limits: {
+      fileSize: MAX_SIZE
+   }
  })
 
  router.post("/", upload.single('foto'), authorization, async (req, res, next) => {
@@ -22,7 +60,7 @@ const upload = multer({
        console.log(req.file)
        const { judul } = req.body
        const { teks } = req.body
-       const { foto } = req.body
+       const foto = req.file.filename
        const { video } = req.body
  
        const post = await pool.query(

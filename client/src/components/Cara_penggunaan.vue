@@ -1,5 +1,5 @@
 <template>
-    <div id="caraPenggunaan" class="container-fluid bg-dark-blue">
+    <div id="caraPenggunaan" class="cara container-fluid bg-dark-blue">
         <div class="container d-md-block align-items-center pt-5">
             <div class="row">
                 <h2 class="extra-bold mb-5" style="color:white">Cara Penggunaan</h2>
@@ -34,7 +34,7 @@
                 </div>
                 <div class="col-md-3 mb-3">
                     <div class="card">
-                        <img src="../assets/images/step_1.png" class="card-img-top p-4" alt="step 1">
+                        <img src="../assets/images/step_4.png" class="card-img-top p-4" alt="step 1">
                         <div class="card-body d-inline-flex align-items-start p-3">
                             <h5 class="card-title me-2">4</h5>
                             <p class="card-text">Cermati dan informasi detail dari calon yang dipilih</p>
@@ -61,11 +61,15 @@ export default {
 .card{
     border-radius: 15px;
     background-color: #F2F0E1;
-    min-height: 21.5rem;
+    height: 22rem;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border:none;
 }
 p{
     font-size: 16px;
+}
+.card-img-top{
+    height: 250px;
+    width: 250px;
 }
 </style>

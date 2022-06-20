@@ -1,42 +1,24 @@
 <template>
     <div class="container">
         <h1 class="text-center pb-4 mb-4">Calon DPD Republik Indonesia</h1>
-        <!-- <select class="btn-outline-orange2 me-3" name="dapil" id="dapil" v-model="selectedKota">
-            <option class="dropdown-item" value="dapil">Daerah Pilih</option>
-            <option class="dropdown-item" v-for="(prov) in provinsi" :key="prov.id_provinsi">
-            {{ prov.provinsi }}
-            </option>
-        </select> 
-        <select class="btn-outline-orange2" name="partai" id="partai" v-model="selectedPartai">
-            <option class="dropdown-item" value="partai">Partai</option>
-            <option class="dropdown-item" v-for="prt in partai" v-bind:key="prt.id_partai">
-            {{ prt.nama_partai }}
-            </option>
-        </select>  -->
-
         <div class="row">
             <div class="col-md-2 mt-3">
                 <h5 class="mt-3">Filter</h5>
-                <h7 class="mt-3">Partai</h7>
+                <h6 class="mt-3">Partai</h6>
                 <div class="form-check" v-for="option in partai" :key="option.nama_partai">
-                    <input class="form-check-input" :id="option" type="checkbox" :value="option" v-model="checked.selectedPartai" :key="option.nama_partai">
-                    <label class="form-check-label" :for="option" :key="option.nama_partai">{{ option.nama_partai }}</label>
+                    <input class="form-check-input" id="semua" type="checkbox" value="semua" v-model="checkPartai">
+                    <input class="form-check-input" :id="option" type="checkbox" :value="option.nama_partai" v-model="checkPartai">
+                    <label class="form-check-label">{{ option.nama_partai }}</label>
                 </div>
-                <h7 class="mt-3">Daerah pilih</h7>
-                <div class="form-check" v-for="option in kota" :key="option.kota">
-                    <input class="form-check-input" :id="option" type="checkbox" :value="option" v-model="checked.selectedKota" :key="option.kota">
-                    <label class="form-check-label" :for="option" :key="option.kota">{{ option.kota }}</label>
-                </div>
-
             </div>
 
             <div class="col-md-10">
                 <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
-                    <div class="col" id="my-table" v-for="(calon,index) in calons" :key="calon.id_calon" v-show="visible(calon.partai,calon.kota)">
+                    <div class="col" id="my-table" v-for="calon in filteredCalons" :key="calon.id_calon">
                         <div class="card h-100">
                             <img :src=calon.foto class="card-img-top" alt="dpr 2">
                             <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
-                                <h5>{{index + 1}}</h5>
+                                <h5>{{calon.no_urut}}</h5>
                             </div>
                             <div class="card-body p-4">
                                 <h5 class="card-title text-center">{{calon.nama}}</h5>
@@ -122,7 +104,6 @@
 
 <script>
 import axios from 'axios'
-const _ = require('lodash')
 
 const DPD_API_URL = `${process.env.VUE_APP_API_URL}/calon/jabatan/7a9b46a5-efe7-4f9b-80e7-4b54636810ad`
 const FOLLOWED_CALON_API_URL = `${process.env.VUE_APP_API_URL}/user/followed`
@@ -133,11 +114,9 @@ export default {
         no_data: false,
         calons: [],
         followed_calon: [],
-        provinsi: [],
-        checked:{
-            selectedKota: [],
-            selectedPartai: [],
-        },
+        // provinsi: [],
+        partai:[],
+        checkPartai: [],
         exampleItems : [...Array(150).keys()].map(i => ({ id: (i+1), name: 'Nama ' + (i+1) })) ,
         perPage: 9,
         currentPage: 1,
@@ -145,90 +124,43 @@ export default {
     computed: {
         isLoggedIn: function() {return localStorage.getItem("token") != null},
         rows(){return this.exampleItems.length},
-        partai: function() {
-            return this.available('partai').sort((a, b) => a < b ? -1 : 1);
-        },
-        kota: function() {
-            return this.available('kota').sort((a, b) => a < b ? -1 : 1);
+        filteredCalons(){
+            let calons = this.calons
+            const checkPartai = this.checkPartai
+
+            if(checkPartai.length){
+                return calons.filter((calon) => {
+                    let selectedPartai = calon.partai.findIndex((prt) => {
+                        return checkPartai.includes(prt.nama_partai)
+                    }, this)
+                    return selectedPartai !== -1
+                })
+            }
+
+            else{
+                console.log('gaada hasil')
+            }
+
+            return calons
         }
-
-        // filteredKota : function(){
-        //     if(this.selectedKota && this.selectedKota !== 'dapil'){
-        //         if(this.selectedPartai && this.selectedPartai){
-        //             return this.calons.filter((calon) => {
-        //                 let foundPartai = calon.partai.findIndex((prt) => {
-        //                     return prt.nama_partai.match(this.selectedPartai)
-        //                 })
-        //                 return foundPartai !== -1
-        //             });
-        //         }
-        //         return this.calons.filter((calon) => {
-        //             return calon.provinsi.match(this.selectedKota);
-        //         })
-        //     }
-        //     if(this.selectedKota && this.selectedPartai){
-        //         return this.calons.filter((calon) => {
-        //             let dapil = calon.provinsi.match(this.selectedKota)
-        //             let foundPartai = calon.partai.findIndex((prt) => {
-        //                 let part = prt.nama_partai.match(this.selectedPartai)
-        //             })
-        //             return foundPartai !== -1
-        //         })
-        //     }
-
-
-        //     // if(this.selectedKota && this.selectedKota != 'dapil'){
-        //     //     return this.calons.filter((calon) => {
-        //     //         // return calon.provinsi.match(this.selectedKota);
-        //     //         return hasil = calon.provinsi.match(this.selectedKota)
-        //     //     })
-        //     // }
-        //     // if(this.selectedPartai && this.selectedPartai != 'partai'){
-        //     //     return this.calons.filter((calon) => {
-        //     //         let foundPartai = calon.partai.findIndex((prt) => {
-        //     //             return hasil = prt.nama_partai.match(this.selectedPartai)
-        //     //         })
-        //     //         return foundPartai !== -1
-        //     //     })
-        //     // }
-
-        //     // return hasil;
-        //     // if(this.filterCategory && this.filterCategory !== 'all') {
-        //     //     posts = posts.filter((p) => {
-        //     //     let foundCategory = p.category_array.findIndex((c) => {
-        //     //         return c.slug === this.filterCategory
-        //     //     })
-        //     //     return foundCategory !== -1
-        //     //     })
-        //     // }
-        // }
+        
     },
     created(){
         this.fetchDPDCalons()
-        // this.fetchPartai(),
-        // this.fetchProvinsi()
+        this.fetchPartai()
     },
     methods : {
-        // fetchProvinsi(){
-        //     const PROV_API_URL = `${process.env.VUE_APP_API_URL}/dapil/provinsi`
-        //     fetch(PROV_API_URL)
-        //         .then(response => response.json())
-        //         .then(result => {
-        //             this.provinsi = result
-        //         })
-        // },
-
-        // fetchPartai(){
-        //     const PARTAI_API_URL = `${process.env.VUE_APP_API_URL}/partai`
+        fetchPartai(){
+            const PARTAI_API_URL = `${process.env.VUE_APP_API_URL}/partai`
         
-        //     fetch(PARTAI_API_URL)
-        //         .then(response => response.json())
-        //         .then(result => {
-        //             this.partai = result
-        //             var parsedobj = JSON.parse(JSON.stringify(result))
-        //             console.log(parsedobj)
-        //     })  
-        // },
+            fetch(PARTAI_API_URL)
+                .then(response => response.json())
+                .then(result => {
+                    this.partai = result
+                    var parsedobj = JSON.parse(JSON.stringify(result))
+                    console.log(parsedobj)
+            })  
+        },
 
         fetchDPDCalons(){
             fetch(DPD_API_URL)
@@ -289,30 +221,6 @@ export default {
                     console.error(error)
                 })
         },
-
-        available: function(category) {
-            const categorySet = new Set([]);
-            for (var i = 0; i < this.calons.length; i++) {
-                this.calons[i][category].forEach(el => categorySet.add(el));
-            }
-            return [...categorySet];
-        },
-        visible: function(partai,kota) {
-            const partais = this.checked.selectedPartai.length ? _.intersection(partai, this.checked.selectedPartai).length : true;      
-            const kotas = this.checked.selectedKota.length ? _.intersection(kota, this.checked.selectedKota).length : true;        
-            if (partais && kotas) {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        filters: {
-            capitalize: function (value) {
-            if (!value) return '';
-            value = value.toString();
-            return value.charAt(0).toUpperCase() + value.slice(1);
-            }
-        }
     }
 }
 </script>

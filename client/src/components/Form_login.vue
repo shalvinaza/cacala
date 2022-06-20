@@ -12,50 +12,59 @@
                 <form @submit.prevent="loginUser">
                     <div class="forms-inputs mb-4"> 
                         <span>Email</span> 
-                        <input id="email_user" autocomplete="off" type="email" v-model="login.email" v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(login.email) && emailBlured}" v-on:blur="emailBlured = true" placeholder="Ketik email di sini">
-                        <div class="invalid-feedback">Email harus valid!</div>
+                        <input id="email_user" @focus="error=false" autocomplete="off" type="email" v-model="login.email" v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(login.email) && emailBlured || error===true}" v-on:blur="emailBlured = true" placeholder="Ketik email di sini">
+                        <div class="invalid-feedback">Email harus valid</div>
                     </div>
                     <div class="forms-inputs mb-4"> 
                         <span>Kata Sandi</span>
                         <div class="input-group">
-                            <input v-if="showPassword" id="pass_user" autocomplete="off" minlength="8" type="text" v-model="login.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(login.password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
-                            <input v-else id="pass_user" autocomplete="off" minlength="8" type="password" v-model="login.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(login.password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
-                            <button class=" button input-group-text showPass" @click="toggleShow"> <font-awesome-icon icon="fa-solid fa-eye" v-if="showPassword" /> <font-awesome-icon icon="fa-solid fa-eye-slash" v-else /> </button>
+                            <input v-if="showPassword" @focus="error=false" autocomplete="off" minlength="8" type="text" v-model="login.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(login.password) && passwordBlured || error===true}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
+                            <input v-else @focus="error=false" autocomplete="off" minlength="8" type="password" v-model="login.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(login.password) && passwordBlured || error===true}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
+                            <button class=" button input-group-text showPass" style="border-radius:0 10px 10px 0;" @click="toggleShow"><font-awesome-icon icon="fa-solid fa-eye" v-if="showPassword" /> <font-awesome-icon icon="fa-solid fa-eye-slash" v-else /> </button>
+                            <div class="invalid-feedback">Kata sandi minimal 8 karakter</div>
                         </div>
-                        <div class="invalid-feedback">Password minimal 8 karakter!</div>
                     </div>
                     <div class="mb-3"> 
                         <!-- <button v-on:click.stop.prevent="submit" type="submit" class="btn bg-light-orange w-100 br-10">Masuk</button>  -->
-                        <button type="submit" class="btn bg-light-orange w-100 br-10">Masuk</button> 
+                        <button type="submit" @click="error=false" class="btn bg-light-orange w-100 br-10">Masuk</button> 
                     </div>
                 </form>
                 <!-- </div> -->
                 <div class="mb-4">
-                    <span>Belum punya akun?</span> <a class="buttonDaftar" style="color:#D65A40; cursor:pointer" @click="goToRegister()">Daftar Sekarang</a>
+                    <span>Belum punya akun?</span> <a class="buttonDaftar" style="color:#D65A40; cursor:pointer; text-decoration: none" @click="goToRegister()">Daftar Sekarang</a>
                 </div>
                 <button type="button" @click="goToLoginAdmin()" class="btn btn-outline-orange2 w-100 br-10">Masuk sebagai admin</button> 
             </div>
           </div>
+
+          <Alert v-if="error" variantName="danger" :messageProps="message"/>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import Alert from './Pop_sukses.vue'
+
 const LOGIN_API_URL = `${process.env.VUE_APP_API_URL}/auth/users/login`
 
 export default {
     name:'Form_login',
+    components:{
+        Alert
+    },
     data: function () {
         return {
             emailBlured : false,
             valid : false,
-            submitted : false,
             passwordBlured:false,
             login: {
                 email: "",
                 password: ""
             },
-            showPassword: false
+            showPassword: false,
+            error: false,
+            message:'',
+            showAlert: false
         }   
     },
     computed:{
@@ -67,9 +76,9 @@ export default {
         validate : function(){
             this.emailBlured = true;
             this.passwordBlured = true;
-            if( this.validEmail(this.email) && this.validPassword(this.password)){
+            if( this.validEmail(this.login.email) && this.validPassword(this.login.password)){
                 this.valid = true;
-                }
+            }
         },
         validEmail : function(email) {
             var re = /(.+)@(.+){2,}\.(.+){2,}/;
@@ -82,12 +91,6 @@ export default {
                 return true;
             }
         },
-        submit : function(){
-            this.validate();
-            if(this.valid){
-                this.submitted = true;
-            }
-        },
         toggleShow() {
             this.showPassword = !this.showPassword;
         },
@@ -97,21 +100,27 @@ export default {
         goToRegister(){
             this.$router.push('/register');
         },
-        loginUser(e){
+        async loginUser(e){
             e.preventDefault()
-            if (this.login.password.length > 0) {
-                axios.post(LOGIN_API_URL, this.login)
-                .then(response => {
-                    localStorage.setItem('token',response.data.token)
+            this.validate()
+            if (this.valid) {
+                try{
+                    await axios.post(LOGIN_API_URL, this.login)
+                    .then(response => {
+                        this.showAlert = true
+                        localStorage.setItem('token',response.data.token)
+                        localStorage.setItem('sukses', this.showAlert)
 
-                if (localStorage.getItem('token') != null){
-                    this.$emit('loggedIn')
-                    this.$router.push('/')
+                        if (localStorage.getItem('token') != null){
+                            this.error = false
+                            this.$emit('loggedIn')
+                            this.$router.push('/')
+                        }
+                    })   
+                }catch(err) {
+                    this.error = true
+                    this.message = err.response.data
                 }
-                })
-                .catch(function (error) {
-                    console.error(error.response);
-                })
             }
         }
     }
@@ -146,7 +155,7 @@ p{
     left: 10px;
     background-color: #fff;
     padding: 5px 10px;
-    z-index: 1000;
+    z-index: 100;
 }
 .forms-inputs input {
     height: 50px;

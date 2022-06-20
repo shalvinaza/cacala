@@ -6,9 +6,9 @@
                     <p>&copy; Cacala | Komisi Pemilihan Umum Republik Indonesia</p>
                 </div>
                 <div class="col-lg-3 d-flex justify-content-end align-items-center">
-                    <i class="fab fa-facebook-square me-2"></i>
-                    <i class="fab fa-twitter-square me-2"></i>
-                    <i class="fab fa-instagram-square me-2"></i>
+                    <font-awesome-icon icon="fa-brands fa-facebook-square" class="me-2"/>
+                    <font-awesome-icon icon="fa-brands fa-twitter-square" class="me-2"/>
+                    <font-awesome-icon icon="fa-brands fa-instagram" class="me-2"/>
                     <a  >Kontak Pengaduan</a>
                 </div>
             </div>

@@ -1,9 +1,9 @@
 <template>
     <div class="container">
         <div class="row">
-            <div class="col-md-3 left-col d-flex justify-content-center">
+            <div class="col-md-3 left-col d-flex justify-content-center" v-for="(calon) in calon" :key="calon.id_admin">
                 <div class="p-4 br-15" style="background: #EDEDE9; max-height:1430px">
-                    <img :src=calon.foto class="profil-calon-detail mb-4" alt="dpr 2">
+                    <img :src="calon.foto" class="profil-calon-detail mb-4" alt="dpr 2">
                     <h5 class="text-center">{{calon.nama}}</h5>
                     <p class="mb-5 text-center">Calon {{calon.jabatan_tujuan}}</p>
                     <div class="row align-items-start">
@@ -15,13 +15,13 @@
                     <div class="row align-items-start">
                         <h6 class="col">Daerah Pilih</h6>
                         <div class="col d-flex flex-wrap justify-content-end">
-                            <p>{{calon.kota}}</p>
+                            <p v-for="(kta,index) in calon.kota" :key="index">{{kta.kota}}</p>
                         </div>
                     </div>
                     <div class="row align-items-start end-row-section">
                         <h6 class="col">Nomor Urut</h6>
                         <div class="col d-flex flex-wrap justify-content-end">
-                            <p>1</p>
+                            <p>{{calon.no_urut}}</p>
                         </div>
                     </div>
                     <div class="mt-4 pb-3 end-row-section">
@@ -52,7 +52,7 @@
                     <div class="card text-white poster-calon mb-2 text-center">
                         <img src="../assets/images/poster.jpg" class="poster-calon" alt="dpr 2">
                         <div class="card-img-overlay d-flex justify-content-start poster-caption">
-                        <p class="card-text me-3 w-100">{{calon.slogan}}</p>
+                        <p class="card-text me-3 w-100" v-for="calon in calon" :key="calon.id_calon">{{calon.slogan}}</p>
                             <span class="card-text icons"><i class="fas fa-edit"></i></span>
                         </div>
                     </div>
@@ -73,7 +73,7 @@
                                     </div>
                                     <div class="d-flex align-items-center">
                                         <span class="card-text icons me-3">
-                                            <input multiple type="file" id="inputFoto" style="display:none" ref="foto" @change="selectImage()"/><font-awesome-icon icon="fa-solid fa-images" @click="addFoto()"/>
+                                            <input type="file" id="inputFoto" style="display:none" ref="foto" @change="selectImage()"/><font-awesome-icon icon="fa-solid fa-images" @click="addFoto()"/>
                                         </span>
                                         <span class="card-text icons flex-grow-2 w-100">
                                             <input type="file" id="inputVideo" style="display:none" ref="video" @change="selectVideo()"/><font-awesome-icon icon="fa-solid fa-video" @click="addVideo()"/>
@@ -82,19 +82,7 @@
                                         <button type="submit" class="btn bg-light-orange br-10">Unggah</button> 
                                     </div>
                                     <div class="d-flex flex-column field">
-                                        <div v-for="(file,index) in form.foto" :key="index" :class="`level ${file.invalidMessage && 'has-text-danger'}`">
-                                            <div class="level-left">
-                                                <div class="level-item">
-                                                    {{file.name}}
-                                                    <span v-if="file.invalidMessage">&nbsp;- {{file.invalidMessage}}</span>
-                                                </div>
-                                            </div>
-                                            <div class="level-right">
-                                                <div class="level-item">
-                                                    <font-awesome-icon icon="fa-solid fa-xmark" class="delete" @click.prevent="files.splice(index,1);form.foto.splice(index,1)"/>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <span v-if="form.foto" class="file-name">{{form.foto.name}}</span>
                                     </div>
       
                                 </form>                      
@@ -141,7 +129,9 @@
                                             </div>
                                         </Popup2>
                                     </div>
-                                    <!-- <img src="../assets/images/poster_post.jpg" class="w-100 img-poster-post mb-3" alt="..."> -->
+                                    <div class="d-flex justify-content-center">
+                                        <img v-if="post.foto" :src="'http://localhost:3000/uploads/' + post.foto" class="img-poster-post mb-3" alt="...">     
+                                    </div>
                                     <p class="card-text">{{post.teks}}</p>
                                 </div>
                             </div>
@@ -167,7 +157,9 @@
                                     <span class="card-text icons me-2"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></span>
                                     <span class="card-text icons"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></span>
                                 </div>
-                                <img src="../assets/images/poster_post2.jpg" class="w-100 img-poster-post mb-3" alt="...">
+                                <div class="d-flex justify-content-center">
+                                    <img src="../assets/images/poster_post2.jpg" class="w-100 img-poster-post mb-3" alt="...">
+                                </div>
                                 <!-- <p class="card-text">On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.</p> -->
                             </div>
                         </div>                        
@@ -180,7 +172,9 @@
                                     <span class="card-text icons me-2"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></span>
                                     <span class="card-text icons"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></span>
                                 </div>
-                                <img src="../assets/images/poster_post.jpg" class="w-100 img-poster-post mb-3" alt="...">
+                                <div class="d-flex justify-content-center">
+                                    <img src="../assets/images/poster_post.jpg" class="w-100 img-poster-post mb-3" alt="...">
+                                </div>
                                 <p class="card-text">On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.</p>
                             </div>
                         </div>
@@ -196,7 +190,6 @@
 import Popup from './Popup.vue'
 import Popup2 from './Berhasil.vue'
 import axios from 'axios'
-import _ from 'lodash'
 
 const CALON_API_URL = `${process.env.VUE_APP_API_URL}/calon/admin`
 
@@ -208,20 +201,19 @@ export default {
     },
     data: function () {
         return {
-             calon: "",
+             calon: [],
              posts: [],
              form : {
                  judul:'',
                  teks:'',
-                 foto: [],
+                 foto: '',
                  video:''
              },
             files:[],
             formUpdate : {
                  judul:'',
-                 waktu:'',
                  teks:'',
-                 foto: [],
+                 foto: '',
                  video:''
              },
              updateSubmit: false,
@@ -264,22 +256,7 @@ export default {
             document.getElementById('inputVideo').click();
         },
         selectImage(){
-            try{
-                const fotos = this.$refs.foto.files;
-                this.form.foto = [ ...this.form.foto, ...fotos];
-
-                this.files = [
-                    ...this.files,
-                    ..._.map(fotos, file => ({
-                        name: file.name,
-                        size:file.size,
-                        type: file.type,
-                        invalidMessage: this.validateImage(file)
-                    }))
-                ]
-            }catch(err){
-                console.log(err)
-            }
+            this.form.foto = this.$refs.foto.files[0];
         },
 
         validateImage(file){
@@ -306,21 +283,21 @@ export default {
 
             formData.append('judul', this.form.judul);
             formData.append('teks', this.form.teks);
+            formData.append('foto', this.form.foto);
 
-            _.forEach(this.form.foto, file => {
-                if(this.validateImage(file) === ""){
-                    formData.append('foto', file);
-                }
-            });
+            // _.forEach(this.form.foto, file => {
+            //     if(this.validateImage(file) === ""){
+            //         formData.append('foto', file);
+            //     }
+            // });
             try {
                 axios.defaults.headers.common["token"] = localStorage.token
                 await axios.post(POST_POSTS_API_URL, formData);
                 this.message = "Berhasil diunggah";
                 this.load()
-                this.files = []
                 this.form.judul =''
                 this.form.teks = ''
-                this.form.foto = []
+                this.form.foto = ''
                 this.form.video = ''
                 this.error = false
             }catch(err){
@@ -441,7 +418,10 @@ export default {
     border-radius: 15px;
 }
 .img-poster-post{
+    display: flex;
+    justify-content: center;
     max-height: 800px;
+    max-width: 400px;
 }
 .icons{
     color: #DDA18C;

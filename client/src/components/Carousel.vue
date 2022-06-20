@@ -11,7 +11,7 @@
                 <div class="carousel-item active">
                     <div class="row" style="padding-left:5em; padding-right:5em">
                         <div class="col-md d-flex justify-content-center">
-                            <img src="../assets/images/hello.png" alt="Selamat Datang">
+                            <img src="../assets/images/hello.png" alt="Selamat Datang" class="w-100" style="max-width:300px">
                         </div>
                         <div class="col-md d-flex flex-row flex-wrap justify-content-center text-center carousel-center">
                             <h2>Selamat Datang di Aplikasi Cacala!</h2> <br/>
@@ -22,7 +22,7 @@
                 <div class="carousel-item">
                     <div class="row" style="padding-left:5em; padding-right:5em">
                         <div class="col-md d-flex justify-content-center">
-                            <img src="../assets/images/hello.png" alt="Selamat Datang">
+                            <img src="../assets/images/hello.png" alt="Selamat Datang" class="w-100" style="max-width:300px">
                         </div>
                         <div class="col-md d-flex flex-row flex-wrap justify-content-center text-center carousel-center">
                             <h2>Selamat Datang di Aplikasi Cacala 2</h2> <br/>
@@ -33,7 +33,7 @@
                 <div class="carousel-item">
                     <div class="row" style="padding-left:5em; padding-right:5em">
                         <div class="col-md d-flex justify-content-center">
-                            <img src="../assets/images/hello.png" alt="Selamat Datang">
+                            <img src="../assets/images/hello.png" alt="Selamat Datang" class="w-100" style="max-width:300px">
                         </div>
                         <div class="col-md d-flex flex-row flex-wrap justify-content-center text-center carousel-center">
                             <h2>Selamat Datang di Aplikasi Cacala 3</h2> <br/>

@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <h1 class="text-center pb-4 mb-4">Calon DPRD Kabupaten/Kota {{kota.kota}}</h1>
+        <h1 class="text-center pb-4 mb-4">Calon DPRD {{kota.kota}}</h1>
         <select class="btn-outline-orange2" name="partai" id="partai" v-model="selectedPartai">
             <option class="dropdown-item" value="">Partai</option>
             <option class="dropdown-item" v-for="prt in partai" v-bind:key="prt.id_partai">
@@ -81,7 +81,8 @@ export default {
     },
     methods : {
         fetchKotaName(){
-            const KOTA_API_URL = `${process.env.VUE_APP_API_URL}/dapil/kota/${this.$route.params.id_kota}`
+            const id_kota = this.$route.params.id_kota;
+            const KOTA_API_URL = `${process.env.VUE_APP_API_URL}/dapil/kota/${id_kota}`
         
             fetch(KOTA_API_URL)
             .then(response => response.json())

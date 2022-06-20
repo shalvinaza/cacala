@@ -10,54 +10,61 @@
                 <form class="form-data" @submit.prevent="loginAdmin">
                     <div class="forms-inputs mb-4"> 
                         <span>Nama</span> 
-                        <input autocomplete="off" type="text" v-model="login.username" v-bind:class="{'form-control':true, 'is-invalid' : !validUsername(login.username) && usernameBlured}" v-on:blur="usernameBlured = true" placeholder="Ketik nama di sini">
-                        <div class="invalid-feedback">Nama tidak boleh kosong!</div>
+                        <input autocomplete="off" @focus="error=false" type="text" v-model="login.username" v-bind:class="{'form-control':true, 'is-invalid' : !validUsername(login.username) && usernameBlured || error===true}" v-on:blur="usernameBlured = true" placeholder="Ketik nama di sini">
+                        <div class="invalid-feedback">Nama harus sesuai dengan database</div>
                     </div>
                     <div class="forms-inputs mb-4"> 
                         <span>Kata Sandi</span>
                         <div class="input-group">
-                            <input v-if="showPassword" autocomplete="off" minlength="8" type="text" v-model="login.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(login.password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
-                            <input v-else autocomplete="off" minlength="8" type="password" v-model="login.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(login.password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
-                            <button class=" button input-group-text showPass" @click="toggleShow"><font-awesome-icon icon="fa-solid fa-eye" v-if="showPassword" /> <font-awesome-icon icon="fa-solid fa-eye-slash" v-else /> </button>
+                            <input v-if="showPassword" @focus="error=false" autocomplete="off" minlength="8" type="text" v-model="login.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(login.password) && passwordBlured || error===true}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
+                            <input v-else @focus="error=false" autocomplete="off" minlength="8" type="password" v-model="login.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(login.password) && passwordBlured || error===true}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
+                            <button class=" button input-group-text showPass" style="border-radius:0 10px 10px 0;" @click="toggleShow"><font-awesome-icon icon="fa-solid fa-eye" v-if="showPassword" /> <font-awesome-icon icon="fa-solid fa-eye-slash" v-else /> </button>
+                            <div class="invalid-feedback">Password minimal 8 karakter</div>
                         </div>
-                        <div class="invalid-feedback">Password minimal 8 karakter!</div>
                     </div>
                     <div class="mb-3"> 
-                        <button type="submit" class="btn bg-light-orange w-100 br-10">Masuk</button>
+                        <button type="submit" @click="error=false" class="btn bg-light-orange w-100 br-10">Masuk</button>
                     </div>
                 </form>
                 <button type="button" @click="goToLoginUser()" class="btn btn-outline-orange2 w-100 br-10">Masuk sebagai pengguna</button> 
             </div>
           </div>
+
+          <Alert v-if="error" variantName="danger" :messageProps="message"/>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import Alert from './Pop_sukses.vue'
 const LOGIN_API_URL = `${process.env.VUE_APP_API_URL}/auth/admins/login`
 
 export default {
     name:'Form_login',
+    components: {
+        Alert
+    },
     data: function () {
         return {
             usernameBlured : false,
             valid : false,
-            submitted : false,
             passwordBlured:false,
             login: {
                 username : "",
                 password : ""
             },
-            showPassword:false
+            showPassword:false,
+            error: false,
+            message: ''
             }
     },
     methods:{
         validate : function(){
             this.usernameBlured = true;
             this.passwordBlured = true;
-            if( this.validusername(this.username) && this.validPassword(this.password)){
+            if( this.validUsername(this.login.username) && this.validPassword(this.login.password)){
                 this.valid = true;
-                }
+            }
         },
         validUsername : function(username) {
             if(username.length > 0){
@@ -69,33 +76,31 @@ export default {
                 return true;
             }
         },
-        submit : function(){
-            this.validate();
-            if(this.valid){
-                this.submitted = true;
-            }
-        },
         goToLoginUser(){
             this.$router.push('/login');
         },
         toggleShow() {
             this.showPassword = !this.showPassword;
         },
-        loginAdmin(e){
+        async loginAdmin(e){
             e.preventDefault()
-            if (this.login.password.length > 0) {
-                axios.post(LOGIN_API_URL, this.login)
-                .then(response => {
-                    localStorage.setItem('token',response.data.token)
+            this.validate()
+            if (this.valid) {
+                try{
+                    await axios.post(LOGIN_API_URL, this.login)
+                    .then(response => {
+                        localStorage.setItem('token',response.data.token)
 
-                if (localStorage.getItem('token') != null){
-                    this.$emit('loggedIn')
-                    this.$router.push('/detail_admin_calon')
+                    if (localStorage.getItem('token') != null){
+                        this.error = false
+                        this.$emit('loggedIn')
+                        this.$router.push('/detail_admin_calon')
+                    }
+                    })
+                }catch(err) {
+                    this.error = true
+                    this.message = err.response.data
                 }
-                })
-                .catch(function (error) {
-                    console.error(error.response);
-                })
             }
         }
     }

@@ -7,7 +7,7 @@
             <form @submit.prevent="getData" class="w-100">
             <div class="input-group">
                     <input type="search" class="form-control" placeholder="Ketik nama calon disini" v-model="search">
-                    <button type="submit" class="input-group-text"><i class="fas fa-search me-1"></i></button>                    
+                    <button type="submit" class="input-group-text"><font-awesome-icon icon="fa-solid fa-magnifying-glass"/></button>                    
             </div>
             </form>
             <!-- search result -->

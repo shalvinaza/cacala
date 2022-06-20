@@ -14,7 +14,7 @@ exports.register = async (req, res) => {
       ])
 
       if(user.rows.length !== 0){
-         return res.status(401).send("User already exists")
+         return res.status(401).send("email sudah terdaftar")
       }
 
       //3. Bcrypt the user password
@@ -28,7 +28,7 @@ exports.register = async (req, res) => {
       //5. generating our jwt token
       // const token = jwtGenerator(newUser.rows[0].id_user)
 
-      res.json("User successfully registered")
+      res.json("Registrasi berhasil")
    } catch (err){
       console.error(err.message)
       res.status(500).send("Server Error")
@@ -46,7 +46,7 @@ exports.login = async (req, res) => {
       ])
 
       if(user.rows.length === 0){
-         return res.status(401).json("Password or email is incorrect")
+         return res.status(401).json("Email belum terdaftar")
       }
 
       //3. check if incomming password is the same as the database password
@@ -56,7 +56,7 @@ exports.login = async (req, res) => {
       )
 
       if(!validPassword){
-         return res.status(401).json("Password or email is incorrect")
+         return res.status(401).json("Email atau kata sandi salah")
       }
 
       //4. give them the jwt token

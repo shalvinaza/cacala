@@ -16,12 +16,10 @@
 export default {
     props: {
         title: {
-            type: String,
-            required: true
+            type: String
         },
         pesanPopup: {
-            type: String,
-            required: true
+            type: String
         }
     },
     // methods:{

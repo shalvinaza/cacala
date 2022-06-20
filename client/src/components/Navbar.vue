@@ -1,5 +1,6 @@
 <template>
-    <div class="container-fluid bg-dark-blue nav-shadow">
+<div class="d-flex">
+    <div class="container-fluid bg-dark-blue nav-shadow d-flex flex-column">
       <nav class="container navbar navbar-expand-lg navbar-dark" id="navbar">
         <a class="navbar-brand extra-bold" id="home" style="letter-spacing: 0.45em;" href="/">CACALA</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,14 +26,27 @@
                   </div>
                 </li>
                 <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle txt-white kab"   id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <a class="nav-link dropdown-toggle txt-white kab" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     DPRD Kabupaten/Kota
                   </a>
                   <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <li>
-                      <router-link v-for="(kta) in kota" :key="kta.id_kota" :to="{name: 'Dprd_kab_kota', params: { id_kota: kta.id_kota }}" class="dropdown-item" style="color:black">
+                      <!-- <router-link v-for="(kta) in kota" :key="kta.id_kota" :to="{name: 'Dprd_kab_kota', params: { id_kota: kta.id_kota }}" class="dropdown-item" style="color:black">
                         {{kta.kota}}
-                      </router-link>
+                      </router-link> -->
+                        <select v-model="checkProv" >
+                          <option value="" disabled>All</option>
+                          <option v-for="prov in provinsi" :key="prov.id_provinsi" :value="prov.provinsi" @click="filterKota">{{prov.provinsi}}</option>
+                        </select>
+                    </li>
+                    <li>
+                        <select @change="goToKab($event)">
+                          <option value="allKot" disabled>All</option>
+                          <option v-for="kota in filterKota" :key="kota.id_kota" :value="kota.id_kota" @click="goToKota(kota.id_kota)">
+                            {{kota.kota}}
+                          </option>
+                        </select>
+
                     </li>
                   </div>
                 </li>
@@ -60,17 +74,16 @@
               </span>
             </div>
         </div>
-
-        <Popup v-if="openPopup" title="Apakah Anda yakin?" pesanPopup="Anda tidak dapat mengikuti calon maupun melihat dasbor setelah keluar">
-          <div class="d-flex justify-content-end">
-            <button class="bg-light-orange-pop me-2 br-10" @click="toggleShow()">Tidak</button>
-            <button class="btn-outline-orange" @click="logUserOut()">Iya</button>
-          </div>
-        </Popup>
-
       </nav>
 
+      <Popup v-if="openPopup" title="Apakah Anda yakin?" pesanPopup="Anda tidak dapat mengikuti calon maupun melihat dasbor setelah keluar">
+        <div class="d-flex justify-content-end">
+          <button class="bg-light-orange-pop me-2 br-10" @click="toggleShow()">Tidak</button>
+          <button class="btn-outline-orange" @click="logUserOut()">Iya</button>
+        </div>
+      </Popup>
     </div>
+  </div>
 </template>
 
 <script>
@@ -84,13 +97,21 @@ export default {
   data: () => ({
     provinsi: [],
     kota: [],
-    openPopup: false
+    openPopup: false,
+    checkProv: ''
   }),
   components:{
     Popup
   },
   computed: {
-    isLoggedIn: function() {return localStorage.getItem("token") != null}
+    isLoggedIn: function() {
+      return localStorage.getItem("token") != null
+    },
+    filterKota:function(){
+      return this.kota.filter((kta)=>{
+        return kta.provinsi.match(this.checkProv)
+      })
+    }
   },
   mounted(){
     fetch(PROVINSI_API_URL)
@@ -120,6 +141,11 @@ export default {
     },
     goToSearch(){
       this.$router.push('/search/')
+    },
+    goToKab(e){
+      // localStorage.setItem('id_kota', e.target.value)
+      // this.$router.push('dprd_kab_kota/' + e.target.value)
+      this.$router.push({ name: 'Dprd_kab_kota', params: { id_kota: e.target.value  } })
     }
   }
   

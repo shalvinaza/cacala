@@ -37,7 +37,7 @@ exports.login = async (req, res) => {
       ])
 
       if(admin.rows.length === 0){
-         return res.status(401).json("Password or username is incorrect")
+         return res.status(401).json("admin tidak terdaftar")
       }
 
       const validPassword = await bcrypt.compare(
@@ -46,7 +46,7 @@ exports.login = async (req, res) => {
       )
 
       if(!validPassword){
-         return res.status(401).json("Password or username is incorrect")
+         return res.status(401).json("Nama atau kata sandi salah")
       }
 
       const token = jwtGenerator(admin.rows[0].id_admin)
@@ -92,7 +92,7 @@ exports.updateAdmin = async (req, res) => {
          username, bcryptPass, id
       ])
 
-      res.json("Admin detail is updated")
+      res.json("Data admin berhasil diubah")
    } catch (err) {
       res.json({ message: err })
    }
