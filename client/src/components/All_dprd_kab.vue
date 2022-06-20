@@ -2,63 +2,65 @@
     <div class="container">
         <h1 class="text-center pb-4 mb-4">Calon DPRD {{kota.kota}}</h1>
 
-        <!-- filter -->
-        <div class="col-md-2 mt-3">
-            <h5 class="mt-3">Filter</h5>
-            <h6 class="mt-3">Partai</h6>
-            <div class="form-check" v-for="option in partai" :key="option.nama_partai">
-                <input class="form-check-input" id="semua" type="checkbox" value="semua" v-model="checkPartai">
-                <input class="form-check-input" :id="option" type="checkbox" :value="option.nama_partai" v-model="checkPartai">
-                <label class="form-check-label">{{ option.nama_partai }}</label>
+        <div class="row">
+            <!-- filter -->
+            <div class="col-md-2 mt-3">
+                <h5 class="mt-3"><font-awesome-icon icon="fa-solid fa-filter" /> Filter</h5>
+                <h6 class="mt-3">Partai</h6>
+                <div class="form-check" v-for="option in partai" :key="option.nama_partai">
+                    <input class="form-check-input" id="semua" type="checkbox" value="semua" v-model="checkPartai">
+                    <input class="form-check-input" :id="option" type="checkbox" :value="option.nama_partai" v-model="checkPartai">
+                    <label class="form-check-label">{{ option.nama_partai }}</label>
+                </div>
+                <h6 class="mt-3">Daerah pilih</h6>
+                <div class="form-check" v-for="option in kecamatan" :key="option.id_kecamatan">
+                    <input class="form-check-input" id="semua" type="checkbox" value="semua" v-model="checkDapil">
+                    <input class="form-check-input" :id="option" type="checkbox" :value="option.kecamatan" v-model="checkDapil">
+                    <label class="form-check-label">{{ option.kecamatan }}</label>
+                </div>
             </div>
-            <h6 class="mt-3">Daerah pilih</h6>
-            <div class="form-check" v-for="option in kota" :key="option.id_kota">
-                <input class="form-check-input" id="semua" type="checkbox" value="semua" v-model="checkDapil">
-                <input class="form-check-input" :id="option" type="checkbox" :value="option.kota" v-model="checkDapil">
-                <label class="form-check-label">{{ option.kota }}</label>
-            </div>
-        </div>
 
-        <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
-            <div class="col" v-for="calon in filteredCalons" :key="calon.id_calon">
-                <div class="card h-100">
-                    <img :src=calon.foto class="card-img-top" alt="dpr 2">
-                    <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
-                        <h5>{{calon.no_urut}}</h5>
-                    </div>
-                    <div class="card-body p-4">
-                        <h5 class="card-title text-center">{{calon.nama}}</h5>
-                        <p class="card-subtitle text-center text-muted">Calon {{calon.jabatan_tujuan}}</p>
-                        <div class="row align-items-start mt-3">
-                            <p class="col d-flex flex-wrap card-title">Partai</p>
-                            <div class="col d-flex flex-wrap justify-content-end">
-                            <div class="col d-flex flex-wrap justify-content-end">
-                                <img v-for="partai in calon.partai" :key="partai.nama_partai" :src="partai.logo_partai" class="img-partai m-1">
+            <div class="col-md-10">
+                <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
+                    <div class="col" v-for="calon in filteredCalons" :key="calon.id_calon">
+                        <div class="card h-100">
+                            <img :src="calon.foto" class="card-img-top" alt="dpr 2">
+                            <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
+                                <h5>{{calon.no_urut}}</h5>
                             </div>
+                            <div class="card-body p-3">
+                                <h6 class="card-title text-center">{{calon.nama}}</h6>
+                                <p class="card-subtitle text-center text-muted">Calon {{calon.jabatan_tujuan}}</p>
+                                <div class="row align-items-start mt-2">
+                                    <p class="col d-flex flex-wrap card-title">Partai</p>
+                                    <div class="col d-flex flex-wrap justify-content-end">
+                                        <div class="col d-flex justify-content-end">
+                                            <img v-for="partai in calon.partai" :key="partai.nama_partai" :src="partai.logo_partai" class="img-partai m-1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-start mb-2">
+                                    <p class="col d-flex flex-wrap card-title">Daerah Pilih</p>
+                                    <div class="col d-flex flex-wrap justify-content-end">
+                                        <p v-for="kec in calon.kecamatan" :key="kec.id_kecamatan">{{ kec.kecamatan }}</p>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-center justify-content-between">
+                                    <button class="btn btn-outline-orange" :value="calon.id_admin" @click="goToDetail($event)">Detail</button>
+                                    <span v-if="isLoggedIn">
+                                        <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="!calon.status">Ikuti</button>
+                                        <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="calon.status">Berhenti</button>
+                                    </span>   
+                                    <span v-else>
+                                        <button class="btn btn-outline-blue" @click="goToLogin()">Ikuti</button> 
+                                    </span>                          
+                                </div>
                             </div>
-                        </div>
-                        <div class="row align-items-start mb-2">
-                            <p class="col d-flex flex-wrap card-title">Daerah Pilih</p>
-                            <div class="col d-flex flex-wrap justify-content-end">
-                                <p v-for="kota in calon.kota" :key="kota.id_kota">{{ kota.kota }}>{{calon.kota}}</p>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-center justify-content-between">
-                            <!-- <router-link :to="{ name: 'Detail_calon', params: { id_admin: calon.id_admin}}" class="btn btn-outline-orange">Detail</router-link> -->
-                            <button class="btn btn-outline-orange" @click="goToDetail($event)">Detail</button>
-                            <span v-if="isLoggedIn">
-                                <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="!calon.status">Ikuti</button>
-                                <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="calon.status">Berhenti</button>
-                            </span>   
-                            <span v-else>
-                                <button class="btn btn-outline-blue" @click="goToLogin()">Ikuti</button> 
-                            </span>                          
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
     </div>
 </template>
 
@@ -74,7 +76,8 @@ export default {
         user: [],
         followed_calon: [],
         partai: [],
-        kota: [],
+        kecamatan:[],
+        kota: '',
         selectedPartai : '',
         checkPartai: [],
         checkDapil: []
@@ -95,8 +98,8 @@ export default {
                     return selectedPartai !== -1
                 })
                 .filter((calon) => {
-                    let selectedDapil = calon.kota.findIndex((dapil) => {
-                        return checkDapil.includes(dapil.kota)
+                    let selectedDapil = calon.kecamatan.findIndex((dapil) => {
+                        return checkDapil.includes(dapil.kecamatan)
                     }, this)
                     return selectedDapil !== -1
                 })
@@ -113,8 +116,8 @@ export default {
 
             else if(checkDapil.length){
                 return calons.filter((calon) => {
-                    let selectedDapil = calon.kota.findIndex((dapil) => {
-                        return checkDapil.includes(dapil.kota)
+                    let selectedDapil = calon.kecamatan.findIndex((dapil) => {
+                        return checkDapil.includes(dapil.kecamatan)
                     }, this)
                     return selectedDapil !== -1
                 })
@@ -130,6 +133,7 @@ export default {
     created(){
         this.fetchDPRDKabCalons()
         this.fetchKotaName()
+        this.fetchKecamatan()
         this.fetchPartai()
     },
     methods : {
@@ -141,6 +145,17 @@ export default {
             .then(response => response.json())
             .then(result => {
                 this.kota = result
+            })
+        },
+
+        fetchKecamatan(){
+            const id_kota = this.$route.params.id_kota;
+            const KOTA_API_URL = `${process.env.VUE_APP_API_URL}/dapil/kecamatan/kota/${id_kota}`
+        
+            fetch(KOTA_API_URL)
+            .then(response => response.json())
+            .then(result => {
+                this.kecamatan = result
             })
         },
 
@@ -194,7 +209,9 @@ export default {
                     console.log(parsedobj)
             })  
         },
-        
+        goToDetail(e){
+            this.$router.push({ name: 'Detail_calon', params: { id_admin: e.target.value}})
+        },
         goToLogin(){
             this.$router.push('/login');
         },
@@ -251,12 +268,14 @@ export default {
 h1{
     letter-spacing: 0.10em;
     font-weight: 700;
+    border-bottom: 2px solid black;
 }
 .card{
     background-color: #F2F0E1;
     border-radius: 15px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border:none;
+    cursor: pointer;
     /* min-height: 35rem; */
 }
 .card-img-top{
@@ -268,12 +287,15 @@ h1{
     border-bottom: 1px solid #C2A49D;
 }
 .img-partai{
-    max-width: 22px;
-    max-height: 22px;
+    width: 30px;
+    height: 30px;
     border-radius: 15px;
+    padding: 0;
 }
 .btn-outline-orange, .btn-outline-blue{
+    padding: 0.3rem;
     min-width: 5rem;
+    font-size: 80%;
 }
 .card-img-overlay{
     right: unset;
@@ -293,5 +315,8 @@ h1{
 .dropdown-item{
     background-color: white;
     border-color: white;
+}
+p{
+    font-size: 95%;
 }
 </style>

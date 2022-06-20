@@ -5,7 +5,7 @@
         <div class="row">
 
         <div class="col-md-2 mt-3">
-            <h5 class="mt-3">Filter</h5>
+            <h5 class="mt-3"> <font-awesome-icon icon="fa-solid fa-filter" /> Filter</h5>
             <h6 class="mt-3">Partai</h6>
             <div class="form-check" v-for="option in partai" :key="option.nama_partai">
                 <input class="form-check-input" id="semua" type="checkbox" value="semua" v-model="checkPartai">
@@ -22,29 +22,21 @@
         <!-- all calon literally -->
         <div class="col-md-10">
             <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
-            
-            <!-- percobaan checkbox filter -->
-            <!-- <div class="col">
-                <h3>Color</h3>
-                <template v-for="option in partai">
-                <input :id="option" type="checkbox" :value="option" v-model="checked.color" :key="option.index"><label :for="option" :key="option.index">{{ option }}</label>
-                </template>
-            </div> -->
                 
             <div class="col" v-for="calon in filteredCalons" :key="calon.id_calon">
                 <div class="card h-100">
-                    <img :src=calon.foto class="card-img-top" alt="dpr 2">
+                    <img :src="calon.foto" class="card-img-top" alt="dpr 2">
                     <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
                         <h5>{{calon.no_urut}}</h5>
                     </div>
-                    <div class="card-body p-4">
-                        <h5 class="card-title text-center">{{calon.nama}}</h5>
+                    <div class="card-body p-3">
+                        <h6 class="card-title text-center">{{calon.nama}}</h6>
                         <p class="card-subtitle text-center text-muted">Calon {{calon.jabatan_tujuan}}</p>
-                        <div class="row align-items-start mt-3">
+                        <div class="row align-items-start mt-2">
                             <p class="col d-flex flex-wrap card-title">Partai</p>
                             <div class="col d-flex flex-wrap justify-content-end">
-                                <!-- <img v-for="partai in calon.partai" :key="partai.id_partai" :src="partai.logo_partai" class="img-partai m-1"> -->
-                                <p v-for="partai in calon.partai" :key="partai.nama_partai" class="img-partai m-1">{{partai.nama_partai}}</p>
+                                <img v-for="partai in calon.partai" :key="partai.id_partai" :src="partai.logo_partai" class="img-partai m-1">
+                                <!-- <p v-for="partai in calon.partai" :key="partai.nama_partai" class="img-partai m-1">{{partai.nama_partai}}</p> -->
                             </div>
                         </div>
                         <div class="row align-items-start mb-2">
@@ -54,7 +46,7 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-center justify-content-between">
-                            <router-link :to="{ name: 'Detail_calon', params: { id_admin: calon.id_admin}}" class="btn btn-outline-orange">Detail</router-link>
+                            <button class="btn btn-outline-orange" :value="calon.id_admin" @click="goToDetail($event)">Detail</button>
                             <span v-if="isLoggedIn">
                                 <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="!calon.status">Ikuti</button>
                                 <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="calon.status">Berhenti</button>
@@ -226,6 +218,10 @@ export default {
             })  
         },
 
+        goToDetail(e){
+            this.$router.push({ name: 'Detail_calon', params: { id_admin: e.target.value}})
+        },
+
         goToLogin(){
             this.$router.push('/login');
         },
@@ -275,6 +271,7 @@ h1{
     border-radius: 15px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border:none;
+    cursor: pointer;
     /* min-height: 35rem; */
 }
 .card-img-top{
@@ -286,12 +283,14 @@ h1{
     border-bottom: 1px solid #C2A49D;
 }
 .img-partai{
-    max-width: 22px;
-    max-height: 22px;
+    width: 30px;
+    height: 30px;
     border-radius: 15px;
 }
 .btn-outline-orange, .btn-outline-blue{
+    padding: 0.3rem;
     min-width: 5rem;
+    font-size: 80%;
 }
 .card-img-overlay{
     right: unset;
@@ -311,5 +310,8 @@ h1{
 .dropdown-item{
     background-color: white;
     border-color: white;
+}
+p{
+    font-size: 95%;
 }
 </style>
