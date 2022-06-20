@@ -575,7 +575,8 @@ exports.selectForSearch = async (req, res) => {
    var search = req.params.str
    try{
       const calon = await pool.query(
-         "SELECT calon.id_calon, calon.nama, calon.foto, calon.slogan, calon.no_urut, admins.id_admin, jabatan.jabatan_tujuan, FROM calon JOIN admins on calon.id_admin = admins.id_admin JOIN jabatan on calon.id_jabatan = jabatan.id_jabatan WHERE LOWER (calon.nama) LIKE LOWER ($1) ORDER BY no_urut;",[
+
+         "SELECT calon.id_calon, calon.nama, calon.foto, calon.slogan, calon.no_urut, admins.id_admin, jabatan.jabatan_tujuan FROM calon JOIN admins on calon.id_admin = admins.id_admin JOIN jabatan on calon.id_jabatan = jabatan.id_jabatan WHERE LOWER (calon.nama) LIKE LOWER ($1) ORDER BY no_urut;",[
             `%${search}%`
          ])
 

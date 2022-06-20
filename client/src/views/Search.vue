@@ -4,10 +4,10 @@
     <div class="content" style="padding:120px 0 70px 0">
         <div class="container">
             <h1 class="text-center mb-5">Siapa Calon Yang Ingin Anda Cari?</h1>
-            <form @submit.prevent="getData" class="w-100">
+            <form @submit.prevent="getData()" class="w-100">
             <div class="input-group">
-                    <input type="search" class="form-control" placeholder="Ketik nama calon disini" v-model="search">
-                    <button type="submit" class="input-group-text"><font-awesome-icon icon="fa-solid fa-magnifying-glass"/></button>                    
+                <input type="search" class="form-control" placeholder="Ketik nama calon disini" v-model="search">
+                <button type="submit" class="input-group-text"><font-awesome-icon icon="fa-solid fa-magnifying-glass"/></button>                    
             </div>
             </form>
             <!-- search result -->
@@ -32,11 +32,11 @@
                             <div class="row align-items-start mb-2">
                                 <p class="col d-flex flex-wrap card-title">Daerah Pilih</p>
                                 <div class="col d-flex flex-wrap justify-content-end">
-                                    <p>{{calon.kota}}</p>
+                                    <p v-for="kota in calon.kota" :key="kota.id_kota">{{kota.kota}}</p>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-center justify-content-between">
-                                <router-link :to="{ name: 'Detail_calon', params: { id_admin: calon.id_admin}}" class="btn btn-outline-orange">Detail</router-link>
+                                <button class="btn btn-outline-orange" :value="calon.id_admin" @click="goToDetail($event)">Detail</button>
                                 <span v-if="isLoggedIn">
                                     <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="!calon.status">Ikuti</button>
                                     <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="calon.status">Berhenti</button>
@@ -76,7 +76,7 @@ export default {
     methods: {
         async getData(){
             // const search = this.$route.params.search;
-            await axios.get(`${process.env.VUE_APP_API_URL}/calon/search/${this.search}`)
+            await axios.get(process.env.VUE_APP_API_URL + '/calon/search/' + this.search)
             .then((result)=>{
                 this.calons = result.data
                 var parsedobj = JSON.parse(JSON.stringify(result))
@@ -86,6 +86,11 @@ export default {
                 console.log(error)
             })
         },
+
+        goToDetail(e){
+            this.$router.push({ name: 'Detail_calon', params: { id_admin: e.target.value}})
+        },
+
         goToLogin(){
             this.$router.push('/login');
         },

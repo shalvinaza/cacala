@@ -28,7 +28,7 @@
                         <img src="../assets/images/step_3.png" class="card-img-top p-4" alt="step 1">
                         <div class="card-body d-inline-flex align-items-start p-3">
                             <h5 class="card-title me-2">3</h5>
-                            <p class="card-text">Klik kartu salah satu calon yang Anda inginkan </p>
+                            <p class="card-text">Klik detail pada kartu salah satu calon lalu ikuti jika Anda berkenan </p>
                         </div>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                         <img src="../assets/images/step_4.png" class="card-img-top p-4" alt="step 1">
                         <div class="card-body d-inline-flex align-items-start p-3">
                             <h5 class="card-title me-2">4</h5>
-                            <p class="card-text">Cermati dan informasi detail dari calon yang dipilih</p>
+                            <p class="card-text">Cermati informasi detail dari calon yang dipilih</p>
                         </div>
                     </div>
                 </div>
