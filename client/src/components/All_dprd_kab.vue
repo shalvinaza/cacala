@@ -1,18 +1,30 @@
 <template>
     <div class="container">
         <h1 class="text-center pb-4 mb-4">Calon DPRD {{kota.kota}}</h1>
-        <select class="btn-outline-orange2" name="partai" id="partai" v-model="selectedPartai">
-            <option class="dropdown-item" value="">Partai</option>
-            <option class="dropdown-item" v-for="prt in partai" v-bind:key="prt.id_partai">
-            {{ prt.nama_partai }}
-            </option>
-        </select> 
+
+        <!-- filter -->
+        <div class="col-md-2 mt-3">
+            <h5 class="mt-3">Filter</h5>
+            <h6 class="mt-3">Partai</h6>
+            <div class="form-check" v-for="option in partai" :key="option.nama_partai">
+                <input class="form-check-input" id="semua" type="checkbox" value="semua" v-model="checkPartai">
+                <input class="form-check-input" :id="option" type="checkbox" :value="option.nama_partai" v-model="checkPartai">
+                <label class="form-check-label">{{ option.nama_partai }}</label>
+            </div>
+            <h6 class="mt-3">Daerah pilih</h6>
+            <div class="form-check" v-for="option in kota" :key="option.id_kota">
+                <input class="form-check-input" id="semua" type="checkbox" value="semua" v-model="checkDapil">
+                <input class="form-check-input" :id="option" type="checkbox" :value="option.kota" v-model="checkDapil">
+                <label class="form-check-label">{{ option.kota }}</label>
+            </div>
+        </div>
+
         <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
-            <div class="col" v-for="(calon,index) in calons" :key="calon.id_calon">
+            <div class="col" v-for="calon in filteredCalons" :key="calon.id_calon">
                 <div class="card h-100">
                     <img :src=calon.foto class="card-img-top" alt="dpr 2">
                     <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
-                        <h5>{{index + 1}}</h5>
+                        <h5>{{calon.no_urut}}</h5>
                     </div>
                     <div class="card-body p-4">
                         <h5 class="card-title text-center">{{calon.nama}}</h5>
@@ -21,18 +33,19 @@
                             <p class="col d-flex flex-wrap card-title">Partai</p>
                             <div class="col d-flex flex-wrap justify-content-end">
                             <div class="col d-flex flex-wrap justify-content-end">
-                                <img v-for="(partai) in calon.partai" :key="partai.nama_partai" :src=partai.logo_partai class="img-partai m-1">
+                                <img v-for="partai in calon.partai" :key="partai.nama_partai" :src="partai.logo_partai" class="img-partai m-1">
                             </div>
                             </div>
                         </div>
                         <div class="row align-items-start mb-2">
                             <p class="col d-flex flex-wrap card-title">Daerah Pilih</p>
                             <div class="col d-flex flex-wrap justify-content-end">
-                                <p>{{calon.kota}}</p>
+                                <p v-for="kota in calon.kota" :key="kota.id_kota">{{ kota.kota }}>{{calon.kota}}</p>
                             </div>
                         </div>
                         <div class="d-flex justify-content-center justify-content-between">
-                            <router-link :to="{ name: 'Detail_calon', params: { id_admin: calon.id_admin}}" class="btn btn-outline-orange">Detail</router-link>
+                            <!-- <router-link :to="{ name: 'Detail_calon', params: { id_admin: calon.id_admin}}" class="btn btn-outline-orange">Detail</router-link> -->
+                            <button class="btn btn-outline-orange" @click="goToDetail($event)">Detail</button>
                             <span v-if="isLoggedIn">
                                 <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="!calon.status">Ikuti</button>
                                 <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="calon.status">Berhenti</button>
@@ -59,20 +72,60 @@ export default {
         no_data: false,
         calons: [],
         user: [],
-        kota: [],
         followed_calon: [],
         partai: [],
-        selectedPartai : ''
+        kota: [],
+        selectedPartai : '',
+        checkPartai: [],
+        checkDapil: []
     }),
     computed: {
         isLoggedIn: function() {return localStorage.getItem("token") != null},
-        // filteredKota : function(){
-        //     if(this.selectedPartai != null){
-        //         return this.calons.filter((calon) => {
-        //             return calon.nama_partai.match(this.selectedPartai);
-        //         })
-        //     }
-        // }
+        filteredCalons(){
+            let calons = this.calons
+            const checkPartai = this.checkPartai
+            const checkDapil = this.checkDapil
+
+            if(checkPartai.length && checkDapil.length){
+                return calons
+                .filter((calon) => {
+                    let selectedPartai = calon.partai.findIndex((prt) => {
+                        return checkPartai.includes(prt.nama_partai) 
+                    }, this)
+                    return selectedPartai !== -1
+                })
+                .filter((calon) => {
+                    let selectedDapil = calon.kota.findIndex((dapil) => {
+                        return checkDapil.includes(dapil.kota)
+                    }, this)
+                    return selectedDapil !== -1
+                })
+            }
+
+            else if(checkPartai.length){
+                return calons.filter((calon) => {
+                    let selectedPartai = calon.partai.findIndex((prt) => {
+                        return checkPartai.includes(prt.nama_partai)
+                    }, this)
+                    return selectedPartai !== -1
+                })
+            }
+
+            else if(checkDapil.length){
+                return calons.filter((calon) => {
+                    let selectedDapil = calon.kota.findIndex((dapil) => {
+                        return checkDapil.includes(dapil.kota)
+                    }, this)
+                    return selectedDapil !== -1
+                })
+            }
+
+            else{
+                console.log('gaada hasil')
+            }
+
+            return calons
+        }
     },
     created(){
         this.fetchDPRDKabCalons()
