@@ -21,8 +21,11 @@
         </div>
         <!-- all calon literally -->
         <div class="col-md-10">
+            <div v-if="!filteredCalons.length" class="row d-flex justify-content-center mt-3">
+                <img src='../assets/images/error.png' class="d-flex" style="width:40%" alt="Not Found">
+                <h5 class="d-flex d-flex justify-content-center align-items-center mt-3">Hasil tidak ditemukan</h5>
+            </div>
             <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
-                
             <div class="col" v-for="calon in filteredCalons" :key="calon.id_calon">
                 <div class="card h-100">
                     <img :src="calon.foto" class="card-img-top" alt="dpr 2">
@@ -122,10 +125,6 @@ export default {
                     }, this)
                     return selectedDapil !== -1
                 })
-            }
-
-            else{
-                console.log('gaada hasil')
             }
 
             return calons

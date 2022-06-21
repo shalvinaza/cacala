@@ -29,18 +29,17 @@
                   <a class="nav-link dropdown-toggle txt-white kab" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     DPRD Kabupaten/Kota
                   </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <div class="dropdown-menu p-2" aria-labelledby="navbarDropdown">
                     <li>
-                      <!-- <router-link v-for="(kta) in kota" :key="kta.id_kota" :to="{name: 'Dprd_kab_kota', params: { id_kota: kta.id_kota }}" class="dropdown-item" style="color:black">
-                        {{kta.kota}}
-                      </router-link> -->
-                        <select v-model="checkProv" >
+                        <p style="cursor:pointer" class="mb-1">Pilih provinsi</p>
+                        <select v-model="checkProv" class="dropKab w-100">
                           <option value="" disabled>All</option>
                           <option v-for="prov in provinsi" :key="prov.id_provinsi" :value="prov.provinsi" @click="filterKota">{{prov.provinsi}}</option>
                         </select>
                     </li>
-                    <li>
-                        <select @change="goToKab($event)">
+                    <li class="mt-2">
+                        <p style="cursor:pointer" class="mb-1">Pilih Kabupaten/Kota</p>
+                        <select @change="goToKab($event)" class="dropKab w-100">
                           <option value="allKot" disabled>All</option>
                           <option v-for="kota in filterKota" :key="kota.id_kota" :value="kota.id_kota" @click="goToKota(kota.id_kota)">
                             {{kota.kota}}
@@ -143,8 +142,6 @@ export default {
       this.$router.push('/search/')
     },
     goToKab(e){
-      // localStorage.setItem('id_kota', e.target.value)
-      // this.$router.push('dprd_kab_kota/' + e.target.value)
       this.$router.push({ name: 'Dprd_kab_kota', params: { id_kota: e.target.value  } })
     }
   }

@@ -21,6 +21,10 @@
             </div>
 
             <div class="col-md-10">
+                <div v-if="!filteredCalons.length" class="row d-flex justify-content-center mt-3">
+                    <img src='../assets/images/error.png' class="d-flex" style="width:40%" alt="Not Found">
+                    <h5 class="d-flex d-flex justify-content-center align-items-center mt-3">Hasil tidak ditemukan</h5>
+                </div>
                 <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
                     <div class="col" v-for="calon in filteredCalons" :key="calon.id_calon">
                         <div class="card h-100">
@@ -35,7 +39,8 @@
                                     <p class="col d-flex flex-wrap card-title">Partai</p>
                                     <div class="col d-flex flex-wrap justify-content-end">
                                         <div class="col d-flex justify-content-end">
-                                            <img v-for="partai in calon.partai" :key="partai.nama_partai" :src="partai.logo_partai" class="img-partai m-1">
+                                            <!-- <img v-for="partai in calon.partai" :key="partai.nama_partai" :src="partai.logo_partai" class="img-partai m-1"> -->
+                                            <p v-for="partai in calon.partai" :key="partai.nama_partai">{{partai.nama_partai}}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -121,10 +126,6 @@ export default {
                     }, this)
                     return selectedDapil !== -1
                 })
-            }
-
-            else{
-                console.log('gaada hasil')
             }
 
             return calons
@@ -319,4 +320,5 @@ h1{
 p{
     font-size: 95%;
 }
+
 </style>

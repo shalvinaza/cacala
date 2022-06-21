@@ -154,7 +154,7 @@ exports.followCalon = async (req, res) => {
          ]
       )
 
-      res.json("Calon followed")
+      res.json("Calon berhasil diikuti")
    } catch(err) {
       res.json({message: err})
    }
@@ -163,7 +163,7 @@ exports.followCalon = async (req, res) => {
 exports.selectFollowedCalonByUser = async (req, res) => {
    try{
       const calon = await pool.query(
-         "select users.username, users.email, calon.*, jabatan.jabatan_tujuan, kota.kota FROM mengikuti_calon JOIN users ON users.id_user= mengikuti_calon.id_user JOIN calon ON mengikuti_calon.id_calon = calon.id_calon JOIN jabatan on calon.id_jabatan = jabatan.id_jabatan JOIN kota on calon.id_dapil_kota = kota.id_kota WHERE mengikuti_calon.id_user = $1;",[
+         "select users.username, users.email, calon.*, jabatan.jabatan_tujuan FROM mengikuti_calon JOIN users ON users.id_user= mengikuti_calon.id_user JOIN calon ON mengikuti_calon.id_calon = calon.id_calon JOIN jabatan on calon.id_jabatan = jabatan.id_jabatan WHERE mengikuti_calon.id_user = $1;",[
             req.user
          ])
 
@@ -176,9 +176,30 @@ exports.selectFollowedCalonByUser = async (req, res) => {
                "select partai.nama_partai, partai.logo_partai FROM partai_calon JOIN calon ON partai_calon.id_calon = calon.id_calon JOIN partai ON partai_calon.id_partai = partai.id_partai WHERE partai_calon.id_calon = $1;",
                 [calon.rows[i].id_calon]
             )
+
+            kota = await pool.query(
+               "select kota.*, provinsi.provinsi FROM dapil_calon dapil JOIN calon ON dapil.id_calon = calon.id_calon JOIN kota ON dapil.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil.id_calon = $1;",
+                [calon.rows[i].id_calon]
+            )
    
+            kecamatan = await pool.query(
+               "select kecamatan.* FROM dapil_calon dapil JOIN calon ON dapil.id_calon = calon.id_calon JOIN kecamatan ON dapil.id_kecamatan = kecamatan.id_kecamatan WHERE dapil.id_calon = $1;",
+                [calon.rows[i].id_calon]
+            )
+   
+            pendidikan = await pool.query(
+               "select pen.* FROM riwayat_pendidikan pen JOIN calon c ON pen.id_calon = c.id_calon WHERE pen.id_calon = $1",
+               [id_calon]
+            )
+   
+            pekerjaan = await pool.query(
+               "select pek.* FROM riwayat_pekerjaan pek JOIN calon c ON pek.id_calon = c.id_calon WHERE pek.id_calon = $1",
+               [id_calon]
+            )
+
             j = 0
-            calon.rows[i] = {...calon.rows[i], partai: partai.rows}
+            
+            calon.rows[i] = {...calon.rows[i], partai: partai.rows, kota: kota.rows, kecamatan:kecamatan.rows}
             calon.rows[i] = {...calon.rows[i], status: false}
          }
       
@@ -196,7 +217,7 @@ exports.unfollowCalon = async (req, res) => {
          [id_calon, req.user]
       )
 
-      res.json("Calon unfollowed")
+      res.json("Anda berhenti mengikuti calon")
    } catch(err){
       res.json({message: err})
    }

@@ -50,6 +50,12 @@
                         </div>
                     </div>
                 </div>
+
+                <div v-if="!filteredCalons.length" class="row d-flex justify-content-center mt-3">
+                    <img src='../assets/images/error.png' class="d-flex" style="width:40%" alt="Not Found">
+                    <h5 class="d-flex d-flex justify-content-center align-items-center mt-3">Hasil tidak ditemukan</h5>
+                </div>
+
             </div>
         </div>
     </div>

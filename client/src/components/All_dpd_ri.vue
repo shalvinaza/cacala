@@ -39,7 +39,7 @@
                                     <button class="btn btn-outline-orange" :value="calon.id_admin" @click="goToDetail($event)">Detail</button>
                                     <span v-if="isLoggedIn">
                                         <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon), calon.status = !calon.status" v-show="!calon.status">Ikuti</button>
-                                        <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon), calon.status = !calon.status" v-show="calon.status">Berhenti</button>
+                                        <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon), calon.status = !calon.status" v-show="calon.status">Berhenti ikuti</button>
                                     </span>       
                                     <span v-else>
                                         <button class="btn btn-outline-blue" @click="goToLogin()">Ikuti</button> 
@@ -85,6 +85,11 @@
                     </div>
                     </div>
 
+                </div>
+
+                <div v-if="!filteredCalons.length" class="row d-flex justify-content-center mt-3">
+                    <img src='../assets/images/error.png' class="d-flex" style="width:40%" alt="Not Found">
+                    <h5 class="d-flex d-flex justify-content-center align-items-center mt-3">Hasil tidak ditemukan</h5>
                 </div>
 
                 <b-pagination
@@ -137,11 +142,9 @@ export default {
                 })
             }
 
-            else{
-                console.log('gaada hasil')
-            }
-
             return calons
+
+
         }
         
     },
@@ -188,8 +191,8 @@ export default {
 
         checkFollowedCalon(){
             console.log(this.calons.length)
-            this.calons.forEach((value, i) => {
-                this.followed_calon.forEach((value, j) => {
+            Array.from(this.calons).forEach((value, i) => {
+                Array.from(this.followed_calon).forEach((value, j) => {
                     if(this.calons[i].id_calon == this.followed_calon[j].id_calon){
                         this.calons[i].status = true
                         console.log(`${this.calons[i].nama} => status: ${this.calons[i].status}`)
