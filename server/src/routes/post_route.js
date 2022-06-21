@@ -4,17 +4,18 @@ const multer = require('multer')
 const path = require('path')
 const app = express()
 const router = express.Router()
+const cloudinary = require('../utils/cloudinary')
 
 const authorization = require("../middleware/authorization")
 
-const storage = multer.diskStorage({
-   destination: function(req, file, cb){
-      cb(null, './uploads/')
-   },
-   filename: function(req, file, cb){
-      cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname)
-   }
-})
+// const storage = multer.diskStorage({
+//    destination: function(req, file, cb){
+//       cb(null, './uploads/')
+//    },
+//    filename: function(req, file, cb){
+//       cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname)
+//    }
+// })
 
 const fileFilter = function(req, file, cb){
    allowedTypes = ["image/jpeg", "image/png", "image/gif"];
@@ -42,7 +43,7 @@ app.use(function(err, req, res, next){
 })
 
 const upload = multer({
-   storage:storage,
+   storage:multer.diskStorage({}),
    fileFilter: fileFilter,
    limits: {
       fileSize: MAX_SIZE
@@ -57,15 +58,20 @@ const upload = multer({
        // for(let i = 0; i<req.foto.length; i++){
        //    fotos.push(url + './server/uploads/' + req.foto[i].filename)
        // }
-       console.log(req.file)
+
+       const uploadedFoto = await cloudinary.uploader.upload(req.file.path)
+
+      //  console.log(req.file)
        const { judul } = req.body
        const { teks } = req.body
-       const foto = req.file.filename
+      //  const foto = req.file.filename
+       const foto = uploadedFoto.secure_url
+       const id_foto = uploadedFoto.public_id
        const { video } = req.body
  
        const post = await pool.query(
-          "INSERT INTO post(id_admin, judul, teks, foto, video) VALUES($1, $2, $3, $4, $5) RETURNING *",
-          [req.user, judul, teks, foto, video]
+          "INSERT INTO post(id_admin, judul, teks, foto, id_foto, video) VALUES($1, $2, $3, $4, $5, $6) RETURNING *",
+          [req.user, judul, teks, foto, id_foto, video]
        )
  
        res.json(post)

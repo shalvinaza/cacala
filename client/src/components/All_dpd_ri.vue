@@ -75,7 +75,6 @@
                                 <router-link to="/" class="btn btn-outline-orange">Detail</router-link>
                                 <span v-if="isLoggedIn">
                                     <button class="btn btn-outline-blue">Ikuti</button>
-                                    <button class="btn btn-outline-blue">Berhenti</button>
                                 </span>       
                                 <span v-else>
                                     <button class="btn btn-outline-blue" @click="goToLogin()">Ikuti</button> 

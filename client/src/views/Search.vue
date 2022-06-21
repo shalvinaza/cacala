@@ -24,9 +24,9 @@
                                 <div class="row align-items-start mt-2">
                                     <p class="col d-flex flex-wrap card-title">Partai</p>
                                     <div class="col d-flex flex-wrap justify-content-end">
-                                    <div class="col d-flex flex-wrap justify-content-end">
-                                        <img v-for="(partai,index) in calon.partai" :key="index" :src=partai.logo_partai class="img-partai m-1">
-                                    </div>
+                                        <div class="col d-flex flex-wrap justify-content-end">
+                                            <img v-for="(partai,index) in calon.partai" :key="index" :src=partai.logo_partai class="img-partai m-1">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row align-items-start">
@@ -37,11 +37,11 @@
                                 </div>
                             </div>
                             <div class="card-footer mb-2">
-                                <div class="d-flex justify-content-center justify-content-between">
+                                <div class="d-flex justify-content-between">
                                     <button class="btn btn-outline-orange" :value="calon.id_admin" @click="goToDetail($event)">Detail</button>
                                     <span v-if="isLoggedIn">
                                         <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="!calon.status">Ikuti</button>
-                                        <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="calon.status">Berhenti</button>
+                                        <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="calon.status">Berhenti ikuti</button>
                                     </span>   
                                     <span v-else>
                                         <button class="btn btn-outline-blue" @click="goToLogin()">Ikuti</button> 
@@ -178,10 +178,6 @@ h1{
     border:none;
     cursor: pointer;
     /* min-height: 35rem; */
-}
-.card-footer{
-    background-color: transparent;
-    border-top: 0;
 }
 .card-img-top{
     border-radius: 15px 15px 0 0;

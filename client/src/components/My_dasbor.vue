@@ -1,42 +1,86 @@
 <template>
   <div class="container">
       <h1 class="text-center pb-4 mb-4">Calon yang Diikuti</h1>
-      <div class="d-flex d-inline-row pb-3 mb-4">
-          <a   class="me-3" style="color: #D65A40;">Semua</a>
-          <a   class="me-3">Presiden</a>
-          <a   class="me-3">DPR RI</a>
-          <a   class="me-3">DPD RI</a>
-          <a   class="me-3">DPRD Provinsi</a>
-          <a   class="me-3">DPRD Kabupaten/Kota</a>
-      </div>
-      <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
-            <div class="col" v-for="calon in calons" :key="calon.id_calon">
-                <div class="card h-100">
-                    <img :src=calon.foto class="card-img-top" alt="dpr 2">
-                    <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
-                        <h5>{{calon.no_urut}}</h5>
-                    </div>
-                    <div class="card-body p-4">
-                        <h5 class="card-title text-center">{{calon.nama}}</h5>
-                        <p class="card-subtitle text-center text-muted">Calon {{calon.jabatan_tujuan}}</p>
-                        <div class="row align-items-start mt-3">
-                            <p class="col d-flex flex-wrap card-title">Partai</p>
-                            <div class="col d-flex flex-wrap justify-content-end" v-for="(partai) in calon.partai" :key="partai.nama_partai">
-                                <img :src=partai.logo_partai class="img-partai m-1">
+        <div class="row row-cols-1 row-cols-md-2">
+            <div class="col-md-2">
+                <h5 class="mt-3"><font-awesome-icon icon="fa-solid fa-filter" /> Filter</h5>
+                <div class="form-check mt-3">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked v-model="checkedJabatan" value="semua">
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        Semua
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" v-model="checkedJabatan" value="Presiden">
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        Presiden
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" v-model="checkedJabatan" value="DPR RI">
+                    <label class="form-check-label" for="flexRadioDefault2">
+                        DPR RI
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" v-model="checkedJabatan" value="DPD RI">
+                    <label class="form-check-label" for="flexRadioDefault2">
+                        DPD RI
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" v-model="checkedJabatan" value="DPRD Provinsi">
+                    <label class="form-check-label" for="flexRadioDefault2">
+                        DPRD provinsi
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" v-model="checkedJabatan" value="DPRD Kabupaten/Kota">
+                    <label class="form-check-label" for="flexRadioDefault2">
+                        DPRD Kabupaten/Kota
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
+                    <div class="col" v-for="calon in followedJabatan" :key="calon.id_calon">
+                        <div class="card h-100">
+                            <img :src=calon.foto class="card-img-top" alt="dpr 2">
+                            <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
+                                <h5>{{calon.no_urut}}</h5>
                             </div>
-                        </div>
-                        <div class="row align-items-start mb-2">
-                            <p class="col d-flex flex-wrap card-title">Daerah Pilih</p>
-                            <div class="col d-flex flex-wrap justify-content-end">
-                                <p>{{calon.kota}}</p>
+                            <div class="card-body p-3">
+                                <h6 class="card-title text-center">{{calon.nama}}</h6>
+                                <p class="card-subtitle text-center text-muted">Calon {{calon.jabatan_tujuan}}</p>
+                                <div class="row align-items-start mt-2">
+                                    <p class="col d-flex flex-wrap card-title">Partai</p>
+                                    <div class="col d-flex flex-wrap justify-content-end">
+                                        <div class="col d-flex flex-wrap justify-content-end">
+                                            <img v-for="(partai,index) in calon.partai" :key="index" :src=partai.logo_partai class="img-partai m-1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-start">
+                                    <p class="col d-flex flex-wrap card-title">Daerah Pilih</p>
+                                    <div class="col d-flex flex-wrap justify-content-end">
+                                        <p v-for="kota in calon.kota" :key="kota.id_kota">{{kota.kota}}</p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <button class="btn btn-outline-orange" @click="goToDetail()">Detail</button>
-                            <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon)">Berhenti</button>                          
+                            <div class="card-footer mb-2">
+                                <div class="d-flex justify-content-between">
+                                    <button class="btn btn-outline-orange" :value="calon.id_admin" @click="goToDetail($event)">Detail</button>
+                                    <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon)">Berhenti ikuti</button>                          
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <div v-if="!followedJabatan.length" class="d-flex justify-content-center mt-3">
+                    <img src='../assets/images/no_follow.png' class="d-flex" style="width:40%" alt="Not Found">
+                </div>
+
             </div>
         </div>
   </div>
@@ -51,24 +95,36 @@ export default {
     data : () => ({
         no_data: false,
         calons: [],
+        checkedJabatan: 'semua'
     }),
-    mounted(){
+    computed:{
+        followedJabatan:function(){
+            let calons = this.calons
+            if(this.checkedJabatan && this.checkedJabatan !== 'semua'){
+                calons = calons.filter((calon)=>{
+                    return calon.jabatan_tujuan.match(this.checkedJabatan)
+                })
+            }
+            return calons
+        }
+    },
+    created(){
         this.fetchFollowedCalon()
     },
     methods : {
         fetchFollowedCalon(){
             const headers = { token: localStorage.token }
-        fetch(FOLLOWED_CALON_API_URL, { headers })
-            .then(response => response.json())
-            .then(result => {
-                this.calons = result
-                var parsedobj = JSON.parse(JSON.stringify(result))
-                console.log(parsedobj)
+            fetch(FOLLOWED_CALON_API_URL, { headers })
+                .then(response => response.json())
+                .then(result => {
+                    this.calons = result
+                    var parsedobj = JSON.parse(JSON.stringify(result))
+                    console.log(parsedobj)
             })
         },
 
-        goToDetail(){
-        this.$router.push('/detail_calon');
+        goToDetail(e){
+            this.$router.push({ name: 'Detail_calon', params: { id_admin: e.target.value}})
         },
 
         unfollowCalon(id_calon){
@@ -93,6 +149,8 @@ export default {
 a{
     color: black;
     font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
 }
 a:hover,a:active{
     color: #D65A40;
@@ -100,8 +158,6 @@ a:hover,a:active{
 h1{
     letter-spacing: 0.10em;
     font-weight: 700;
-}
-.d-inline-row{
     border-bottom: 2px solid black;
 }
 .card{
@@ -109,16 +165,21 @@ h1{
     border-radius: 15px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border:none;
+    cursor: pointer;
     /* min-height: 35rem; */
 }
 .card-img-top{
     border-radius: 15px 15px 0 0;  
-    max-height: 250px; 
+    height: 250px;
 }
 .img-partai{
-    max-width: 22px;
-    max-height: 22px;
+    width: 30px;
+    height: 30px;
     border-radius: 15px;
+}
+.card-subtitle{
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #C2A49D;
 }
 .card-img-overlay{
     right: unset;
@@ -131,6 +192,11 @@ h1{
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 .btn-outline-orange, .btn-outline-blue{
+    padding: 0.3rem;
     min-width: 5rem;
+    font-size: 80%;
+}
+p{
+    font-size: 95%;
 }
 </style>

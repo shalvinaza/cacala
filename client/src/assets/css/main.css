@@ -108,6 +108,12 @@ a:active{
     color:white;
     background-color: #DDA18C;
 }
+
+.card-footer{
+    background-color: transparent;
+    border-top: 0;
+}
+
 #caraPenggunaan .cara, #presiden .pres, #dpr_ri .dprri, #dpd_ri .dpdri, #dprd_prov .prov, #dprd_kab .kab {
     color: white;
   }
