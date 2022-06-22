@@ -86,7 +86,6 @@ router.get("/", authorization,  controller.selectPostByAdmin)
 router.get("/:id_post", controller.selectPostById)
 router.put("/:id_post", upload.single('foto'), controller.updatePost)
 router.delete("/:id_post", controller.deletePost)
-router.post("/images", controller.addImage)
 
 router.get("/user/:id_admin", controller.selectPostByUser)
 
