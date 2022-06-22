@@ -91,8 +91,73 @@ const upload = multer({
     }
 })
 router.get("/:id_post", controller.selectPostById)
-router.put("/:id_post", upload.single('foto'), controller.updatePost)
-router.delete("/:id_post", controller.deletePost)
+router.put("/:id_post", upload.single('foto'), async (req, res) => {
+   try{
+      const { id_post } = req.params
+
+      let post = await pool.query(
+         "SELECT * FROM post WHERE id_post = $1", [
+            id_post
+         ]
+      )
+
+      const { judul } = req.body || post.judul
+      const { teks } = req.body || post.teks
+      let foto = post.foto
+      let id_foto = post.id_foto
+      let uploadedFoto
+
+      if(!post.id_foto && req.file){
+         uploadedFoto = await cloudinary.uploader.upload(req.file.path)
+         foto = uploadedFoto.secure_url
+         id_foto = uploadedFoto.public_id
+         console.log(req.file)
+      } 
+      else if(post.id_foto && req.file){
+         await cloudinary.uploader.destroy(post.id_foto);
+         uploadedFoto = await cloudinary.uploader.upload(req.file.path)
+         foto = uploadedFoto.secure_url
+         id_foto = uploadedFoto.public_id
+         console.log(req.file)
+      }
+
+      post = await pool.query(
+         "UPDATE post SET judul = $1, teks = $2, foto = $3, id_foto = $4 WHERE id_post = $5", [
+            judul, teks, foto, id_foto, id_post
+         ]
+      )
+
+      res.json("Post is updated")
+   } catch (err) {
+      res.json({ message: err })
+   }
+})
+
+router.delete("/:id_post", async (req, res)=> {
+   try{
+      const { id_post } = req.params
+
+      let post = await pool.query(
+         "SELECT * FROM post WHERE id_post = $1", [
+            id_post
+         ]
+      )
+
+      if(post.id_foto){
+         await cloudinary.uploader.destroy(post.id_foto)
+      }
+
+      post = await pool.query(
+         "DELETE FROM post WHERE id_post = $1", [
+            id_post
+         ]
+      )
+
+      res.json("Post is deleted")
+   } catch (err) {
+      res.json({ message: err })
+   }
+})
 
 router.get("/user/:id_admin", controller.selectPostByUser)
 

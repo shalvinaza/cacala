@@ -303,12 +303,12 @@ export default {
             //     // console.log(err)
             // }
         },
-        del(form){
+        del(){
             const post_id = this.delPost;
             axios.delete(`${process.env.VUE_APP_API_URL}/post/`+ post_id).then(() =>{
                 this.popupDel = false
                 this.load()
-                let index = this.posts.indexOf(form.name)
+                let index = this.posts.indexOf(post_id)
                 this.posts.splice(index,1)
             })            
         },

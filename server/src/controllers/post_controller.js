@@ -16,48 +16,23 @@ exports.selectPostByAdmin = async (req, res) => {
    }
 }
 
-exports.updatePost = async (req, res) => {
-   try{
-      const { id_post } = req.params
+// exports.deletePost = async (req, res) => {
+//    try{
+//       const { id_post } = req.params
 
-      await cloudinary.uploader.destroy(post.cloudinary_id)
+//       await cloudinary.uploader.destroy(post.cloudinary_id)
 
-      const uploadedFoto = await cloudinary.uploader.upload(req.file.path)
+//       const post = await pool.query(
+//          "DELETE FROM post WHERE id_post = $1", [
+//             id_post
+//          ]
+//       )
 
-      const { judul } = req.body || post.judul
-      const { teks } = req.body || post.teks
-      const foto = uploadedFoto.secure_url || post.foto
-      const id_foto = uploadedFoto.public_id || post.id_foto
-
-      const post = await pool.query(
-         "UPDATE post SET judul = $1, teks = $2, foto = $3, id_foto = $4 WHERE id_post = $5", [
-            judul, teks, foto, id_foto, id_post
-         ]
-      )
-
-      res.json("Post is updated")
-   } catch (err) {
-      res.json({ message: err })
-   }
-}
-
-exports.deletePost = async (req, res) => {
-   try{
-      const { id_post } = req.params
-
-      await cloudinary.uploader.destroy(post.cloudinary_id)
-
-      const post = await pool.query(
-         "DELETE FROM post WHERE id_post = $1", [
-            id_post
-         ]
-      )
-
-      res.json("Post is deleted")
-   } catch (err) {
-      res.json({ message: err })
-   }
-}
+//       res.json("Post is deleted")
+//    } catch (err) {
+//       res.json({ message: err })
+//    }
+// }
 
 exports.selectPostByUser = async (req, res) => {
    const { id_admin } = req.params
