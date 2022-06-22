@@ -7,6 +7,7 @@ const router = express.Router()
 const cloudinary = require('../utils/cloudinary')
 
 const authorization = require("../middleware/authorization")
+const controller = require("../controllers/post_controller")
 
 // const storage = multer.diskStorage({
 //    destination: function(req, file, cb){
@@ -16,6 +17,11 @@ const authorization = require("../middleware/authorization")
 //       cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname)
 //    }
 // })
+
+
+
+
+router.get("/", authorization,  controller.selectPostByAdmin)
 
 const fileFilter = function(req, file, cb){
    allowedTypes = ["image/jpeg", "image/png", "image/gif"];
@@ -61,17 +67,16 @@ const upload = multer({
 
        const uploadedFoto = await cloudinary.uploader.upload(req.file.path)
 
-      //  console.log(req.file)
+       console.log(req.file)
        const { judul } = req.body
        const { teks } = req.body
       //  const foto = req.file.filename
        const foto = uploadedFoto.secure_url
        const id_foto = uploadedFoto.public_id
-       const { video } = req.body
- 
+
        const post = await pool.query(
-          "INSERT INTO post(id_admin, judul, teks, foto, id_foto, video) VALUES($1, $2, $3, $4, $5, $6) RETURNING *",
-          [req.user, judul, teks, foto, id_foto, video]
+          "INSERT INTO post(id_admin, judul, teks, foto, id_foto) VALUES($1, $2, $3, $4, $5) RETURNING *",
+          [req.user, judul, teks, foto, id_foto]
        )
  
        res.json(post)
@@ -79,10 +84,6 @@ const upload = multer({
        console.error(err.message)
     }
 })
-
-const controller = require("../controllers/post_controller")
-
-router.get("/", authorization,  controller.selectPostByAdmin)
 router.get("/:id_post", controller.selectPostById)
 router.put("/:id_post", upload.single('foto'), controller.updatePost)
 router.delete("/:id_post", controller.deletePost)

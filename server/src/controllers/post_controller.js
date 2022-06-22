@@ -16,30 +16,6 @@ exports.selectPostByAdmin = async (req, res) => {
    }
 }
 
-// exports.addPost = async (req, res) => {
-//    try{
-//       // const fotos = []
-
-//       // for(let i = 0; i<req.foto.length; i++){
-//       //    fotos.push(req.foto[i].filename)
-//       // }
-
-//       const { judul } = req.body
-//       const { teks } = req.body
-//       const { foto } = fotos
-//       const { video } = req.video
-
-//       const post = await pool.query(
-//          "INSERT INTO post(id_admin, judul, teks, foto, video) VALUES($1, $2, $3, $4, $5) RETURNING *",
-//          [req.user, judul, teks, foto, video]
-//       )
-
-//       res.json(post)
-//    } catch(err) {
-//       console.error(err.message)
-//    }
-// }
-
 exports.updatePost = async (req, res) => {
    try{
       const { id_post } = req.params
@@ -52,11 +28,10 @@ exports.updatePost = async (req, res) => {
       const { teks } = req.body || post.teks
       const foto = uploadedFoto.secure_url || post.foto
       const id_foto = uploadedFoto.public_id || post.id_foto
-      const { video } = req.body
 
       const post = await pool.query(
-         "UPDATE post SET judul = $1, teks = $2, foto = $3, id_foto = $4, video = $5 WHERE id_post = $6", [
-            judul, teks, foto, id_foto, video, id_post
+         "UPDATE post SET judul = $1, teks = $2, foto = $3, id_foto = $4 WHERE id_post = $5", [
+            judul, teks, foto, id_foto, id_post
          ]
       )
 
@@ -111,20 +86,3 @@ exports.selectPostById = async (req, res) => {
       res.json({ message: err })
    }
 }
-
-// exports.addImage = async (req, res) => {
-//    try{
-//       const { id_post } = req.body
-//       const { foto } = req.body
-//       const { video } = req.body
-
-//       const postImage = await pool.query(
-//          "INSERT INTO images(id_post, foto, video) VALUES($1, lo_import($2), lo_import($3)) RETURNING *",
-//          [id_post, foto, video]
-//       )
-
-//       res.json(postImage)
-//    } catch(err) {
-//       console.error(err.message)
-//    }
-// }

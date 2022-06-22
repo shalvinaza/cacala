@@ -187,8 +187,6 @@ import Popup from './Popup.vue'
 import Popup2 from './Berhasil.vue'
 import axios from 'axios'
 
-const CALON_API_URL = `${process.env.VUE_APP_API_URL}/calon/admin`
-
 export default {
     name :'Post_detail_calon',
     components:{
@@ -218,7 +216,8 @@ export default {
         }   
     },
     mounted(){
-        const headers = { token: localStorage.getItem('token') }
+        const headers = { token: localStorage.token }
+        const CALON_API_URL = `${process.env.VUE_APP_API_URL}/calon/admin`
         fetch(CALON_API_URL, { headers })
             .then(response => response.json())
             .then(result => {
@@ -231,8 +230,8 @@ export default {
     methods: {
         load(){
             const GET_POST_API_URL = `${process.env.VUE_APP_API_URL}/post/`
-            const headers = { token: localStorage.getItem('token') }
-            axios.get(GET_POST_API_URL, {headers})
+            axios.defaults.headers.common["token"] = localStorage.token
+            axios.get(GET_POST_API_URL)
                 .then(result => {
                     this.posts = result.data
                     var parsedobj = JSON.parse(JSON.stringify(result))
@@ -264,6 +263,7 @@ export default {
         },
         async addPost(){
             const POST_POSTS_API_URL = `${process.env.VUE_APP_API_URL}/post/`
+            axios.defaults.headers.common["token"] = localStorage.token
             const formData = new FormData();
 
             formData.append('judul', this.form.judul);
@@ -276,8 +276,7 @@ export default {
             //     }
             // });
             try {
-                const headers = { token: localStorage.getItem('token') }
-                await axios.post(POST_POSTS_API_URL, formData, {headers});
+                await axios.post(POST_POSTS_API_URL, formData);
                 this.message = "Berhasil diunggah";
                 this.load()
                 this.form.judul =''
@@ -285,7 +284,7 @@ export default {
                 this.form.foto = ''
                 // this.error = false
             }catch(err){
-                console.log(err.response.data.error)
+                console.log(err)
                 // this.error = true;
             }
             // try{
@@ -324,12 +323,11 @@ export default {
             })  
         },
         update(formUpdate){
-            const headers = { token: localStorage.getItem('token') }
             return axios.put(`${process.env.VUE_APP_API_URL}/post/` + formUpdate.id, {
                 judul : this.formUpdate.judul,
                 teks : this.formUpdate.teks,
                 foto : this.formUpdate.foto,
-            }, {headers})
+            })
             .then(() =>{
                 this.updateSubmit = false
                 this.load()
