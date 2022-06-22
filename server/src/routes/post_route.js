@@ -8,6 +8,7 @@ const cloudinary = require('../utils/cloudinary')
 
 const authorization = require("../middleware/authorization")
 const controller = require("../controllers/post_controller")
+const e = require("express")
 
 // const storage = multer.diskStorage({
 //    destination: function(req, file, cb){
@@ -65,14 +66,19 @@ const upload = multer({
        //    fotos.push(url + './server/uploads/' + req.foto[i].filename)
        // }
 
-       const uploadedFoto = await cloudinary.uploader.upload(req.file.path)
-
-       console.log(req.file)
-       const { judul } = req.body
-       const { teks } = req.body
+       
       //  const foto = req.file.filename
-       const foto = uploadedFoto.secure_url
-       const id_foto = uploadedFoto.public_id
+      const { judul } = req.body
+      const { teks } = req.body
+      let foto = null
+      let id_foto = null
+
+      if(req.file){
+         const uploadedFoto = await cloudinary.uploader.upload(req.file.path)
+         foto = uploadedFoto.secure_url 
+         id_foto = uploadedFoto.public_id 
+         console.log(req.file)
+      } 
 
        const post = await pool.query(
           "INSERT INTO post(id_admin, judul, teks, foto, id_foto) VALUES($1, $2, $3, $4, $5) RETURNING *",
