@@ -84,7 +84,7 @@ const controller = require("../controllers/post_controller")
 
 router.get("/", authorization,  controller.selectPostByAdmin)
 router.get("/:id_post", controller.selectPostById)
-router.put("/:id_post", controller.updatePost)
+router.put("/:id_post", upload.single('foto'), controller.updatePost)
 router.delete("/:id_post", controller.deletePost)
 router.post("/images", controller.addImage)
 

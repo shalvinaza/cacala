@@ -1,5 +1,6 @@
 const express = require("express")
 const { pool } = require("../dbConfig")
+const cloudinary = require('../utils/cloudinary')
 
 exports.selectPostByAdmin = async (req, res) => {
    try{
@@ -42,14 +43,20 @@ exports.selectPostByAdmin = async (req, res) => {
 exports.updatePost = async (req, res) => {
    try{
       const { id_post } = req.params
-      const { judul } = req.body
-      const { teks } = req.body
-      const { foto } = req.body
+
+      await cloudinary.uploader.destroy(post.cloudinary_id)
+
+      const uploadedFoto = await cloudinary.uploader.upload(req.file.path)
+
+      const { judul } = req.body || post.judul
+      const { teks } = req.body || post.teks
+      const foto = uploadedFoto.secure_url || post.foto
+      const id_foto = uploadedFoto.public_id || post.id_foto
       const { video } = req.body
 
       const post = await pool.query(
-         "UPDATE post SET judul = $1, teks = $2, foto = $3, video = $4 WHERE id_post = $5", [
-            judul, teks, foto, video, id_post
+         "UPDATE post SET judul = $1, teks = $2, foto = $3, id_foto = $4, video = $5 WHERE id_post = $6", [
+            judul, teks, foto, id_foto, video, id_post
          ]
       )
 
@@ -62,6 +69,8 @@ exports.updatePost = async (req, res) => {
 exports.deletePost = async (req, res) => {
    try{
       const { id_post } = req.params
+
+      await cloudinary.uploader.destroy(post.cloudinary_id)
 
       const post = await pool.query(
          "DELETE FROM post WHERE id_post = $1", [
@@ -103,19 +112,19 @@ exports.selectPostById = async (req, res) => {
    }
 }
 
-exports.addImage = async (req, res) => {
-   try{
-      const { id_post } = req.body
-      const { foto } = req.body
-      const { video } = req.body
+// exports.addImage = async (req, res) => {
+//    try{
+//       const { id_post } = req.body
+//       const { foto } = req.body
+//       const { video } = req.body
 
-      const postImage = await pool.query(
-         "INSERT INTO images(id_post, foto, video) VALUES($1, lo_import($2), lo_import($3)) RETURNING *",
-         [id_post, foto, video]
-      )
+//       const postImage = await pool.query(
+//          "INSERT INTO images(id_post, foto, video) VALUES($1, lo_import($2), lo_import($3)) RETURNING *",
+//          [id_post, foto, video]
+//       )
 
-      res.json(postImage)
-   } catch(err) {
-      console.error(err.message)
-   }
-}
+//       res.json(postImage)
+//    } catch(err) {
+//       console.error(err.message)
+//    }
+// }

@@ -75,10 +75,6 @@
                                         <span class="card-text icons me-3">
                                             <input type="file" id="inputFoto" style="display:none" ref="foto" @change="selectImage()"/><font-awesome-icon icon="fa-solid fa-images" @click="addFoto()"/>
                                         </span>
-                                        <span class="card-text icons flex-grow-2 w-100">
-                                            <input type="file" id="inputVideo" style="display:none" ref="video" @change="selectVideo()"/><font-awesome-icon icon="fa-solid fa-video" @click="addVideo()"/>
-                                        </span>
-
                                         <button type="submit" class="btn bg-light-orange br-10">Unggah</button> 
                                     </div>
                                     <div class="d-flex flex-column field">
@@ -89,12 +85,12 @@
                             </div>
                         </div> 
 
-                        <div
+                        <!-- <div
                             v-if="message"
                             :class="`message ${error ? 'is-danger' : 'is-success'}`"
                         >
                             <div class="message-body mb-3">{{message}}</div>
-                        </div> 
+                        </div>  -->
 
                         <Popup v-if="updateSubmit" title="Edit Postingan" @toggle-modal="toggleModal">
                                 <form>
@@ -130,7 +126,7 @@
                                         </Popup2>
                                     </div>
                                     <div class="d-flex justify-content-center">
-                                        <img v-if="post.foto" :src="'http://localhost:3000/uploads/' + post.foto" class="img-poster-post mb-3" alt="...">     
+                                        <img v-if="post.foto" :src="post.foto" class="img-poster-post mb-3" alt="...">     
                                     </div>
                                     <p class="card-text">{{post.teks}}</p>
                                 </div>
@@ -206,25 +202,23 @@ export default {
              form : {
                  judul:'',
                  teks:'',
-                 foto: '',
-                 video:''
+                 foto: ''
              },
             files:[],
             formUpdate : {
                  judul:'',
                  teks:'',
-                 foto: '',
-                 video:''
+                 foto: ''
              },
              updateSubmit: false,
              popupDel: false,
              delPost: '',
              message: '',
-             error: false
+            //  error: false
         }   
     },
     mounted(){
-        const headers = { token: localStorage.token }
+        const headers = { token: localStorage.getItem('token') }
         fetch(CALON_API_URL, { headers })
             .then(response => response.json())
             .then(result => {
@@ -237,8 +231,8 @@ export default {
     methods: {
         load(){
             const GET_POST_API_URL = `${process.env.VUE_APP_API_URL}/post/`
-            axios.defaults.headers.common["token"] = localStorage.token
-            axios.get(GET_POST_API_URL)
+            const headers = { token: localStorage.getItem('token') }
+            axios.get(GET_POST_API_URL, {headers})
                 .then(result => {
                     this.posts = result.data
                     var parsedobj = JSON.parse(JSON.stringify(result))
@@ -252,13 +246,9 @@ export default {
         addFoto(){
             document.getElementById('inputFoto').click();
         },
-        addVideo(){
-            document.getElementById('inputVideo').click();
-        },
         selectImage(){
             this.form.foto = this.$refs.foto.files[0];
         },
-
         validateImage(file){
             const MAX_SIZE = 200000;
             const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
@@ -271,11 +261,6 @@ export default {
             }
 
             return "";
-        },
-        selectVideo(){
-            this.form.video = this.$refs.video.files[0];
-            this.error = false;
-            this.message = '';
         },
         async addPost(){
             const POST_POSTS_API_URL = `${process.env.VUE_APP_API_URL}/post/`
@@ -291,18 +276,17 @@ export default {
             //     }
             // });
             try {
-                axios.defaults.headers.common["token"] = localStorage.token
-                await axios.post(POST_POSTS_API_URL, formData);
+                const headers = { token: localStorage.getItem('token') }
+                await axios.post(POST_POSTS_API_URL, formData, {headers});
                 this.message = "Berhasil diunggah";
                 this.load()
                 this.form.judul =''
                 this.form.teks = ''
                 this.form.foto = ''
-                this.form.video = ''
-                this.error = false
+                // this.error = false
             }catch(err){
-                this.message = err.response.data.error;
-                this.error = true;
+                console.log(err.response.data.error)
+                // this.error = true;
             }
             // try{
             //     axios.post(POST_POSTS_API_URL,this.form)
@@ -332,31 +316,26 @@ export default {
         edit(post){
             this.updateSubmit = true
             axios.get(`${process.env.VUE_APP_API_URL}/post/`+ post.id_post).then(() =>{
-                this.formUpdate.id = post.id_post
+                // this.formUpdate.id = post.id_post
                 this.formUpdate.judul = post.judul
                 this.formUpdate.teks = post.teks
                 this.formUpdate.foto = post.foto
-                this.formUpdate.video = post.video
                 
             })  
         },
         update(formUpdate){
-            axios.defaults.headers.common["token"] = localStorage.token
+            const headers = { token: localStorage.getItem('token') }
             return axios.put(`${process.env.VUE_APP_API_URL}/post/` + formUpdate.id, {
                 judul : this.formUpdate.judul,
-                waktu : this.formUpdate.waktu,
                 teks : this.formUpdate.teks,
                 foto : this.formUpdate.foto,
-                video : this.formUpdate.video
-            })
+            }, {headers})
             .then(() =>{
                 this.updateSubmit = false
                 this.load()
                 this.formUpdate.judul =''
-                this.formUpdate.waktu = ''
                 this.formUpdate.teks = ''
-                this.formUpdate.foto = []
-                this.formUpdate.video = ''
+                this.formUpdate.foto = ''
             })
             .catch((err)=>{
                 console.log(err);
