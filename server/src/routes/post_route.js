@@ -8,19 +8,6 @@ const cloudinary = require('../utils/cloudinary')
 
 const authorization = require("../middleware/authorization")
 const controller = require("../controllers/post_controller")
-const e = require("express")
-
-// const storage = multer.diskStorage({
-//    destination: function(req, file, cb){
-//       cb(null, './uploads/')
-//    },
-//    filename: function(req, file, cb){
-//       cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname)
-//    }
-// })
-
-
-
 
 router.get("/", authorization,  controller.selectPostByAdmin)
 
@@ -57,7 +44,7 @@ const upload = multer({
    }
  })
 
- router.post("/", upload.single('foto'), authorization, async (req, res, next) => {
+ router.post("/", upload.single("image"), authorization, async (req, res, next) => {
    try{
        // const fotos = []
        // const url = req.protocol + '://' + req.get('host')
@@ -90,36 +77,63 @@ const upload = multer({
        console.error(err.message)
     }
 })
-router.get("/:id_post", controller.selectPostById)
-router.put("/:id_post", upload.single('foto'), async (req, res) => {
+
+router.get("/:id_post", async (req, res) => {
+   const {id_post} = req.params
+   try{
+      let post = await pool.query(
+         "select * from post where id_post = $1", [
+         id_post
+      ])
+
+      res.json(post.rows)
+   } catch(err) {
+      res.json({ message: err })
+   }
+})
+
+router.put("/:id_post", upload.single("image"), async (req, res) => {
    try{
       const { id_post } = req.params
 
-      let post = await pool.query(
-         "SELECT * FROM post WHERE id_post = $1", [
+      try{
+         var post = await pool.query(
+            "select * from post where id_post = $1", [
             id_post
-         ]
-      )
+         ])
+      } catch(err) {
+         console.log(err)
+      }
 
-      const { judul } = req.body || post.judul
-      const { teks } = req.body || post.teks
       let foto = post.foto
       let id_foto = post.id_foto
-      let uploadedFoto
 
-      if(!post.id_foto && req.file){
-         uploadedFoto = await cloudinary.uploader.upload(req.file.path)
-         foto = uploadedFoto.secure_url
-         id_foto = uploadedFoto.public_id
-         console.log(req.file)
-      } 
-      else if(post.id_foto && req.file){
-         await cloudinary.uploader.destroy(post.id_foto);
-         uploadedFoto = await cloudinary.uploader.upload(req.file.path)
-         foto = uploadedFoto.secure_url
-         id_foto = uploadedFoto.public_id
-         console.log(req.file)
+      if(!req.file){
+         try{
+            foto = req.body.foto
+            id_foto = req.body.id_foto
+         }catch(err){
+            console.log(err)
+         }
       }
+      else{
+         try{
+            if(post.id_foto){
+               await cloudinary.uploader.destroy(post.id_foto)
+               var uploadedFoto = await cloudinary.uploader.upload(req.file.path)
+            } else{
+               var uploadedFoto = await cloudinary.uploader.upload(req.file.path)
+            }
+            foto = uploadedFoto.secure_url
+            id_foto = uploadedFoto.public_id
+            console.log(req.file)
+         } catch(err){
+            console.log(err)
+         }
+      }
+
+      const { judul } = req.body
+      const { teks } = req.body
 
       post = await pool.query(
          "UPDATE post SET judul = $1, teks = $2, foto = $3, id_foto = $4 WHERE id_post = $5", [
@@ -127,7 +141,7 @@ router.put("/:id_post", upload.single('foto'), async (req, res) => {
          ]
       )
 
-      res.json("Post is updated")
+      res.json("Update berhasil")
    } catch (err) {
       res.json({ message: err })
    }
@@ -136,18 +150,19 @@ router.put("/:id_post", upload.single('foto'), async (req, res) => {
 router.delete("/:id_post", async (req, res)=> {
    try{
       const { id_post } = req.params
+      const { id_foto } = req.body
 
-      let post = await pool.query(
-         "SELECT * FROM post WHERE id_post = $1", [
-            id_post
-         ]
-      )
-
-      if(post.id_foto){
-         await cloudinary.uploader.destroy(post.id_foto)
+      if(id_foto){
+         await cloudinary.uploader.destroy(id_foto)
       }
 
-      post = await pool.query(
+      // let post = await pool.query(
+      //    "SELECT * FROM post WHERE id_post = $1", [
+      //       id_post
+      //    ]
+      // )
+
+      const post = await pool.query(
          "DELETE FROM post WHERE id_post = $1", [
             id_post
          ]

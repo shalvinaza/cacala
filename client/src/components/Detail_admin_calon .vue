@@ -93,7 +93,7 @@
                         </div>  -->
 
                         <Popup v-if="updateSubmit" title="Edit Postingan" @toggle-modal="toggleModal">
-                                <form>
+                                <form @submit.prevent="update" enctype="multipart/form-data">
                                     <div class="forms-inputs mb-4"> 
                                         <span>Judul unggahan</span> 
                                         <input class="w-100 p-3" autocomplete="off" type="text" v-model="formUpdate.judul" placeholder="Ketik judul di sini">
@@ -103,9 +103,13 @@
                                         <textarea class="w-100 p-3" autocomplete="off" v-model="formUpdate.teks" placeholder="Ketik teks di sini"></textarea>
                                     </div>
                                     <div class="d-flex align-items-center">
-                                        <span class="card-text icons me-3"><font-awesome-icon icon="fa-solid fa-images" /></span>
-                                        <span class="card-text icons flex-grow-2 w-100"><font-awesome-icon icon="fa-solid fa-video" /></span>
-                                        <button type="submit" class="btn bg-light-orange br-10" @click="update(formUpdate)">Perbarui</button>
+                                        <span class="card-text icons me-3">
+                                            <input type="file" id="inputFoto2" style="display:none" ref="foto2" @change="selectImageUpdate()"/><font-awesome-icon icon="fa-solid fa-images" @click="addFotoUpdate()"/>
+                                        </span>
+                                        <button type="submit" class="btn bg-light-orange br-10">Unggah</button> 
+                                    </div>
+                                    <div class="d-flex flex-column field">
+                                        <span v-if="formUpdate.file" class="file-name">{{formUpdate.file.name}}</span>
                                     </div>
                                 </form>  
                         </Popup>
@@ -206,12 +210,15 @@ export default {
             formUpdate : {
                  judul:'',
                  teks:'',
-                 foto: ''
+                 file: '',
+                 foto:'',
+                 id_foto:''
              },
              updateSubmit: false,
              popupDel: false,
              delPost: '',
              message: '',
+             id_post:''
             //  error: false
         }   
     },
@@ -248,6 +255,12 @@ export default {
         selectImage(){
             this.form.foto = this.$refs.foto.files[0];
         },
+        addFotoUpdate(){
+            document.getElementById('inputFoto2').click();
+        },
+        selectImageUpdate(){
+            this.formUpdate.file = this.$refs.foto2.files[0];
+        },
         validateImage(file){
             const MAX_SIZE = 200000;
             const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
@@ -268,7 +281,7 @@ export default {
 
             formData.append('judul', this.form.judul);
             formData.append('teks', this.form.teks);
-            formData.append('foto', this.form.foto);
+            formData.append('image', this.form.foto);
 
             // _.forEach(this.form.foto, file => {
             //     if(this.validateImage(file) === ""){
@@ -287,21 +300,6 @@ export default {
                 console.log(err)
                 // this.error = true;
             }
-            // try{
-            //     axios.post(POST_POSTS_API_URL,this.form)
-            //         this.load()
-            //         this.message = "Unggahan berhasil dikirim"
-            //         this.form.judul =''
-            //         this.form.waktu = ''
-            //         this.form.teks = ''
-            //         this.form.foto = []
-            //         this.form.video = ''
-            //         this.error = false
-            // } catch(err) {
-            //     this.message = err.response.data.error
-            //     this.error = true
-            //     // console.log(err)
-            // }
         },
         del(){
             const post_id = this.delPost;
@@ -313,31 +311,45 @@ export default {
             })            
         },
         edit(post){
+            this.id_post = post.id_post
             this.updateSubmit = true
             axios.get(`${process.env.VUE_APP_API_URL}/post/`+ post.id_post).then(() =>{
-                // this.formUpdate.id = post.id_post
                 this.formUpdate.judul = post.judul
-                this.formUpdate.teks = post.teks
+                this.formUpdate.teks = post.teks  
                 this.formUpdate.foto = post.foto
-                
+                this.formUpdate.id_foto = post.id_foto           
             })  
         },
-        update(formUpdate){
-            return axios.put(`${process.env.VUE_APP_API_URL}/post/` + formUpdate.id, {
-                judul : this.formUpdate.judul,
-                teks : this.formUpdate.teks,
-                foto : this.formUpdate.foto,
-            })
-            .then(() =>{
-                this.updateSubmit = false
-                this.load()
-                this.formUpdate.judul =''
-                this.formUpdate.teks = ''
-                this.formUpdate.foto = ''
-            })
-            .catch((err)=>{
-                console.log(err);
-            })
+        async update(){
+            const post_id = this.id_post
+            const formFile = this.formUpdate.file
+
+            const formData = new FormData();
+
+            formData.append('judul', this.formUpdate.judul);
+            formData.append('teks', this.formUpdate.teks);
+            
+            if(formFile !== ""){
+                formData.append('image', this.formUpdate.file);
+            }
+            else{
+                formData.append('foto', this.formUpdate.foto);
+                formData.append('id_foto', this.formUpdate.id_foto);
+            }
+
+            try {
+                return axios.put(`${process.env.VUE_APP_API_URL}/post/` + post_id, formData)
+                .then(() =>{
+                    this.updateSubmit = false
+                    this.load()
+                    this.formUpdate.judul =''
+                    this.formUpdate.teks = ''
+                    this.formUpdate.file = ''
+                })
+            } catch(err){
+                console.log(err)
+                // this.error = true;
+            }
         },
         toggleModal(){
             this.updateSubmit = !this.updateSubmit;  
