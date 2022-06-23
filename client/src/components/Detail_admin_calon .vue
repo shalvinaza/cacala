@@ -379,8 +379,8 @@ export default {
     max-height: 210px;
 }
 .img-partai{
-    max-width: 22px;
-    max-height: 22px;
+    width: 30px;
+    height: 30px;
     border-radius: 15px;
 }
 .row{

@@ -25,7 +25,7 @@ exports.selectPostByUser = async (req, res) => {
          ]
       )
 
-      res.json(post)
+      res.json(post.rows)
    } catch(err){
       res.json({ message: err })
    }

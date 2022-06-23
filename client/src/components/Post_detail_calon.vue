@@ -11,13 +11,13 @@
                     <div class="row align-items-start">
                         <h6 class="col">Partai</h6>
                         <div class="col d-flex flex-wrap justify-content-end">
-                            <img v-for="partai in calon.partai" :key="partai.nama_partai" :src=partai.logo_partai class="img-partai me-2">
+                            <img v-for="partai in calon.partai" :key="partai.nama_partai" :src="partai.logo_partai" class="img-partai me-2">
                         </div>
                     </div>
                     <div class="row align-items-start">
                         <h6 class="col">Daerah Pilih</h6>
                         <div class="col d-flex flex-wrap justify-content-end">
-                            <p>{{calon.kota}}</p>
+                            <p v-for="kota in calon.kota" :key="kota.id_post">{{kota.kota}}</p>
                         </div>
                     </div>
                     <div class="row align-items-start end-row-section">
@@ -62,16 +62,16 @@
                         </div>
                     </div>
                     <div class="p-4">
-                        <span v-for="post in posts"  :key="post.id_post">
+                        <span v-for="post in posts" :key="post.id_foto">
                             <div class="card w-100 postingan p-3 mb-3">
                                 <div class="card-body p-0">
                                     <h5 class="card-title text-center">{{post.judul}}</h5>
                                     <div class="d-flex end-row-section w-100 p-0 mb-3 pb-2">
                                         <p class="card-text text-muted m-0 flex-grow-2 w-100" style=""><i class="far fa-calendar-alt"></i>  <small>{{post.waktu}}</small></p>
-                                        <span class="card-text icons me-2" @click="edit(post)" ><i class="fas fa-edit"></i></span>
-                                        <span class="card-text icons" @click="del(post)"><i class="fas fa-trash"></i></span>
                                     </div>
-                                    <!-- <img src="../assets/images/poster_post.jpg" class="w-100 img-poster-post mb-3" alt="..."> -->
+                                    <div class="d-flex justify-content-center">
+                                        <img v-if="post.foto" :src="post.foto" class="img-poster-post mb-3" alt="...">     
+                                    </div>
                                     <p class="card-text">{{post.teks}}</p>
                                 </div>
                             </div>
@@ -112,6 +112,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
     name :'Post_detail_calon',
     data : () => ({
@@ -120,18 +122,33 @@ export default {
         posts: []
     }),
     mounted(){
-        const id_admin = this.$route.params.id_admin;
-        fetch(`${process.env.VUE_APP_API_URL}/calon/${id_admin}`)
-            .then(response => response.json())
-            .then(result => {
-                this.calons = result;
-            })
-        fetch(`${process.env.VUE_APP_API_URL}/post/user/${id_admin}`)
-            .then(response => response.json())
-            .then(result => {
-                this.posts = result;
-            })
+        this.calonDetail()
+        this.calonPosts()
         
+    },
+    methods: {
+        calonDetail(){
+            try{
+                const id_admin = this.$route.params.id_admin;
+                axios.get(`${process.env.VUE_APP_API_URL}/calon/` + id_admin)
+                .then(result => {
+                    this.calons = result.data;
+                })
+            }catch(err) {
+                console.log(err)
+            }
+        },
+        calonPosts(){
+            try {
+                const id_admin = this.$route.params.id_admin;
+                axios.get(`${process.env.VUE_APP_API_URL}/post/user/` + id_admin)
+                .then(result => {
+                    this.posts = result.data;
+                })
+            } catch(err){
+                console.log(err)
+            }
+        }
     }
 }
 </script>
@@ -153,8 +170,8 @@ export default {
     max-height: 210px;
 }
 .img-partai{
-    max-width: 22px;
-    max-height: 22px;
+    width: 30px;
+    height: 30px;
     border-radius: 15px;
 }
 .row{
@@ -181,7 +198,10 @@ export default {
     border-radius: 15px;
 }
 .img-poster-post{
+    display: flex;
+    justify-content: center;
     max-height: 800px;
+    max-width: 400px;
 }
 .icons{
     color: white;
