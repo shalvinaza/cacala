@@ -224,6 +224,20 @@ exports.selectFollowedCalonByUser = async (req, res) => {
    }
 }
 
+exports.statOnDetail = async (req, res) => {
+   const { id_calon } = req.params
+   try{
+      const followed = await pool.query(
+         "select users.username, users.email, calon.id_calon, calon.nama, jabatan.jabatan_tujuan FROM mengikuti_calon JOIN users ON users.id_user= mengikuti_calon.id_user JOIN calon ON mengikuti_calon.id_calon = calon.id_calon JOIN jabatan on calon.id_jabatan = jabatan.id_jabatan WHERE mengikuti_calon.id_user = $1 AND mengikuti_calon.id_calon = $2;",[
+            req.user, id_calon
+         ])
+      
+         res.json(followed.rows)
+   } catch(err) {
+      res.json({ message: err })
+   }
+}
+
 exports.unfollowCalon = async (req, res) => {
    const { id_calon } = req.params
    try{

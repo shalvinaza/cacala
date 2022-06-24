@@ -64,11 +64,13 @@
                 
                     <div class="p-4">
                         <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h6>Total pengikut : {{showTotal}}</h6>
+                            <span class="d-flex">
+                                <h6 class="me-2">Total pengikut :</h6> <h6>{{showTotal}}</h6>
+                            </span>
                             <span v-if="isLoggedin">
                                 <span v-for="calon in calons" :key="calon.status">
-                                    <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon), calon.status = !calon.status" v-show="!calon.status">Ikuti</button>
-                                    <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon), calon.status = !calon.status" v-show="calon.status">Berhenti ikuti</button>
+                                    <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon)" v-show="!isFollowed">Ikuti</button>
+                                    <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon)" v-show="isFollowed">Berhenti ikuti</button>
                                 </span>       
                             </span>
                             <span v-else>
@@ -126,7 +128,6 @@
 
 <script>
 import axios from 'axios'
-const FOLLOWED_CALON_API_URL = `${process.env.VUE_APP_API_URL}/user/followed`
 
 export default {
     name :'Post_detail_calon',
@@ -137,21 +138,20 @@ export default {
         followers:{},
         interval: null,
         idd: '',
-        followed_calon:[]
+        followed_calon:[],
+        intervalPost: null
     }),
     created(){
         this.calonDetail()
         this.fetchFollowedCalon()
-        this.calonPosts()
+        // this.calonPosts()
         this.interval = setInterval(this.totalFollowers, 1000)
+        this.interval = setInterval(this.calonPosts, 10000)
         this.idd = localStorage.getItem('id_calon')
-        // this.checkFollowedCalon()
     },
-    // mounted(){
-
-    // },
     beforeDestroy(){
         clearInterval(this.interval)
+        clearInterval(this.intervalPost)
     },
     destroyed(){
         localStorage.removeItem('id_calon')
@@ -169,6 +169,14 @@ export default {
                 tot = 0
             }
             return tot
+        },
+        isFollowed(){
+            const calFollowed = this.followed_calon
+            let stat = false
+            if(calFollowed.length){
+                stat = true
+            }
+            return stat
         }
     },
     methods: {
@@ -187,48 +195,48 @@ export default {
                 console.log(err)
             }
         },
-        fetchFollowedCalon() {
-            const headers = { token: localStorage.token }
-            fetch(FOLLOWED_CALON_API_URL, { headers })
-                .then(response => response.json())
-                .then(result => {
-                    this.followed_calon = result
-                    this.checkFollowedCalon()
-                    var parsedobj = JSON.parse(JSON.stringify(result))
-                    console.log(parsedobj)
-                })
-        },
 
-        checkFollowedCalon(){
-            console.log(this.calons.length)
-            Array.from(this.calons).forEach((value, i) => {
-                Array.from(this.followed_calon).forEach((value, j) => {
-                    if(this.calons[i].id_calon == this.followed_calon[j].id_calon){
-                        this.calons[i].status = true
-                        console.log(`${this.calons[i].nama} => status: ${this.calons[i].status}`)
-                    }
+        fetchFollowedCalon() {
+            try{
+               // const GET_FOLLOWED = `${process.env.VUE_APP_API_URL}/user/getStatusDetail/${this.idd}`
+                const id_calon = localStorage.getItem('id_calon')
+                axios.defaults.headers.common["token"] = localStorage.token
+                axios.get(`${process.env.VUE_APP_API_URL}/user/getStatusDetail/` + id_calon)
+                .then(result => {
+                    this.followed_calon = result.data
+                    // this.checkFollowedCalon()
                 })
-            })
+            }catch(err){
+                console.log(err)
+            }
         },
 
         followCalon(id_calon){
             const FOLLOW_API_URL = `${process.env.VUE_APP_API_URL}/user/${id_calon}`
             axios.defaults.headers.common["token"] = localStorage.token
             
-            axios.post(FOLLOW_API_URL)
-                .catch((error) => {
-                    console.error(error)
+            try{
+                axios.post(FOLLOW_API_URL)
+                .then(() =>{
+                    this.fetchFollowedCalon()
                 })
+            }catch(error){
+                    console.error(error)
+            }
         },
 
         unfollowCalon(id_calon){
             const UNFOLLOW_API_URL = `${process.env.VUE_APP_API_URL}/user/unfollow/${id_calon}`
             axios.defaults.headers.common["token"] = localStorage.token
 
-            axios.delete(UNFOLLOW_API_URL)
-                .catch((error) => {
-                    console.error(error)
+            try{
+                axios.delete(UNFOLLOW_API_URL)
+                .then(() =>{
+                    this.fetchFollowedCalon()
                 })
+            } catch(error){
+                    console.error(error)
+            }
         },
 
         calonPosts(){
