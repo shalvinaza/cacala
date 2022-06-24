@@ -121,7 +121,7 @@ exports.updateUser = async (req, res) => {
          username, email, req.user
       ])
 
-      res.json("User detail is updated")
+      res.json("Email atau nama berhasul diubah")
    } catch (err) {
       res.json({ message: err })
    }
@@ -139,7 +139,7 @@ exports.updateUserPass = async (req, res) => {
          password, bcryptPass, req.user
       ])
 
-      res.json("User password is updated")
+      res.json("Password berhasil diubah")
    } catch (err) {
       res.json({ message: err })
    }
@@ -155,6 +155,21 @@ exports.followCalon = async (req, res) => {
       )
 
       res.json("Calon berhasil diikuti")
+   } catch(err) {
+      res.json({message: err})
+   }
+}
+
+exports.totalFollowers = async (req, res) => {
+   const { id_calon } = req.params
+   try{
+      const totalFollowers = await pool.query(
+         "SELECT * FROM mengikuti_calon WHERE mengikuti_calon.id_calon = $1;", [
+            id_calon
+         ]
+      )
+
+      res.json(totalFollowers.rows)
    } catch(err) {
       res.json({message: err})
    }
@@ -230,7 +245,7 @@ exports.deleteAkun = async (req, res) => {
          [id_user]
       )
 
-      res.json("Account Deleted")
+      res.json("Akun dihapus")
    } catch(err){
       res.json({message: err})
    }

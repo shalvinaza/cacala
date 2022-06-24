@@ -36,7 +36,9 @@ exports.selectAllCalon = async (req, res) => {
             [id_calon]
          )
 
+         j = 0
          calon.rows[i] = {...calon.rows[i], partai: partai.rows, kota: kota.rows, kecamatan: kecamatan.rows, riwayat_pendidikan: pendidikan.rows, riwayat_pekerjaan: pekerjaan.rows}
+         calon.rows[i] = {...calon.rows[i], status: false}
       }
 
       res.json(calon.rows)
@@ -187,7 +189,9 @@ exports.selectCalonByUser = async (req, res) => {
             [calon.rows[i].id_calon]
          )
 
+         j = 0
          calon.rows[i] = {...calon.rows[i], partai: partai.rows, kota: kota.rows, kecamatan:kecamatan.rows, riwayat_pendidikan: pendidikan.rows, riwayat_pekerjaan: pekerjaan.rows}
+         calon.rows[i] = {...calon.rows[i], status: false}
       }
 
       res.json(calon.rows)
@@ -398,8 +402,10 @@ exports.selectCalonByAdmin = async (req, res) => {
             "select pek.* FROM riwayat_pekerjaan pek JOIN calon c ON pek.id_calon = c.id_calon WHERE pek.id_calon = $1",
             [id_calon]
          )
-
+ 
+         j = 0
          calon.rows[i] = {...calon.rows[i], partai: partai.rows, kota: kota.rows, kecamatan:kecamatan.rows, riwayat_pendidikan: pendidikan.rows, riwayat_pekerjaan: pekerjaan.rows}
+         calon.rows[i] = {...calon.rows[i], status: false}
       }
 
       res.json(calon.rows)

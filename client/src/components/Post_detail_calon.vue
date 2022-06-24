@@ -14,7 +14,7 @@
                             <img v-for="partai in calon.partai" :key="partai.nama_partai" :src="partai.logo_partai" class="img-partai me-2">
                         </div>
                     </div>
-                    <div class="row align-items-start">
+                    <div class="row align-items-start mt-2">
                         <h6 class="col">Daerah Pilih</h6>
                         <div class="col d-flex flex-wrap justify-content-end">
                             <p v-for="kota in calon.kota" :key="kota.id_post">{{kota.kota}}</p>
@@ -27,17 +27,17 @@
                         </div>
                     </div>
                     <div class="mt-4 pb-3 end-row-section">
-                        <h5 class="mb-3">Riwayat Pendidikan</h5>
+                        <h6 class="mb-3">Riwayat Pendidikan</h6>
                         <div class="mb-3" v-for="(pendidikan) in calon.riwayat_pendidikan" :key="pendidikan.id_pendidikan">
-                            <h6>{{pendidikan.nama_institusi}}</h6>
+                            <p>{{pendidikan.nama_institusi}}</p>
                             <p class="mb-2">{{pendidikan.detail_pendidikan}}</p>
                             <i class="far fa-calendar-alt"></i> <span>{{pendidikan.tahun_mulai_pendidikan}}</span> - <span>{{pendidikan.tahun_selesai_pendidikan}}</span>
                         </div>
                     </div>
                     <div class="mt-4 pb-3">
-                        <h5 class="mb-3">Riwayat Pekerjaan</h5>
+                        <h6 class="mb-3">Riwayat Pekerjaan</h6>
                         <div v-for="(pekerjaan) in calon.riwayat_pekerjaan" :key="pekerjaan.id_pekerjaan">
-                            <h6>{{pekerjaan.nama_pekerjaan}}</h6>
+                            <p>{{pekerjaan.nama_pekerjaan}}</p>
                             <p class="mb-2">{{pekerjaan.detail_pekerjaan}}</p>
                             <i class="far fa-calendar-alt"></i> <span>{{pekerjaan.tahun_mulai_pekerjaan}}</span> - <span>{{pekerjaan.tahun_selesai_pekerjaan}}</span>
                         </div>
@@ -61,7 +61,20 @@
                             <p class="card-text w-100" v-for="(calon) in calons" :key="calon.id_admin">{{calon.slogan}}</p>
                         </div>
                     </div>
+                
                     <div class="p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6>Total pengikut : {{showTotal}}</h6>
+                            <span v-if="isLoggedin">
+                                <span v-for="calon in calons" :key="calon.status">
+                                    <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon), calon.status = !calon.status" v-show="!calon.status">Ikuti</button>
+                                    <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon), calon.status = !calon.status" v-show="calon.status">Berhenti ikuti</button>
+                                </span>       
+                            </span>
+                            <span v-else>
+                                <button class="btn btn-outline-blue" @click="goToLogin()">Ikuti</button> 
+                            </span> 
+                        </div>
                         <span v-for="post in posts" :key="post.id_foto">
                             <div class="card w-100 postingan p-3 mb-3">
                                 <div class="card-body p-0">
@@ -113,18 +126,58 @@
 
 <script>
 import axios from 'axios'
+const FOLLOWED_CALON_API_URL = `${process.env.VUE_APP_API_URL}/user/followed`
 
 export default {
     name :'Post_detail_calon',
     data : () => ({
         no_data: false,
         calons: [],
-        posts: []
+        posts: [],
+        followers:{},
+        interval: null,
+        idd: '',
+        followed_calon:[]
     }),
-    mounted(){
+    // props:{
+    //     id:{
+    //         type: String,
+    //         required: true
+    //     }
+    // },
+    beforeMount(){
         this.calonDetail()
+        this.fetchFollowedCalon()
+    },
+    created(){
         this.calonPosts()
-        
+        this.interval = setInterval(this.totalFollowers, 1000)
+        this.idd = localStorage.getItem('id_calon')
+        // this.checkFollowedCalon()
+    },
+    // mounted(){
+
+    // },
+    beforeDestroy(){
+        clearInterval(this.interval)
+    },
+    destroyed(){
+        localStorage.removeItem('id_calon')
+    },
+    computed:{
+        isLoggedin:function(){
+            return localStorage.getItem("token") != null
+        },
+        showTotal:function(){
+            let tot = 0
+            let followers = this.followers
+            if(followers.length){
+                tot = Object.keys(this.followers).length
+            } else{
+                tot = 0
+            }
+            return tot
+        }
     },
     methods: {
         calonDetail(){
@@ -132,12 +185,60 @@ export default {
                 const id_admin = this.$route.params.id_admin;
                 axios.get(`${process.env.VUE_APP_API_URL}/calon/` + id_admin)
                 .then(result => {
-                    this.calons = result.data;
+                    this.calons = result.data
+
+                // if(localStorage.getItem("token") != null){
+                //     this.fetchFollowedCalon()
+                // }
                 })
             }catch(err) {
                 console.log(err)
             }
         },
+        fetchFollowedCalon() {
+            const headers = { token: localStorage.token }
+            fetch(FOLLOWED_CALON_API_URL, { headers })
+                .then(response => response.json())
+                .then(result => {
+                    this.followed_calon = result
+                    this.checkFollowedCalon()
+                    var parsedobj = JSON.parse(JSON.stringify(result))
+                    console.log(parsedobj)
+                })
+        },
+
+        checkFollowedCalon(){
+            console.log(this.calons.length)
+            Array.from(this.calons).forEach((value, i) => {
+                Array.from(this.followed_calon).forEach((value, j) => {
+                    if(this.calons[i].id_calon == this.followed_calon[j].id_calon){
+                        this.calons[i].status = true
+                        console.log(`${this.calons[i].nama} => status: ${this.calons[i].status}`)
+                    }
+                })
+            })
+        },
+
+        followCalon(id_calon){
+            const FOLLOW_API_URL = `${process.env.VUE_APP_API_URL}/user/${id_calon}`
+            axios.defaults.headers.common["token"] = localStorage.token
+            
+            axios.post(FOLLOW_API_URL)
+                .catch((error) => {
+                    console.error(error)
+                })
+        },
+
+        unfollowCalon(id_calon){
+            const UNFOLLOW_API_URL = `${process.env.VUE_APP_API_URL}/user/unfollow/${id_calon}`
+            axios.defaults.headers.common["token"] = localStorage.token
+
+            axios.delete(UNFOLLOW_API_URL)
+                .catch((error) => {
+                    console.error(error)
+                })
+        },
+
         calonPosts(){
             try {
                 const id_admin = this.$route.params.id_admin;
@@ -146,6 +247,18 @@ export default {
                     this.posts = result.data;
                 })
             } catch(err){
+                console.log(err)
+            }
+        },
+        totalFollowers(){
+            try{
+                // const id_calon = localStorage.getItem('id_calon')
+                // const id_calon = this.$route.params.id_calon
+                axios.get(`${process.env.VUE_APP_API_URL}/user/totalFollowers/` + this.idd)
+                .then(result => {
+                    this.followers = result.data
+                })
+            }catch(err){
                 console.log(err)
             }
         }

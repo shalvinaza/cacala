@@ -14,7 +14,7 @@
                 <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
                     <div class="col" v-for="calon in searchedCalons" :key="calon.id_calon">
                         <div class="card h-100">
-                            <img :src="calon.foto" class="card-img-top" alt="dpr 2">
+                            <input type="image" :src="calon.foto" class="card-img-top" alt="dpr 2" @click="goToDetail(calon)"/>
                             <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
                                 <h5>{{calon.no_urut}}</h5>
                             </div>
@@ -38,7 +38,7 @@
                             </div>
                             <div class="card-footer mb-2">
                                 <div class="d-flex justify-content-between">
-                                    <button class="btn btn-outline-orange" :value="calon.id_admin" @click="goToDetail($event)">Detail</button>
+                                    <button class="btn btn-outline-orange" @click="goToDetail(calon)">Detail</button>
                                     <span v-if="isLoggedIn">
                                         <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="!calon.status">Ikuti</button>
                                         <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="calon.status">Berhenti ikuti</button>
@@ -124,8 +124,9 @@ export default {
             })
         },
 
-        goToDetail(e){
-            this.$router.push({ name: 'Detail_calon', params: { id_admin: e.target.value}})
+        goToDetail(calon){
+            localStorage.setItem('id_calon', calon.id_calon)
+            this.$router.push({ name: 'Detail_calon', params: { id_admin: calon.id_admin}})
         },
 
         goToLogin(){

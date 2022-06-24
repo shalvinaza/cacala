@@ -78,7 +78,8 @@ const routes = [
   {
     path: '/detail_calon/:id_admin',
     name: 'Detail_calon',
-    component: Detail_calon
+    component: Detail_calon,
+    props: true
   },
   {
     path: '/detail_admin_calon',

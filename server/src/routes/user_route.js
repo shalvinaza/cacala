@@ -4,6 +4,7 @@ const controller = require("../controllers/user_controller")
 const authorization = require("../middleware/authorization")
 
 router.get("/", authorization, controller.getUser)
+router.get("/totalFollowers/:id_calon", controller.totalFollowers)
 router.put("/", authorization, controller.updateUser)
 router.put("/pass", authorization, controller.updateUserPass)
 router.post("/:id_calon", authorization, controller.followCalon)
