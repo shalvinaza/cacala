@@ -203,6 +203,9 @@ export default {
 
         goToDetail(calon){
             localStorage.setItem('id_calon', calon.id_calon)
+            if(localStorage.getItem('token') != null){
+                localStorage.getItem('status', calon.status)   
+            }
             this.$router.push({ name: 'Detail_calon', params: { id_admin: calon.id_admin}})
         },
 

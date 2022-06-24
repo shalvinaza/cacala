@@ -139,17 +139,9 @@ export default {
         idd: '',
         followed_calon:[]
     }),
-    // props:{
-    //     id:{
-    //         type: String,
-    //         required: true
-    //     }
-    // },
-    beforeMount(){
+    created(){
         this.calonDetail()
         this.fetchFollowedCalon()
-    },
-    created(){
         this.calonPosts()
         this.interval = setInterval(this.totalFollowers, 1000)
         this.idd = localStorage.getItem('id_calon')
