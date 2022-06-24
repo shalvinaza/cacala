@@ -37,7 +37,7 @@
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-between">
-                                    <button class="btn btn-outline-orange" :value="calon.id_admin" @click="goToDetail($event)">Detail</button>
+                                    <button class="btn btn-outline-orange" @click="goToDetail(calon)">Detail</button>
                                     <span v-if="isLoggedIn">
                                         <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon), calon.status = !calon.status" v-show="!calon.status">Ikuti</button>
                                         <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon), calon.status = !calon.status" v-show="calon.status">Berhenti ikuti</button>
