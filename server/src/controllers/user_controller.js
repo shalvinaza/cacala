@@ -113,16 +113,21 @@ exports.getUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
    try{
-      //const { id } = req.params
+      // const { id } = req.params
       const { username } = req.body
       const { email } = req.body
+      // let password  = req.body
 
-      const user = await pool.query("UPDATE users SET username = $1, email = $2 WHERE id_user = $3", [
+      // //bcrypt user password
+      // const bcryptPass = await bcryptPassword(password)
+
+      const user = await pool.query("UPDATE users SET username = COALESCE (NULLIF($1, ''), username), email = COALESCE (NULLIF($2, ''), email) WHERE id_user = $3;", [
          username, email, req.user
       ])
 
-      res.json("Email atau nama berhasul diubah")
+      res.json("Email atau nama berhasil diubah")
    } catch (err) {
+      console.log(err)
       res.json({ message: err })
    }
 }
@@ -136,7 +141,7 @@ exports.updateUserPass = async (req, res) => {
       const bcryptPass = await bcryptPassword(password)
 
       const user = await pool.query("UPDATE users SET password = $1 WHERE id_user = $2", [
-         password, bcryptPass, req.user
+         bcryptPass, req.user
       ])
 
       res.json("Password berhasil diubah")

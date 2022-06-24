@@ -180,6 +180,9 @@ export default {
         }
     },
     methods: {
+        goToLogin(){
+            this.$router.push('/login');
+        },
         calonDetail(){
             try{
                 const id_admin = this.$route.params.id_admin;
