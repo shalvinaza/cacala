@@ -4,8 +4,8 @@
             <div class="row">
                 <h2 class="extra-bold mb-5" style="color:white">Cara Penggunaan</h2>
             </div>
-            <div class="row row-cols-2 row-cols-md-4 g-4">
-                <div class="col mb-3">
+            <div class="row row-cols-2 row-cols-md-4 g-3">
+                <div class="col">
                     <div class="card">
                         <img src="../assets/images/step_1.png" class="card-img-top p-4" alt="step 1">
                         <div class="card-body d-inline-flex align-items-start p-3">
@@ -14,7 +14,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col mb-3">
+                <div class="col">
                     <div class="card">
                         <img src="../assets/images/step_2.png" class="card-img-top p-4" alt="step 1">
                         <div class="card-body d-inline-flex align-items-start p-3">
@@ -23,7 +23,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col mb-3">
+                <div class="col">
                     <div class="card">
                         <img src="../assets/images/step_3.png" class="card-img-top p-4" alt="step 1">
                         <div class="card-body d-inline-flex align-items-start p-3">
@@ -32,7 +32,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col mb-3">
+                <div class="col mb-4">
                     <div class="card">
                         <img src="../assets/images/step_4.png" class="card-img-top p-4" alt="step 1">
                         <div class="card-body d-inline-flex align-items-start p-3">
@@ -61,7 +61,7 @@ export default {
 .card{
     border-radius: 15px;
     background-color: #F2F0E1;
-    height: 100%;
+    height: 22rem;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border:none;
 }
@@ -93,6 +93,9 @@ p{
         width: 150px;
         height: 150px;
     }
+    .card{
+        height: 19rem;
+    }
  }
  
  @media (max-width: 768px) {
@@ -102,6 +105,9 @@ p{
     }
     p{
         font-size: 80%;
+    }
+    .card{
+        height: 15rem;
     }
     h2{
         font-size: 100%;
