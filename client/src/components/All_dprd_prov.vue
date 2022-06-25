@@ -1,67 +1,138 @@
 <template>
     <div class="container">
         <h1 class="text-center pb-4 mb-4">Calon DPRD Provinsi {{provinsi.provinsi}}</h1>
+        <!-- filter on smaller device -->
+        <button class="btn btn-primary d-block d-xl-none btn-filter mt-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><font-awesome-icon icon="fa-solid fa-filter" /> Filter</button>
 
-        <div class="row">
-
-        <div class="col-md-2 mt-3">
-            <h5 class="mt-3"> <font-awesome-icon icon="fa-solid fa-filter" /> Filter</h5>
-            <h6 class="mt-3">Partai</h6>
-            <div class="form-check" v-for="option in partai" :key="option.nama_partai">
-                <input class="form-check-input" id="semua" type="checkbox" value="semua" v-model="checkPartai">
-                <input class="form-check-input" :id="option" type="checkbox" :value="option.nama_partai" v-model="checkPartai">
-                <label class="form-check-label">{{ option.nama_partai }}</label>
+        <div class="offcanvas offcanvas-end" style="width:80%" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header mt-3">
+                <h6 id="offcanvasRightLabel"><font-awesome-icon icon="fa-solid fa-filter" /> Filter berdasarkan</h6>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
-            <h6 class="mt-3">Daerah pilih</h6>
-            <div class="form-check" v-for="option in kota" :key="option.id_kota">
-                <input class="form-check-input" id="semua" type="checkbox" value="semua" v-model="checkDapil">
-                <input class="form-check-input" :id="option" type="checkbox" :value="option.kota" v-model="checkDapil">
-                <label class="form-check-label">{{ option.kota }}</label>
-            </div>
-        </div>
-        <!-- all calon literally -->
-        <div class="col-md-10">
-            <div v-if="!filteredCalons.length" class="row d-flex justify-content-center mt-3">
-                <img src='../assets/images/error.png' class="d-flex" style="width:40%" alt="Not Found">
-                <h5 class="d-flex d-flex justify-content-center align-items-center mt-3">Hasil tidak ditemukan</h5>
-            </div>
-            <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
-            <div class="col" v-for="calon in filteredCalons" :key="calon.id_calon">
-                <div class="card h-100">
-                    <input type="image" :src="calon.foto" class="card-img-top" alt="dpr 2" @click="goToDetail(calon)"/>
-                    <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
-                        <h5>{{calon.no_urut}}</h5>
-                    </div>
-                    <div class="card-body p-3">
-                        <h6 class="card-title text-center">{{calon.nama}}</h6>
-                        <p class="card-subtitle text-center text-muted">Calon {{calon.jabatan_tujuan}}</p>
-                        <div class="row align-items-start mt-2">
-                            <p class="col d-flex flex-wrap card-title">Partai</p>
-                            <div class="col d-flex flex-wrap justify-content-end">
-                                <img v-for="partai in calon.partai" :key="partai.id_partai" :src="partai.logo_partai" class="img-partai m-1">
-                                <!-- <p v-for="partai in calon.partai" :key="partai.nama_partai" class="img-partai m-1">{{partai.nama_partai}}</p> -->
-                            </div>
-                        </div>
-                        <div class="row align-items-start mb-2">
-                            <p class="col d-flex flex-wrap card-title">Daerah Pilih</p>
-                            <div class="col d-flex flex-wrap justify-content-end">
-                                <p v-for="kota in calon.kota" :key="kota.id_kota">{{ kota.kota }}</p>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-center justify-content-between">
-                            <button class="btn btn-outline-orange" @click="goToDetail(calon)">Detail</button>
-                            <span v-if="isLoggedIn">
-                                <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="!calon.status">Ikuti</button>
-                                <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="calon.status">Berhenti</button>
-                            </span>    
-                            <span v-else>
-                                <button class="btn btn-outline-blue" @click="goToLogin()">Ikuti</button> 
-                            </span>                          
-                        </div>
-                    </div>
+            <div class="offcanvas-body pt-0">
+                <h6 class="mt-3">Partai</h6>
+                <div class="form-check" v-for="option in partai" :key="option.nama_partai">
+                    <input class="form-check-input" id="semua" type="checkbox" value="semua" v-model="checkPartai">
+                    <input class="form-check-input" :id="option" type="checkbox" :value="option.nama_partai" v-model="checkPartai">
+                    <label class="form-check-label">{{ option.nama_partai }}</label>
+                </div>
+                <h6 class="mt-3">Daerah pilih</h6>
+                <div class="form-check" v-for="option in kota" :key="option.id_kota">
+                    <input class="form-check-input" id="semua" type="checkbox" value="semua" v-model="checkDapil">
+                    <input class="form-check-input" :id="option" type="checkbox" :value="option.kota" v-model="checkDapil">
+                    <label class="form-check-label">{{ option.kota }}</label>
                 </div>
             </div>
         </div>
+
+        <div class="d-flex">
+
+            <div class="flex-shrink-1 mt-3 me-5 d-none d-xl-block d-xxl-none">
+                <h5 class="mt-3"> <font-awesome-icon icon="fa-solid fa-filter" /> Filter</h5>
+                <h6 class="mt-3">Partai</h6>
+                <div class="form-check" v-for="option in partai" :key="option.nama_partai">
+                    <input class="form-check-input" id="semua" type="checkbox" value="semua" v-model="checkPartai">
+                    <input class="form-check-input" :id="option" type="checkbox" :value="option.nama_partai" v-model="checkPartai">
+                    <label class="form-check-label">{{ option.nama_partai }}</label>
+                </div>
+                <h6 class="mt-3">Daerah pilih</h6>
+                <div class="form-check" v-for="option in kota" :key="option.id_kota">
+                    <input class="form-check-input" id="semua" type="checkbox" value="semua" v-model="checkDapil">
+                    <input class="form-check-input" :id="option" type="checkbox" :value="option.kota" v-model="checkDapil">
+                    <label class="form-check-label">{{ option.kota }}</label>
+            </div>
+            </div>
+            <!-- all calon literally -->
+            <div class="">
+                <div v-if="!filteredCalons.length" class="row d-flex justify-content-center mt-3">
+                    <img src='../assets/images/error.png' class="d-flex" style="width:40%" alt="Not Found">
+                    <h5 class="d-flex d-flex justify-content-center align-items-center mt-3">Hasil tidak ditemukan</h5>
+                </div>
+                <div class="row row-cols-2 row-cols-lg-4 row-cols-md-3 g-2 g-md-3 g-lg-3 mt-3">
+                <div class="col" v-for="calon in filteredCalons" :key="calon.id_calon">
+                    <div class="card h-100">
+                        <input type="image" :src="calon.foto" class="card-img-top" alt="dpr 2" @click="goToDetail(calon)"/>
+                        <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
+                            <h5>{{calon.no_urut}}</h5>
+                        </div>
+                        <div class="card-body pt-3 pb-0">
+                            <h6 class="card-title text-center">{{calon.nama}}</h6>
+                            <p class="card-subtitle text-center text-muted">Calon {{calon.jabatan_tujuan}}</p>
+                            <div class="row align-items-start mt-2">
+                                <p class="col d-flex flex-wrap card-title">Partai</p>
+                                <div class="col d-flex flex-wrap justify-content-end">
+                                    <img v-for="partai in calon.partai" :key="partai.id_partai" :src="partai.logo_partai" class="img-partai m-1">
+                                    <!-- <p v-for="partai in calon.partai" :key="partai.nama_partai" class="img-partai m-1">{{partai.nama_partai}}</p> -->
+                                </div>
+                            </div>
+                            <div class="row align-items-start mb-2">
+                                <p class="col d-flex flex-wrap card-title">Daerah Pilih</p>
+                                <div class="col d-flex flex-wrap justify-content-end">
+                                    <p v-for="kota in calon.kota" :key="kota.id_kota">{{ kota.kota }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer mb-2">
+                            <div class="d-flex justify-content-between">
+                                <button class="btn btn-outline-orange" @click="goToDetail(calon)">Detail</button>
+                                <span v-if="isLoggedIn">
+                                    <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="!calon.status">Ikuti</button>
+                                    <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="calon.status">Berhenti</button>
+                                </span>    
+                                <span v-else>
+                                    <button class="btn btn-outline-blue" @click="goToLogin()">Ikuti</button> 
+                                </span>                          
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col" v-for="(item,index) in exampleItems.slice((currentPage-1)*perPage,(currentPage-1)*perPage+perPage)" :key="item.index" :per-page="perPage" :current-page="currentPage" >
+                    <div class="card h-100">
+                        <img type="image" src='../assets/images/pres.png' class="card-img-top" alt="dpr 2" @click="goToDetail(calon)"/>
+                        <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
+                            <h5>{{index+4}}</h5>
+                        </div>
+                        <div class="card-body pt-3 pb-0">
+                            <h6 class="card-title text-center">{{item.name}}</h6>
+                            <p class="card-subtitle text-center text-muted">Calon DPD RI</p>
+                            <div class="row align-items-start mt-2">
+                                <p class="col d-flex flex-wrap card-title">Partai</p>
+                                <div class="col d-flex flex-wrap justify-content-end">
+                                    <img src='../assets/images/logo_partai.png' class="img-partai m-1" alt="foto calon">
+                                </div>
+                            </div>
+                            <div class="row align-items-start">
+                                <p class="col d-flex flex-wrap card-title">Daerah Pilih</p>
+                                <div class="col d-flex flex-wrap justify-content-end">
+                                    <p>Bandung</p>
+                                </div>
+                            </div>  
+                        </div>
+                        <div class="card-footer mb-2">
+                            <div class="d-flex justify-content-between">
+                                <router-link to="/" class="btn btn-outline-orange">Detail</router-link>
+                                <span v-if="isLoggedIn">
+                                    <button class="btn btn-outline-blue">Ikuti</button>
+                                </span>       
+                                <span v-else>
+                                    <button class="btn btn-outline-blue" @click="goToLogin()">Ikuti</button> 
+                                </span>                        
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+          <b-pagination
+            v-model="currentPage"
+            :total-rows="rows"
+            :per-page="perPage"
+            aria-controls="my-table"
+            align="center"
+            class="mt-5"
+            ></b-pagination>
+
         </div>
         </div>
     </div>
@@ -84,10 +155,14 @@ export default {
         partai: [],
         followed_calon: [],
         checkPartai: [],
-        checkDapil: []
+        checkDapil: [],
+        exampleItems : [...Array(150).keys()].map(i => ({ id: (i+1), name: 'Nama ' + (i+1) })) ,
+        perPage: 9,
+        currentPage: 1
     }),
     computed: {
         isLoggedIn: function() {return localStorage.getItem("token") != null},
+        rows(){return this.exampleItems.length},
         filteredCalons(){
             let calons = this.calons
             const checkPartai = this.checkPartai
@@ -290,6 +365,9 @@ h1{
     padding: 0.3rem;
     min-width: 5rem;
     font-size: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .card-img-overlay{
     right: unset;
@@ -310,7 +388,78 @@ h1{
     background-color: white;
     border-color: white;
 }
+.flex-item {
+  background: tomato;
+  width: calc(100% / 3.5);
+  padding: 5px;
+  height: auto;
+  margin-top: 10px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+ul.paginate-links.items li {
+  display: inline-block;
+  margin: 5px;
+}
+ul.paginate-links.items a {
+  cursor: pointer;
+}
+ul.paginate-links.items li.active a {
+  font-weight: bold;
+}
+ul.paginate-links.items li.next:before {
+  content: " | ";
+  margin-right: 13px;
+  color: #ddd;
+}
+ul.paginate-links.items li.disabled a {
+  color: #ccc;
+  cursor: no-drop;
+}
 p{
-    font-size: 95%;
+    font-size: 90%;
+}
+.btn-filter{
+    background-color:#9D9493 ;
+    border: none;
+ }
+.btn-filter:focus, .btn-filter:hover {
+    background-color:#D65A40;
+    border: none;
+}
+@media (max-width: 575.98px) { 
+    h5{
+        font-size: 90%;
+    }
+    h6{
+        font-size: 80%;
+    }
+    p{
+        font-size: 70%;
+    }
+    .card-img-overlay{
+        min-width: 40px;
+        min-height: 40px;
+    }
+    .card-img-top{ 
+        height: 200px;
+    }
+    .img-partai{
+        width: 25px;
+        height: 25px;
+    }
+    .btn-outline-orange, .btn-outline-blue{
+        padding: 0.2rem 0.1rem 0.2rem 0.1rem;
+        min-width: 4rem;
+        min-height: 1rem;
+        font-size: 60%;
+            }
+    .btn-outline-orange{
+        border: 1px solid  #D65A40;
+    }
+    .btn-outline-blue{
+        border: 1px solid  #3E5D7A;
+    }
 }
 </style>

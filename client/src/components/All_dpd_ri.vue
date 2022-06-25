@@ -140,7 +140,6 @@ export default {
         no_data: false,
         calons: [],
         followed_calon: [],
-        // provinsi: [],
         partai:[],
         checkPartai: [],
         exampleItems : [...Array(150).keys()].map(i => ({ id: (i+1), name: 'Nama ' + (i+1) })) ,
