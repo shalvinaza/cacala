@@ -369,9 +369,16 @@ p{
         height: 25px;
     }
     .btn-outline-orange, .btn-outline-blue{
-        padding: 0.3rem 0.2rem 0.3rem 0.2rem;
+        padding: 0.2rem 0.1rem 0.2rem 0.1rem;
         min-width: 4rem;
+        min-height: 1rem;
         font-size: 60%;
+            }
+    .btn-outline-orange{
+        border: 1px solid  #D65A40;
+    }
+    .btn-outline-blue{
+        border: 1px solid  #3E5D7A;
     }
 }
 </style>
