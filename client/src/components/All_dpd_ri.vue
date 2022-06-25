@@ -31,14 +31,14 @@
             </div>
 
             <div class="">
-                <div class="row row-cols-2 row-cols-lg-4 row-cols-md-3 g-3 mt-3">
+                <div class="row row-cols-2 row-cols-lg-4 row-cols-md-3 g-2 g-md-3 g-lg-3 mt-3">
                     <div class="col" id="my-table" v-for="calon in filteredCalons" :key="calon.id_calon">
                         <div class="card h-100">
                             <input type="image" :src="calon.foto" class="card-img-top" alt="dpr 2" @click="goToDetail(calon)"/>
                             <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
                                 <h5>{{calon.no_urut}}</h5>
                             </div>
-                            <div class="card-body pt-4 ps-4 pe-4 pb-0">
+                            <div class="card-body pt-3 pb-0">
                                 <h6 class="card-title text-center">{{calon.nama}}</h6>
                                 <p class="card-subtitle text-center text-muted">Calon {{calon.jabatan_tujuan}}</p>
                                 <div class="row align-items-start mt-2">
@@ -76,7 +76,7 @@
                             <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
                                 <h5>{{index+4}}</h5>
                             </div>
-                            <div class="card-body pt-4 ps-4 pe-4 pb-0">
+                            <div class="card-body pt-3 pb-0">
                                 <h6 class="card-title text-center">{{item.name}}</h6>
                                 <p class="card-subtitle text-center text-muted">Calon DPD RI</p>
                                 <div class="row align-items-start mt-2">
@@ -337,7 +337,7 @@ ul.paginate-links.items li.disabled a {
   cursor: no-drop;
 }
 p{
-    font-size: 95%;
+    font-size: 90%;
 }
 .btn-filter{
     background-color:#9D9493 ;
