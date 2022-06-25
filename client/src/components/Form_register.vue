@@ -1,35 +1,30 @@
 <template>
   <div class="container">
-          <div class="row">
-            <div class="col-md left flex-row flex-wrap justify-content-center text-center">
-                <img src="../assets/images/add.png" alt="Daftar">
-                <p class="mt-3">Daftar  dan ikuti akun-akun calon yang Anda inginkan untuk membuat pintasan akses akun-aun Calon ke halaman dashbormu </p>
+        <div class="row m-3 p-2">
+            <div class="col-md p-4 left flex-row flex-wrap justify-content-center align-items-center text-center d-none d-sm-none d-md-block">
+                <img src="../assets/images/add.png" alt="Daftar" class="mt-5 img-ben">
+                <p class="mt-5 txt-ben p-2">Daftar dan ikuti akun calon yang Anda inginkan untuk membuat pintasan akses akun Calon ke halaman dasbormu </p>
             </div>
-            <!-- <div v-for="user in users" :key="user.id_user">
-                {{user.email}}
-            </div> -->
-            <div class="col-md right flex-row d-md-block flex-wrap">
-                <h4 class="bold text-center mb-5">Daftar</h4>
-                <!-- <div class="form-data" v-if="!submitted" id="form1"> -->
+            <div class="col-md right flex-row d-block flex-wrap p-4">
+                <h4 class="bold text-center mb-5 mt-3">Daftar</h4>
                 <form @submit.prevent="registerUser">
                     <div class="forms-inputs mb-4">  
                         <span>Nama</span> 
                         <input id="email_user" autocomplete="off" type="text" v-model="register.username" v-bind:class="{'form-control':true, 'is-invalid' : !validUname(register.username) && unameBlured}" v-on:blur="unameBlured = true" placeholder="Ketik nama di sini">
-                        <div class="invalid-feedback">Nama tidak boleh kosong!</div>
+                        <div class="invalid-feedback">Nama tidak boleh kosong</div>
                     </div>
                     <div class="forms-inputs mb-4"> 
                         <span>Email</span> 
                         <input id="email_user" @focus="error=false" autocomplete="off" type="text" v-model="register.email" v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(register.email) && emailBlured || error===true}" v-on:blur="emailBlured = true" placeholder="Ketik email di sini">
-                        <div class="invalid-feedback">Email harus valid!</div>
-                        <!-- <div v-if="signed" class="invalid-feedback">Email sudah terdaftar!</div> -->
+                        <div class="invalid-feedback">Email harus valid</div>
                     </div>
                     <div class="forms-inputs mb-4"> 
                         <span>Kata Sandi</span>
                         <div class="input-group">
                             <input v-if="showPassword" autocomplete="off" minlength="8" type="text" v-model="register.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(register.password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
                             <input v-else autocomplete="off" minlength="8" type="password" v-model="register.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(register.password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
-                            <button class=" button input-group-text showPass" style="border-radius:0 10px 10px 0;" @click="toggleShow"><font-awesome-icon icon="fa-solid fa-eye" v-if="showPassword" /> <font-awesome-icon icon="fa-solid fa-eye-slash" v-else /> </button>
-                            <div class="invalid-feedback">Password minimal 8 karakter!</div>
+                            <a class=" button input-group-text showPass" style="border-radius:0 10px 10px 0;" @click="toggleShow"><font-awesome-icon icon="fa-solid fa-eye" v-if="showPassword" /> <font-awesome-icon icon="fa-solid fa-eye-slash" v-else /> </a>
+                            <div class="invalid-feedback">Password minimal 8 karakter</div>
                         </div>
                     </div>
                     <div class="forms-inputs mb-4"> 
@@ -37,8 +32,8 @@
                         <div class="input-group">
                             <input v-if="showPassword2" autocomplete="off" type="text" v-model="confirmPassword" v-bind:class="{'form-control':true, 'is-invalid' : !validConfirm(confirmPassword) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik ulang kata sandi di sini">
                             <input v-else autocomplete="off" minlength="8" type="password" v-model="confirmPassword" v-bind:class="{'form-control':true, 'is-invalid' : !validConfirm(confirmPassword) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik ulang kata sandi di sini">
-                            <button class=" button input-group-text showPass" style="border-radius:0 10px 10px 0;" @click="toggleShow2"><font-awesome-icon icon="fa-solid fa-eye" v-if="showPassword2" /> <font-awesome-icon icon="fa-solid fa-eye-slash" v-else /> </button>
-                            <div class="invalid-feedback">Password harus sama!</div>
+                            <a class=" button input-group-text showPass" style="border-radius:0 10px 10px 0;" @click="toggleShow2"><font-awesome-icon icon="fa-solid fa-eye" v-if="showPassword2" /> <font-awesome-icon icon="fa-solid fa-eye-slash" v-else /> </a>
+                            <div class="invalid-feedback">Password harus sama</div>
                         </div>
                     </div>                    
                     <div class="mb-3"> 
@@ -50,23 +45,22 @@
                     <span>Sudah punya akun?</span> <a style="color:#D65A40;cursor:pointer" @click="goToLogin()">Masuk Sekarang</a>
                 </div>
             </div>
-          </div>
+        </div>
 
-          <!-- popup -->
-          <Popup v-if="openPopup" title="Registrasi berhasil" pesanPopup="Silahkan masuk ke dalam sistem">
+        <!-- popup -->
+        <Popup v-if="openPopup" title="Registrasi berhasil" pesanPopup="Silahkan masuk ke dalam sistem">
             <div class="d-flex justify-content-end">
                 <button class="bg-light-orange-pop br-10" @click="goToLogin()">Oke</button>
             </div>
-          </Popup>
-          <!-- <Popup v-if="error" title="Registrasi gagal" :pesanPopup="message">
-            <div class="d-flex justify-content-end">
-                <button class="bg-light-orange-pop br-10" @click="goToLogin">Masuk</button>
-                <button class="btn-outline-orange ms-2" @click="toggleError">Tutup</button>
-            </div>
-          </Popup> -->
+        </Popup>
 
-          <Alert v-if="error" variantName="danger" :messageProps="'Registrasi gagal, ' + message"/>
-
+        <Alert v-if="error" variantName="danger" :messageProps="'Registrasi gagal, ' + message"/>
+        <Alert2 class="d-block d-sm-none d-flex justify-content-center" style="background-color-transparent">
+            <div class="row text-center ps-3 pe-3" style="--bs-gutter-x:0">
+                <img src="../assets/images/add.png" class="mt-5 d-flex justify-content-center m-auto" style="width:50%" alt="Masuk">
+                <p class="mt-3" style="font-size:100%">Daftar dan ikuti akun calon yang Anda inginkan untuk membuat pintasan akses akun Calon ke halaman dasbormu </p>    
+            </div>       
+        </Alert2>
   </div>
 </template>
 
@@ -74,6 +68,7 @@
 import axios from 'axios'
 import Popup from './Berhasil.vue'
 import Alert from './Pop_sukses.vue'
+import Alert2 from './Pop_small.vue'
 const REGISTER_API_URL = `${process.env.VUE_APP_API_URL}/auth/users/register`
 const USERS_API_URL = `${process.env.VUE_APP_API_URL}/auth/users`
 
@@ -81,7 +76,8 @@ export default {
     name:'Form_login',
     components:{
         Popup,
-        Alert
+        Alert,
+        Alert2
     },
     data: function () {
         return {
@@ -121,24 +117,9 @@ export default {
             }
         },
         validEmail : function(email) {
-            // this.fetchUsers();
-            // var countSame = 0;
             var re = /(.+)@(.+){2,}\.(.+){2,}/;
             if(re.test(email.toLowerCase())){
                 return true;
-                // this.users.filter((user) => {
-                //     if(user.email.match(email)){
-                //         countSame += 1;
-                //         break;
-                //     }
-                // });
-                // if(countSame = 0){
-                //     return true;
-                // }
-                // else{
-                //     this.signed = !this.signed;
-                //     countSame = 0;
-                // }
             }
             else{
                 return false;
@@ -201,7 +182,7 @@ p{
     display: flex;
     border: 4px solid #DDA18C;
     justify-content: center;
-    padding: 3rem;
+    /* padding: 3rem; */
     color: white;
 }
 .left{
@@ -221,12 +202,12 @@ p{
     top: -18px;
     left: 10px;
     background-color: #fff;
-    padding: 5px 10px;
+    padding: 5px;
     z-index: 10;
 }
 
 .forms-inputs input {
-    height: 50px;
+    height: 60px;
     border: 2px solid #9D9493;
     border-radius:10px;
 }
@@ -236,7 +217,9 @@ p{
     outline: none;
     border: 2px solid #D65A40;
 }
-
+.showPass:hover {
+    color: #D65A40;
+}
 .btn {
     height: 50px;
 }
@@ -269,10 +252,25 @@ p{
     background-color: #DDA18C;
 }
 .showPass{
-    height: 50px;
+    /* height: 50px; */
+    width: 45px;
     background: none;
     border: 2px solid #9D9493;
     border-left: 0px;
     border-radius:10px;
+}
+@media (max-width: 767.98px) {
+    .right{
+        color: black;
+        border-radius: 15px;
+    }
+}
+@media (max-width: 991.98px) {
+    .txt-ben{
+        font-size: 95%;
+    }
+    .img-ben{
+        width: 85%;
+    }
 }
 </style>

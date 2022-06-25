@@ -1,15 +1,15 @@
 <template>
     <footer class="d-flex bg-dark-blue">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-9 pt-2">
-                    <p>&copy; Cacala | Komisi Pemilihan Umum Republik Indonesia</p>
-                </div>
-                <div class="col-lg-3 d-flex justify-content-end align-items-center">
-                    <font-awesome-icon icon="fa-brands fa-facebook-square" class="me-2"/>
-                    <font-awesome-icon icon="fa-brands fa-twitter-square" class="me-2"/>
-                    <font-awesome-icon icon="fa-brands fa-instagram" class="me-2"/>
-                    <a  >Kontak Pengaduan</a>
+            <div class="d-flex flex-column justify-content-between">
+                <div class="d-flex flex-row pt-2 justify-content-center">
+                    <p class="d-flex flex-grow-1">&copy; Cacala | Shalvina Zahwa Aulia</p>
+                    <div class="icons">
+                        <font-awesome-icon icon="fa-brands fa-facebook-square" class="me-2"/>
+                        <font-awesome-icon icon="fa-brands fa-twitter-square" class="me-2"/>
+                        <font-awesome-icon icon="fa-brands fa-instagram" class=""/>
+                        <!-- <a  >Kontak Pengaduan</a> -->
+                    </div>
                 </div>
             </div>
         </div>

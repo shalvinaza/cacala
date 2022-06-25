@@ -11,6 +11,6 @@ router.put("/pass", authorization, controller.updateUserPass)
 router.post("/:id_calon", authorization, controller.followCalon)
 router.get("/followed", authorization, controller.selectFollowedCalonByUser)
 router.delete("/unfollow/:id_calon", authorization, controller.unfollowCalon)
-router.delete("/delete/:id_user", authorization, controller.deleteAkun)
+router.delete("/delete", authorization, controller.deleteAkun)
 
 module.exports = router

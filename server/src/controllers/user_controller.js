@@ -81,7 +81,7 @@ exports.selectAllUsers = async (req, res) => {
 
 exports.getUser = async (req, res) => {
    try{
-      const user = await pool.query("SELECT * FROM users WHERE id_user = $1", [
+      const user = await pool.query("SELECT username, email FROM users WHERE id_user = $1", [
          req.user
       ])
       res.json(user.rows[0])
@@ -90,26 +90,6 @@ exports.getUser = async (req, res) => {
       res.status(500).json("Server Error")
    }
 }
-
-// exports.updateUser = async (req, res) => {
-//    try{
-//       //const { id } = req.params
-//       const { username } = req.body
-//       const { email } = req.body
-//       const { password } = req.body
-
-//       //bcrypt user password
-//       const bcryptPass = await bcryptPassword(password)
-
-//       const user = await pool.query("UPDATE users SET username = $1, email = $2, password = $3 WHERE id_user = $4", [
-//          username, email, bcryptPass, req.user
-//       ])
-
-//       res.json("User detail is updated")
-//    } catch (err) {
-//       res.json({ message: err })
-//    }
-// }
 
 exports.updateUser = async (req, res) => {
    try{
@@ -125,7 +105,7 @@ exports.updateUser = async (req, res) => {
          username, email, req.user
       ])
 
-      res.json("Email atau nama berhasil diubah")
+      res.json("Nama berhasil diubah")
    } catch (err) {
       console.log(err)
       res.json({ message: err })
@@ -144,7 +124,7 @@ exports.updateUserPass = async (req, res) => {
          bcryptPass, req.user
       ])
 
-      res.json("Password berhasil diubah")
+      res.json("Kata sandi berhasil diubah")
    } catch (err) {
       res.json({ message: err })
    }
@@ -257,11 +237,11 @@ exports.unfollowCalon = async (req, res) => {
    }
 }
 exports.deleteAkun = async (req, res) => {
-   const { id_user } = req.params
+   // const { id_user } = req.params
    try{
       const user = await pool.query(
          "DELETE FROM users WHERE id_user = $1",
-         [id_user]
+         [req.user]
       )
 
       res.json("Akun dihapus")

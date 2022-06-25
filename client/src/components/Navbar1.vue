@@ -163,4 +163,9 @@ a:focus, a:hover{
     color: white;
     background-color: #DDA18C;
 }
+@media (min-width: 992px) and (max-width: 1200px) { 
+  .navbar{
+    font-size: 90%;
+  }
+ }
 </style>

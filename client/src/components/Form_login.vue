@@ -1,14 +1,12 @@
 <template>
   <div class="container">
-          <div class="row">
-            <div class="col-md left flex-row flex-wrap justify-content-center text-center">
-                <img src="../assets/images/add.png" alt="Masuk">
-                <p class="mt-3">Masuk  dan ikuti akun-akun calon yang Anda inginkan untuk membuat pintasan akses akun-aun Calon ke halaman dashbormu </p>
+          <div class="row m-3 p-2">
+            <div class="col-md p-4 left flex-row flex-wrap justify-content-center text-center d-none d-sm-none d-md-block">
+                <img src="../assets/images/add.png" class="mt-5 img-ben" alt="Masuk">
+                <p class="mt-3 txt-ben">Masuk dan ikuti akun calon yang Anda inginkan untuk membuat pintasan akses akun Calon ke halaman dasbormu</p>
             </div>
-            <div class="col-md right flex-row d-md-block flex-wrap">
-                <h4 class="bold text-center mb-5">Masuk</h4>
-                <!-- <div class="form-data" v-if="!submitted" id="form1"> -->
-                <!-- <div class="form-data" @submit.prevent="loginUser" id="form1"> -->
+              <div class="col-md d-block right flex-row flex-wrap p-4">
+                <h4 class="bold text-center mb-5 mt-3">Masuk</h4>
                 <form @submit.prevent="loginUser">
                     <div class="forms-inputs mb-4"> 
                         <span>Email</span> 
@@ -20,7 +18,7 @@
                         <div class="input-group">
                             <input v-if="showPassword" @focus="error=false" autocomplete="off" minlength="8" type="text" v-model="login.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(login.password) && passwordBlured || error===true}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
                             <input v-else @focus="error=false" autocomplete="off" minlength="8" type="password" v-model="login.password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(login.password) && passwordBlured || error===true}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
-                            <button class=" button input-group-text showPass" style="border-radius:0 10px 10px 0;" @click="toggleShow"><font-awesome-icon icon="fa-solid fa-eye" v-if="showPassword" /> <font-awesome-icon icon="fa-solid fa-eye-slash" v-else /> </button>
+                            <a class=" button input-group-text showPass" style="border-radius:0 10px 10px 0;" @click="toggleShow"><font-awesome-icon icon="fa-solid fa-eye" v-if="showPassword" /> <font-awesome-icon icon="fa-solid fa-eye-slash" v-else /> </a>
                             <div class="invalid-feedback">Kata sandi minimal 8 karakter</div>
                         </div>
                     </div>
@@ -33,24 +31,32 @@
                 <div class="mb-4">
                     <span>Belum punya akun?</span> <a class="buttonDaftar" style="color:#D65A40; cursor:pointer; text-decoration: none" @click="goToRegister()">Daftar Sekarang</a>
                 </div>
-                <button type="button" @click="goToLoginAdmin()" class="btn btn-outline-orange2 w-100 br-10">Masuk sebagai admin</button> 
+                <button type="button" @click="goToLoginAdmin()" class="btn btn-outline-orange2 w-100 br-10 mb-3">Masuk sebagai admin</button> 
             </div>
           </div>
 
-          <Alert v-if="error" variantName="danger" :messageProps="message"/>
+        <Alert v-if="error" variantName="danger" :messageProps="message"/>
+        <Alert2 class="d-block d-sm-none d-flex justify-content-center" style="background-color-transparent">
+            <div class="row text-center ps-3 pe-3" style="--bs-gutter-x:0">
+                <img src="../assets/images/add.png" class="mt-5 d-flex justify-content-center m-auto" style="width:50%" alt="Masuk">
+                <p class="mt-3" style="font-size:100%">Masuk dan ikuti akun calon yang Anda inginkan untuk membuat pintasan akses akun Calon ke halaman dasbormu </p>    
+            </div>       
+        </Alert2>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import Alert from './Pop_sukses.vue'
+import Alert2 from './Pop_small.vue'
 
 const LOGIN_API_URL = `${process.env.VUE_APP_API_URL}/auth/users/login`
 
 export default {
     name:'Form_login',
     components:{
-        Alert
+        Alert,
+        Alert2
     },
     data: function () {
         return {
@@ -135,7 +141,7 @@ p{
     display: flex;
     border: 4px solid #DDA18C;
     justify-content: center;
-    padding: 3rem;
+    /* padding: 3rem; */
     color: white;
 }
 .left{
@@ -145,6 +151,7 @@ p{
 .right{
     color: black;
     border-radius: 0 15px 15px 0;
+    /* padding: 3rem; */
 }
 .forms-inputs {
     position: relative
@@ -154,11 +161,11 @@ p{
     top: -18px;
     left: 10px;
     background-color: #fff;
-    padding: 5px 10px;
-    z-index: 100;
+    padding: 5px;
+    z-index: 10;
 }
 .forms-inputs input {
-    height: 50px;
+    height: 60px;
     border: 2px solid #9D9493;
     border-radius:10px;
     /* padding-top: 0.75rem; */
@@ -167,6 +174,9 @@ p{
     box-shadow: none;
     outline: none;
     border: 2px solid #D65A40;
+}
+.showPass:hover {
+    color: #D65A40;
 }
 .btn {
     height: 50px;
@@ -179,10 +189,24 @@ p{
     font-size: 90px
 }
 .showPass{
-    height: 50px;
     background: none;
+    width: 45px;
     border: 2px solid #9D9493;
     border-left: 0px;
     border-radius:10px;
+}
+@media (max-width: 767.98px) {
+    .right{
+        color: black;
+        border-radius: 15px;
+    }
+}
+@media (max-width: 991.98px) {
+    .txt-ben{
+        font-size: 95%;
+    }
+    .img-ben{
+        width: 85%;
+    }
 }
 </style>

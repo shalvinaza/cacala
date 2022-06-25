@@ -146,7 +146,7 @@ export default {
         this.fetchFollowedCalon()
         // this.calonPosts()
         this.interval = setInterval(this.totalFollowers, 1000)
-        this.interval = setInterval(this.calonPosts, 10000)
+        this.interval = setInterval(this.calonPosts, 1000)
         this.idd = localStorage.getItem('id_calon')
     },
     beforeDestroy(){

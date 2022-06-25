@@ -1,43 +1,43 @@
 <template>
 <div class="container-fluid bg-dark-blue">
     <div class="container">
-        <div id="carouselHome" class="carousel slide" data-bs-ride="carousel">
+        <div id="carouselHome" class="carousel slide m-0" data-bs-ride="carousel">
             <div class="carousel-indicators">
                 <button type="button" data-bs-target="#carouselHome" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                 <button type="button" data-bs-target="#carouselHome" data-bs-slide-to="1" aria-label="Slide 2"></button>
                 <button type="button" data-bs-target="#carouselHome" data-bs-slide-to="2" aria-label="Slide 3"></button>
             </div>
             <div class="carousel-inner br-15">
-                <div class="carousel-item active">
-                    <div class="row" style="padding-left:5em; padding-right:5em">
+                <div class="carousel-item active m-0">
+                    <div class="row ps-2 pe-2">
                         <div class="col-md d-flex justify-content-center">
-                            <img src="../assets/images/hello.png" alt="Selamat Datang" class="w-100" style="max-width:300px">
+                            <img src="../assets/images/hello.png" alt="Selamat Datang" class="w-100 img-car" style="max-width:65%">
                         </div>
                         <div class="col-md d-flex flex-row flex-wrap justify-content-center text-center carousel-center">
-                            <h2>Selamat Datang di Aplikasi Cacala!</h2> <br/>
-                            <p>Mari cerdas dalam mencari, mencermati dan mengenali calon-calon Wakil Rakyat</p>
+                            <h2>Selamat Datang di Aplikasi Cacala!</h2>
+                            <p class="mt-3">Mari cerdas dalam mencari, mencermati dan mengenali calon-calon Wakil Rakyat</p>
                         </div>
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <div class="row" style="padding-left:5em; padding-right:5em">
+                    <div class="row ps-2 pe-2">
                         <div class="col-md d-flex justify-content-center">
-                            <img src="../assets/images/hello.png" alt="Selamat Datang" class="w-100" style="max-width:300px">
+                            <img src="../assets/images/hello.png" alt="Selamat Datang" class="w-100 img-car" style="max-width:65%">
                         </div>
                         <div class="col-md d-flex flex-row flex-wrap justify-content-center text-center carousel-center">
-                            <h2>Selamat Datang di Aplikasi Cacala 2</h2> <br/>
-                            <p>Mari cerdas dalam mencari, mencermati dan mengenali calon-calon Wakil Rakyat</p>
+                            <h2>Selamat Datang di Aplikasi Cacala 2</h2>
+                            <p class="mt-3">Mari cerdas dalam mencari, mencermati dan mengenali calon-calon Wakil Rakyat</p>
                         </div>
                     </div>
                 </div>
                 <div class="carousel-item">
-                    <div class="row" style="padding-left:5em; padding-right:5em">
+                    <div class="row ps-2 pe-2">
                         <div class="col-md d-flex justify-content-center">
-                            <img src="../assets/images/hello.png" alt="Selamat Datang" class="w-100" style="max-width:300px">
+                            <img src="../assets/images/hello.png" alt="Selamat Datang" class="w-100 img-car" style="max-width:65%">
                         </div>
                         <div class="col-md d-flex flex-row flex-wrap justify-content-center text-center carousel-center">
-                            <h2>Selamat Datang di Aplikasi Cacala 3</h2> <br/>
-                            <p>Mari cerdas dalam mencari, mencermati dan mengenali calon-calon Wakil Rakyat</p>
+                            <h2>Selamat Datang di Aplikasi Cacala 3</h2>
+                            <p class="mt-3">Mari cerdas dalam mencari, mencermati dan mengenali calon-calon Wakil Rakyat</p>
                         </div>
                     </div>
                 </div>
@@ -88,4 +88,26 @@ h2,p{
 p{
     font-size: 20px;
 }
+@media (min-width: 768px) and (max-width: 992px) { 
+  p{
+    font-size: 100%;
+  }
+  h2{
+    font-size: 120%;
+  }
+ }
+ @media (max-width: 768px) {
+    .img-car{
+        max-width: 30%;
+    }
+    .carousel-center{
+        margin-top: 50px;
+    }
+    p{
+        font-size: 90%;
+    }
+    h2{
+        font-size: 110%;
+    }
+  }
 </style>
