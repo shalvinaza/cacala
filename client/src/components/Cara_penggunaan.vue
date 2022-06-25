@@ -107,7 +107,7 @@ p{
         font-size: 80%;
     }
     .card{
-        height: 15rem;
+        height: 18rem;
     }
     h2{
         font-size: 100%;
