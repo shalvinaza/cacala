@@ -38,6 +38,9 @@ export default {
       return localStorage.getItem('sukses')
     }
   },
+  destroyed(){
+    localStorage.removeItem('sukses')
+  },
   mounted(){
     if(this.openSukses){
       this.showAlert()

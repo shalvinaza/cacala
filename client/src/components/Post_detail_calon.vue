@@ -128,7 +128,7 @@
                                 </span>       
                             </span>
                             <span v-else>
-                                <button class="btn btn-outline-blue" @click="goToLogin()">Ikuti</button> 
+                                <button class="btn btn-outline-blue" @click="togglePopup()">Ikuti</button> 
                             </span> 
                         </div>
                         <span v-for="post in posts" :key="post.id_foto">
@@ -185,11 +185,18 @@
                 </div>
             </div>
         </div>
+        <Popup v-if="muncul" title="Anda belum masuk ke dalam sistem" pesanPopup="Apakah Anda ingin masuk?">
+            <div class="d-flex justify-content-end">
+            <button class="bg-light-orange-pop me-2 br-10" @click="togglePopup()">Tidak</button>
+            <button class="btn-outline-orange2" @click="goToLogin()">Iya</button>
+            </div>
+        </Popup>
     </div>
 </template>
 
 <script>
 import axios from 'axios'
+import Popup from './Berhasil.vue'
 
 export default {
     name :'Post_detail_calon',
@@ -202,8 +209,12 @@ export default {
         idd: '',
         followed_calon:[],
         intervalPost: null,
-        deviceWidth: window.innerWidth
+        deviceWidth: window.innerWidth,
+        muncul: false
     }),
+   components:{
+        Popup
+    },
     created(){
         this.calonDetail()
         this.fetchFollowedCalon()
@@ -228,6 +239,7 @@ export default {
         isLoggedin:function(){
             return localStorage.getItem("token") != null
         },
+
         showTotal:function(){
             let tot = 0
             let followers = this.followers
@@ -248,6 +260,9 @@ export default {
         }
     },
     methods: {
+        togglePopup(){
+            this.muncul = !this.muncul
+        },
         goToLogin(){
             this.$router.push('/login');
         },
@@ -341,6 +356,27 @@ export default {
 .left-col{
     border-radius: 15px;
     max-height: 70%;
+}
+.bg-light-orange-pop:hover,.btn-outline-orange2:hover{
+    color:white;
+    background-color: #D65A40;
+    border-color: #D65A40;
+}
+.bg-light-orange-pop{
+    font-weight:400;
+    border: 1px solid;
+    min-width: 4rem;
+    color: white;
+    background-color: #DDA18C;
+    height: 1.8rem;
+}
+.btn-outline-orange2{
+    color:#DDA18C;
+    font-weight:400;
+    border: 1px solid #DDA18C;
+    min-width: 4rem;
+    background: white;
+    height: 1.8rem;
 }
 .right-col{
     background: #EDEDE9;
@@ -467,13 +503,13 @@ export default {
         font-size: 100%;
     }
     p{
-        font-size: 90%;
+        font-size: 100%;
     }
     .img-poster-post{
         display: flex;
         justify-content: center;
-        max-height: 600px;
-        max-width: 300px;
+        max-height: 700px;
+        max-width: 350px;
     }
     .card-text-dum{
         font-size: 70%;
@@ -482,12 +518,12 @@ export default {
         font-size: 80%;
     }
 } 
-@media (max-width: 360px){
+@media (max-width: 410px){
     .img-poster-post{
         display: flex;
         justify-content: center;
-        max-height: 350px;
-        max-width: 175px;
+        max-height: 500px;
+        max-width: 250px;
     }
 }
 </style>
