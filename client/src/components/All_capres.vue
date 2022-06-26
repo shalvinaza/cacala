@@ -25,7 +25,7 @@
                                 <button class="btn btn-outline-orange" @click="goToDetail(calon)">Detail</button>
                                 <span v-if="isLoggedIn">
                                     <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="!calon.status">Ikuti</button>
-                                <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="calon.status">Berhenti</button>
+                                <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="calon.status">Berhenti ikuti</button>
                                 </span>    
                                 <span v-else>
                                     <button class="btn btn-outline-blue" @click="goToLogin()">Ikuti</button> 

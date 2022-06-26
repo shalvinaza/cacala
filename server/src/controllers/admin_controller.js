@@ -97,3 +97,17 @@ exports.updateAdmin = async (req, res) => {
       res.json({ message: err })
    }
 }
+
+exports.totalFollowers = async (req, res) => {
+   try{
+      const totalFollowers = await pool.query(
+         "SELECT c.id_calon, c.nama, a.id_admin, m.id_calon, m.id_user, u.username FROM admins a JOIN calon c on c.id_admin = a.id_admin JOIN mengikuti_calon m ON m.id_calon = c.id_calon JOIN users u ON m.id_user = u.id_user WHERE a.id_admin = $1;", [
+            req.user
+         ]
+      )
+
+      res.json(totalFollowers.rows)
+   } catch(err) {
+      res.json({message: err})
+   }
+}

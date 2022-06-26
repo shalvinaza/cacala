@@ -2,9 +2,9 @@
     <div class="container">
         <div class="d-flex row row-cols-1 row-cols-md-3">
             <div class="flex-shrink-1 d-none d-md-block">
-                <div class="col left-col d-flex justify-content-center mb-4" v-for="(calon) in calons" :key="calon.id_admin">
+                <div class="left-col d-flex justify-content-center mb-4" v-for="(calon) in calons" :key="calon.id_admin">
                     <div :class="{'p-4 br-15' : deviceWidth >  991.98, 'p-0 br-15' : deviceWidth<  991.98 }" style="background: #EDEDE9; max-height:1430px">
-                        <img :src=calon.foto class="profil-calon-detail mb-4" alt="dpr 2">
+                        <img :src="calon.foto" class="profil-calon-detail mb-4" alt="dpr 2">
                         <h5 class="text-center">{{calon.nama}}</h5>
                         <p class="mb-4 text-center">Calon {{calon.jabatan_tujuan}}</p>
                         <div class="row align-items-start">
@@ -458,7 +458,7 @@ export default {
     }
     .btn-outline-blue{
         min-width: 4rem;
-        max-width: 5em;
+        max-width: 6rem;
         min-height: 2rem;
         font-size: 90%;
         padding: 2px 5px 2px 5px;
@@ -486,8 +486,8 @@ export default {
     .img-poster-post{
         display: flex;
         justify-content: center;
-        max-height: 300px;
-        max-width: 150px;
+        max-height: 350px;
+        max-width: 175px;
     }
 }
 </style>
