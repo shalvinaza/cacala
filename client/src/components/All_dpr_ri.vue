@@ -18,7 +18,7 @@
             </div>
         </div>
 
-        <div class="d-flex">
+        <div :class="{'d-flex': deviceWidth > 1200, '' : deviceWidth < 1200 }">
             <!-- filter on bigger than lg device -->
             <div class="flex-shrink-1 mt-3 me-5 d-none d-xl-block d-xxl-none">
                 <h5 class="mt-3"><font-awesome-icon icon="fa-solid fa-filter" /> Filter</h5>
@@ -30,7 +30,7 @@
                 </div>
             </div>
 
-            <div class="">
+            <div class="flex-grow-1">
                 <div class="row row-cols-2 row-cols-lg-4 row-cols-md-3 g-2 g-md-3 g-lg-3 mt-3">
                     <div class="col" v-for="calon in filteredCalons" :key="calon.id_calon">
                         <div class="card h-100">
@@ -146,6 +146,7 @@ export default {
         exampleItems : [...Array(150).keys()].map(i => ({ id: (i+1), name: 'Nama ' + (i+1) })) ,
         perPage: 9,
         currentPage: 1,
+        deviceWidth: window.innerWidth
     }),
     computed: {
         isLoggedIn: function() {return localStorage.getItem("token") != null},
@@ -172,7 +173,13 @@ export default {
     },
     created(){
         this.fetchDPRRICalons(),
-        this.fetchPartai()    },
+        this.fetchPartai()    
+    },
+    mounted(){
+        window.onresize = () => {
+            this.deviceWidth = window.innerWidth
+        }
+    },
     methods : {
         fetchDPRRICalons(){
             fetch(DPD_API_URL)

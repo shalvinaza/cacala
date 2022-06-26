@@ -53,7 +53,7 @@
                   <router-link to="/dasbor_saya" class="nav-link">Dasbor</router-link>
                 </span>
             </div>
-            <div class="d-flex align-items-center">
+            <div class="d-flex align-items-center icons">
               <button class="btn bg-light-orange text-white me-3 br-10" type="button" @click="goToSearch()">
                 <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
                   Cari</button>
@@ -186,6 +186,9 @@ a:focus, a:hover{
 }
 @media (min-width: 992px) and (max-width: 1200px) { 
   .navbar{
+    font-size: 90%;
+  }
+  .icons button, .icons a{
     font-size: 90%;
   }
  }

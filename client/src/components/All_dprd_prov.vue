@@ -25,7 +25,7 @@
             </div>
         </div>
 
-        <div class="d-flex">
+        <div :class="{'d-flex': deviceWidth > 1200, '' : deviceWidth < 1200 }">
 
             <div class="flex-shrink-1 mt-3 me-5 d-none d-xl-block d-xxl-none">
                 <h5 class="mt-3"> <font-awesome-icon icon="fa-solid fa-filter" /> Filter</h5>
@@ -43,7 +43,7 @@
             </div>
             </div>
             <!-- all calon literally -->
-            <div class="">
+            <div class="flex-grow-1">
                 <div v-if="!filteredCalons.length" class="row d-flex justify-content-center mt-3">
                     <img src='../assets/images/error.png' class="d-flex" style="width:40%" alt="Not Found">
                     <h5 class="d-flex d-flex justify-content-center align-items-center mt-3">Hasil tidak ditemukan</h5>
@@ -158,7 +158,8 @@ export default {
         checkDapil: [],
         exampleItems : [...Array(150).keys()].map(i => ({ id: (i+1), name: 'Nama ' + (i+1) })) ,
         perPage: 9,
-        currentPage: 1
+        currentPage: 1,
+        deviceWidth: window.innerWidth
     }),
     computed: {
         isLoggedIn: function() {return localStorage.getItem("token") != null},
@@ -213,6 +214,11 @@ export default {
         // if(localStorage.getItem("token") != null){
         //     this.fetchFollowedCalon()
         // }
+    },
+    mounted(){
+        window.onresize = () => {
+            this.deviceWidth = window.innerWidth
+        }
     },
     methods : {
         fetchKotaName(){
