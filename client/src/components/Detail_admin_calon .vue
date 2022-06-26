@@ -140,15 +140,14 @@
                                         <span class="card-text flex-shrink-1 icons me-3">
                                             <input type="file" id="inputFoto" style="display:none" ref="foto" @change="selectImage()"/><font-awesome-icon icon="fa-solid fa-images" @click="addFoto()"/>
                                         </span>
-                                        <div class="d-flex flex-shrink-2 field">
-                                            <span v-if="form.foto" class="file-name">{{form.foto.name}}</span>
-                                        </div>
-
                                         <div class="d-flex flex-grow-1 justify-content-end">
                                             <button type="submit" class="btn bg-light-orange br-10">Unggah</button> 
                                         </div>
                                     </div>
-      
+                                    <div class="d-flex flex-row field mt-2">
+                                        <span v-if="form.foto" class="file-name">{{form.foto.name}}</span>
+                                        <span v-if="errorImg" style="color:red" class="m-0">- {{messageImg}}</span>
+                                    </div>
                                 </form>                      
                             </div>
                         </div> 
@@ -213,7 +212,7 @@
                                 <div class="d-flex end-row-section w-100 p-0 mb-3 pb-2">
                                     <p class="card-text-dum text-muted m-0 flex-grow-2 w-100" style=""><i class="far fa-calendar-alt"></i>  <small>19/08/2021</small></p>
                                     <span class="card-text icons me-2"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></span>
-                                    <span class="card-text icons"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></span>
+                                    <span class="card-text icons"><font-awesome-icon icon="fa-solid fa-trash" /></span>
                                 </div>
                                 <!-- <img src="../assets/images/poster_post.jpg" class="w-100 img-poster-post mb-3" alt="..."> -->
                                 <p class="card-text-dum">On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.</p>
@@ -226,7 +225,7 @@
                                 <div class="d-flex end-row-section w-100 p-0 mb-3 pb-2">
                                     <p class="card-text-dum text-muted m-0 flex-grow-2 w-100" style=""><i class="far fa-calendar-alt"></i>  <small>19/08/2021</small></p>
                                     <span class="card-text icons me-2"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></span>
-                                    <span class="card-text icons"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></span>
+                                    <span class="card-text icons"><font-awesome-icon icon="fa-solid fa-trash" /></span>
                                 </div>
                                 <div class="d-flex justify-content-center">
                                     <img src="../assets/images/poster_post2.jpg" class="w-100 img-poster-post mb-3" alt="...">
@@ -241,7 +240,7 @@
                                 <div class="d-flex end-row-section w-100 p-0 mb-3 pb-2">
                                     <p class="card-text-dum text-muted m-0 flex-grow-2 w-100" style=""><i class="far fa-calendar-alt"></i>  <small>19/08/2021</small></p>
                                     <span class="card-text icons me-2"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></span>
-                                    <span class="card-text icons"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></span>
+                                    <span class="card-text icons"><font-awesome-icon icon="fa-solid fa-trash" /></span>
                                 </div>
                                 <div class="d-flex justify-content-center">
                                     <img src="../assets/images/poster_post.jpg" class="w-100 img-poster-post mb-3" alt="...">
@@ -257,7 +256,7 @@
 
         </div>
 
-        <Alert v-if="updated" :variantName="variant" :messageProps="pesanUpdate"/>
+        <Alert v-if="updated" :variantName="variant" :messageProps="pesanUpdate" style="overflow-y: auto"/>
     </div>
 </template>
 
@@ -302,7 +301,9 @@ export default {
              followers: {},
              pesanUpdate: '',
              updated: false,
-             variant: ''
+             variant: '',
+             errorImg: false,
+             messageImg: ''
         }   
     },
     created(){
@@ -373,38 +374,59 @@ export default {
 
         addFoto(){
             document.getElementById('inputFoto').click();
+            this.errorImg = false
+            this.message = ''
+            this.messageImg = ''
         },
         selectImage(){
             this.form.foto = this.$refs.foto.files[0];
+            this.validateImage(this.form.foto)
+
+            if(this.message !== ''){
+                this.errorImg = true
+                this.messageImg = this.message
+                   console.log(this.message)
+            }
         },
         addFotoUpdate(){
             document.getElementById('inputFoto2').click();
-        },
+            this.updated = false
+            this.variant = ''
+            this.pesanUpdate = ''
+          },
         selectImageUpdate(){
             this.formUpdate.file = this.$refs.foto2.files[0];
+            this.validateImage(this.formUpdate.file)
+
+            if(this.message !== ''){
+                this.updated = true
+                this.pesanUpdate = this.message
+                this.variant = 'danger'
+                console.log(this.message)
+            }
         },
-        validateImage(file){
+        validateImage:function(file){
             const MAX_SIZE = 200000;
             const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
 
             if(file.size > MAX_SIZE){
-                return `File terlalu besar. Besar file maksimal ${MAX_SIZE / 1000}Kb`;
+                this.message = `File terlalu besar. Besar file maksimal ${MAX_SIZE / 1000}Kb`;
             }
             if(!allowedTypes.includes(file.type)){
-                return "Hanya boleh memilih gambar";
+                this.message = "Hanya boleh memilih gambar";
             }
 
-            return "";
+            return this.message;
         },
         async addPost(){
             const POST_POSTS_API_URL = `${process.env.VUE_APP_API_URL}/post/`
             axios.defaults.headers.common["token"] = localStorage.token
+
             const formData = new FormData();
 
             formData.append('judul', this.form.judul);
             formData.append('teks', this.form.teks);
             formData.append('image', this.form.foto);
-
             // _.forEach(this.form.foto, file => {
             //     if(this.validateImage(file) === ""){
             //         formData.append('foto', file);
@@ -412,7 +434,6 @@ export default {
             // });
             try {
                 await axios.post(POST_POSTS_API_URL, formData);
-                this.message = "Berhasil diunggah";
                 this.load()
                 this.form.judul =''
                 this.form.teks = ''
@@ -420,13 +441,8 @@ export default {
                 this.updated = true
                 this.variant = 'success'
                 this.pesanUpdate = 'Berhasil membuat unggahan baru'
-                // this.error = false
             }catch(err){
                 console.log(err)
-                this.updated = false
-                this.variant = 'danger'
-                this.pesanUpdate = 'Gagal membuat unggahan baru'
-                // this.error = true;
             }
         },
         del(){
@@ -436,6 +452,9 @@ export default {
                 this.load()
                 let index = this.posts.indexOf(post_id)
                 this.posts.splice(index,1)
+                this.updated = true
+                this.pesanUpdate = 'Unggahan berhasil dihapus'
+                this.variant = 'success'
             })            
         },
         edit(post){
@@ -495,6 +514,9 @@ export default {
         toggleShow(id){
             this.delPost = id;
             this.popupDel = !this.popupDel;
+            this.updated = false
+            this.pesanUpdate = ''
+            this.variant = ''
         },
     }
 }
@@ -606,6 +628,12 @@ export default {
     border: 1px solid #DDA18C ;
     min-width: 4rem;
     background: white;
+}
+.bg-light-orange{
+    background-color: grey;
+}
+.bg-light-orange:hover, .bg-light-orange:focus{
+    background-color: #D65A40;
 }
 .bg-light-orange2:hover,.btn-outline-orange2:hover{
     color:white;

@@ -28,7 +28,7 @@
                                 <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="calon.status">Berhenti ikuti</button>
                                 </span>    
                                 <span v-else>
-                                    <button class="btn btn-outline-blue" @click="goToLogin()">Ikuti</button> 
+                                    <button class="btn btn-outline-blue" @click="togglePopup()">Ikuti</button> 
                                 </span>                      
                             </div>
                         </div>
@@ -36,11 +36,18 @@
                 </div>
             
         </div>
+        <Popup v-if="muncul" title="Anda belum masuk ke dalam sistem" pesanPopup="Apakah Anda ingin masuk?">
+            <div class="d-flex justify-content-end">
+            <button class="bg-light-orange-pop me-2 br-10" @click="togglePopup()">Tidak</button>
+            <button class="btn-outline-orange2" @click="goToLogin()">Iya</button>
+            </div>
+        </Popup> 
     </div>
 </template>
 
 <script>
 import axios from 'axios'
+import Popup from './Berhasil.vue'
 const PRESIDEN_API_URL = `${process.env.VUE_APP_API_URL}/calon/jabatan/1470e05d-6f8d-476f-9d42-09ef4a23e5cc`
 const FOLLOWED_CALON_API_URL = `${process.env.VUE_APP_API_URL}/user/followed`
 
@@ -49,8 +56,12 @@ export default {
     data : () => ({
         no_data: false,
         calons: [],
-        followed_calon: []
+        followed_calon: [],
+        muncul: false
     }),
+    components:{
+        Popup
+    },
     computed: {
         isLoggedIn: function() {return localStorage.getItem("token") != null}
     },
@@ -58,6 +69,10 @@ export default {
         this.fetchCapresCalons()
     },
     methods : {
+        togglePopup(){
+            this.muncul = !this.muncul
+        },
+
         goToDetail(calon){
             localStorage.setItem('id_calon', calon.id_calon)
             this.$router.push({ name: 'Detail_calon', params: { id_admin: calon.id_admin}})
@@ -150,6 +165,27 @@ h1{
     max-width: 22px;
     max-height: 22px;
     border-radius: 15px;
+}
+.bg-light-orange-pop:hover,.btn-outline-orange2:hover{
+    color:white;
+    background-color: #D65A40;
+    border-color: #D65A40;
+}
+.bg-light-orange-pop{
+    font-weight:400;
+    border: 1px solid;
+    min-width: 4rem;
+    color: white;
+    background-color: #DDA18C;
+    height: 1.8rem;
+}
+.btn-outline-orange2{
+    color:#DDA18C;
+    font-weight:400;
+    border: 1px solid #DDA18C;
+    min-width: 4rem;
+    background: white;
+    height: 1.8rem;
 }
 .card-img-overlay{
     right: unset;

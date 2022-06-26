@@ -62,7 +62,7 @@
                                         <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon), calon.status = !calon.status" v-show="calon.status">Berhenti ikuti</button>
                                     </span>       
                                     <span v-else>
-                                        <button class="btn btn-outline-blue" @click="goToLogin()">Ikuti</button> 
+                                        <button class="btn btn-outline-blue" @click="togglePopup()">Ikuti</button> 
                                     </span>                        
                                 </div>
                             </div>
@@ -99,7 +99,7 @@
                                         <button class="btn btn-outline-blue">Ikuti</button>
                                     </span>       
                                     <span v-else>
-                                        <button class="btn btn-outline-blue" @click="goToLogin()">Ikuti</button> 
+                                        <button class="btn btn-outline-blue" @click="togglePopup()">Ikuti</button> 
                                     </span>                        
                                 </div>
                             </div>
@@ -113,23 +113,29 @@
                     <h5 class="d-flex d-flex justify-content-center align-items-center mt-3">Hasil tidak ditemukan</h5>
                 </div>
 
-                <!-- <b-pagination
+                <b-pagination
                 v-model="currentPage"
                 :total-rows="rows"
                 :per-page="perPage"
                 aria-controls="my-table"
                 align="center"
                 class="mt-5"
-                ></b-pagination> -->
+                ></b-pagination>
 
             </div>
         </div>
-                
+        <Popup v-if="muncul" title="Anda belum masuk ke dalam sistem" pesanPopup="Apakah Anda ingin masuk?">
+            <div class="d-flex justify-content-end">
+            <button class="bg-light-orange-pop me-2 br-10" @click="togglePopup()">Tidak</button>
+            <button class="btn-outline-orange2" @click="goToLogin()">Iya</button>
+            </div>
+        </Popup>        
     </div>
 </template>
 
 <script>
 import axios from 'axios'
+import Popup from './Berhasil.vue'
 
 const DPD_API_URL = `${process.env.VUE_APP_API_URL}/calon/jabatan/7a9b46a5-efe7-4f9b-80e7-4b54636810ad`
 const FOLLOWED_CALON_API_URL = `${process.env.VUE_APP_API_URL}/user/followed`
@@ -145,8 +151,12 @@ export default {
         exampleItems : [...Array(150).keys()].map(i => ({ id: (i+1), name: 'Nama ' + (i+1) })) ,
         perPage: 9,
         currentPage: 1,
-        deviceWidth: window.innerWidth
+        deviceWidth: window.innerWidth,
+        muncul: false
     }),
+    components:{
+        Popup
+    },
     computed: {
         isLoggedIn: function() {return localStorage.getItem("token") != null},
         rows(){return this.exampleItems.length},
@@ -179,6 +189,9 @@ export default {
         }
     },
     methods : {
+        togglePopup(){
+            this.muncul = !this.muncul
+        },
         fetchPartai(){
             const PARTAI_API_URL = `${process.env.VUE_APP_API_URL}/partai`
         
@@ -263,6 +276,22 @@ export default {
 </script>
 
 <style scoped>
+.bg-light-orange-pop{
+    font-weight:400;
+    border: 1px solid;
+    min-width: 4rem;
+    color: white;
+    background-color: #DDA18C;
+    height: 1.8rem;
+}
+.btn-outline-orange2{
+    color:#DDA18C;
+    font-weight:400;
+    border: 1px solid #DDA18C;
+    min-width: 4rem;
+    background: white;
+    height: 1.8rem;
+}
 h1{
     letter-spacing: 0.10em;
     font-weight: 700;
@@ -307,11 +336,11 @@ h1{
     border-radius: 40px;
     box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.25);
 }
-.btn-outline-orange2{
+/* .btn-outline-orange2{
     min-height: 3rem;
     padding: 0.5rem;
     border-color: #DDA18C;
-}
+} */
 .flex-item {
   background: tomato;
   width: calc(100% / 3.5);

@@ -47,7 +47,7 @@
                                         <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="calon.status">Berhenti ikuti</button>
                                     </span>   
                                     <span v-else>
-                                        <button class="btn btn-outline-blue" @click="goToLogin()">Ikuti</button> 
+                                        <button class="btn btn-outline-blue" @click="togglePopup()">Ikuti</button> 
                                     </span>                          
                                 </div>
                             </div>
@@ -70,6 +70,12 @@
                 <img src='../assets/images/error.png' class="d-flex" style="width:40%" alt="Not Found">
                 <h5 class="d-flex d-flex justify-content-center align-items-center mt-3">Hasil tidak ditemukan</h5>
             </div>
+            <Popup v-if="muncul" title="Anda belum masuk ke dalam sistem" pesanPopup="Apakah Anda ingin masuk?">
+                <div class="d-flex justify-content-end">
+                <button class="bg-light-orange-pop me-2 br-10" @click="togglePopup()">Tidak</button>
+                <button class="btn-outline-orange2" @click="goToLogin()">Iya</button>
+                </div>
+            </Popup>
         </div>
     </div>
     <Footer1/>
@@ -80,8 +86,11 @@
 import axios from 'axios'
 import Navbar from '@/components/Navbar.vue'
 import Footer1 from '@/components/Footer.vue'
+import Popup from '../components/Berhasil.vue'
 
 const ALL_CALON_API = `${process.env.VUE_APP_API_URL}/calon`
+const FOLLOWED_CALON_API_URL = `${process.env.VUE_APP_API_URL}/user/followed`
+
 
 export default {
     name:'Search',
@@ -93,10 +102,13 @@ export default {
         exampleItems : [...Array(150).keys()].map(i => ({ id: (i+1), name: 'Nama ' + (i+1) })) ,
         perPage: 9,
         currentPage: 1,
+        followed_calon:[],
+        muncul: false
     }),
     components:{
       Navbar,
-      Footer1
+      Footer1,
+      Popup
     },
     created(){
         this.getData()
@@ -106,7 +118,7 @@ export default {
         rows(){return this.searchRes.length},
         searchedCalons: function(){
             return this.calons.filter((calon) => {
-                return calon.nama.toLowerCase().match(this.search) 
+                return calon.nama.toLowerCase().match(this.search.toLowerCase()) 
             })
         }
     },
@@ -115,14 +127,41 @@ export default {
             this.searchRes = this.searchedCalons
             this.cekRow = true
         },
+        togglePopup(){
+            this.muncul = !this.muncul
+        },
         getData(){
             fetch(ALL_CALON_API)
             .then(response => response.json())
             .then(result => {
                 this.calons = result
-                // if(localStorage.getItem("token") != null){
-                //     this.fetchFollowedCalon()
-                // }
+                if(localStorage.getItem("token") != null){
+                    this.fetchFollowedCalon()
+                }
+            })
+        },
+
+        fetchFollowedCalon() {
+            const headers = { token: localStorage.token }
+            fetch(FOLLOWED_CALON_API_URL, { headers })
+                .then(response => response.json())
+                .then(result => {
+                    this.followed_calon = result
+                    this.checkFollowedCalon()
+                    var parsedobj = JSON.parse(JSON.stringify(result))
+                    console.log(parsedobj)
+                })
+        },
+
+        checkFollowedCalon(){
+            console.log(this.calons.length)
+            Array.from(this.calons).forEach((value, i) => {
+                Array.from(this.followed_calon).forEach((value, j) => {
+                    if(this.calons[i].id_calon == this.followed_calon[j].id_calon){
+                        this.calons[i].status = true
+                        console.log(`${this.calons[i].nama} => status: ${this.calons[i].status}`)
+                    }
+                })
             })
         },
 
@@ -253,6 +292,25 @@ p{
     border: 2px solid #D65A40; 
     background-color: #D65A40;
     color: white;
+}
+.bg-light-orange-pop:hover,.btn-outline-orange2:hover{
+    color:white;
+    background-color: #D65A40;
+    border-color: #D65A40;
+}
+.bg-light-orange-pop{
+    font-weight:400;
+    border: 1px solid;
+    min-width: 4rem;
+    color: white;
+    background-color: #DDA18C;
+}
+.btn-outline-orange2{
+    color:#DDA18C;
+    font-weight:400;
+    border: 1px solid #DDA18C;
+    min-width: 4rem;
+    background: white;
 }
 @media (max-width: 575.98px) { 
     h5{

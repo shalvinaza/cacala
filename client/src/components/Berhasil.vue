@@ -2,7 +2,7 @@
     <div class="popup">
         <div class="col-md-3 popup-inner p-4 m-4">
             <div class="d-flex justify-content-center mb-3">
-              <h5 class="">{{title}}</h5>
+              <h5 class="text-center">{{title}}</h5>
             </div>
             <div class="p-0">
                 <p class="text-center">{{pesanPopup}}</p>
