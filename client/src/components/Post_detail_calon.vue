@@ -349,14 +349,19 @@ export default {
     padding: 0;
 }
 .profil-calon-detail{
-    border-radius: 50%;
-    max-width: 210px;
-    max-height: 210px;
+    border-radius: 105px;
+    width: 210px;
+    height: 210px;
+    display: flex;
+    align-self: center;
+    justify-self: center;
+    margin: auto;
+    margin-top: 20px;
 }
 .profil-calon-small{
     border-radius: 50%;
-    max-width: 130px;
-    max-height: 130px;
+    width: 120px;
+    height: 120px;
 }
 .img-partai{
     width: 30px;
@@ -417,7 +422,7 @@ export default {
     .profil-calon-detail{
         width: 130px;
         height: 130px;
-        border-radius: 50;
+        border-radius: 50%;
         display: flex;
         align-self: center;
         justify-self: center;
