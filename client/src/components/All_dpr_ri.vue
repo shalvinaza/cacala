@@ -390,9 +390,9 @@ p{
     }
     .btn-outline-orange, .btn-outline-blue{
         padding: 0.1rem 0.05rem 0.1rem 0.05rem;
-        min-width: 4rem;
+        min-width: 3.5rem;
         min-height: 1rem;
-        font-size: 60%;
+        font-size: 50%;
     }
 }
 </style>
