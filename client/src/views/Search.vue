@@ -4,23 +4,24 @@
     <div class="content" style="padding:120px 0 70px 0">
         <div class="container">
             <h1 class="text-center mb-5">Siapa Calon Yang Ingin Anda Cari?</h1>
-            <form action="">
+            <form @submit.prevent="searchh" class="w-100">
                 <div class="input-group">
-                    <input type="search" class="p-3 w-100" placeholder="Ketik nama calon disini" v-model="search">
+                    <input type="search" class="p-3 form-control" placeholder="Ketik nama calon disini" v-model="search">
+                    <button type="submit" class="input-group-text"><font-awesome-icon icon="fa-solid fa-magnifying-glass" /></button> 
                 </div>
             </form>
 
             <!-- search result -->
             <h5 class="mt-3">Hasil pencarian dengan nama "{{search}}"</h5>
-            <div v-if="search" class="row mt-4">
-                <div class="row row-cols-1 row-cols-md-4 g-4 mt-3">
-                    <div class="col" v-for="calon in searchedCalons" :key="calon.id_calon">
+            <div class="d-flex flex-column mt-4">
+                <div class="row row-cols-2 row-cols-lg-4 row-cols-md-3 g-2 g-md-3 g-lg-3 mt-3">
+                    <div class="col" v-for="calon in searchRes" :key="calon.id_calon">
                         <div class="card h-100">
                             <input type="image" :src="calon.foto" class="card-img-top" alt="dpr 2" @click="goToDetail(calon)"/>
                             <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
                                 <h5>{{calon.no_urut}}</h5>
                             </div>
-                            <div class="card-body pt-4 ps-4 pe-4 pb-0">
+                            <div class="card-body pt-3 pb-0">
                                 <h6 class="card-title text-center">{{calon.nama}}</h6>
                                 <p class="card-subtitle text-center text-muted">Calon {{calon.jabatan_tujuan}}</p>
                                 <div class="row align-items-start mt-2">
@@ -53,8 +54,19 @@
                         </div>
                     </div>
                 </div>
+
+                <b-pagination
+                v-if="searchRes.length"
+                v-model="currentPage"
+                :total-rows="rows"
+                :per-page="perPage"
+                aria-controls="my-table"
+                align="center"
+                class="mt-5"
+                ></b-pagination>
+
             </div>
-            <div v-if="!searchedCalons.length" class="row d-flex justify-content-center mt-3">
+            <div v-if="cekRow && !searchRes.length" class="row d-flex justify-content-center mt-3">
                 <img src='../assets/images/error.png' class="d-flex" style="width:40%" alt="Not Found">
                 <h5 class="d-flex d-flex justify-content-center align-items-center mt-3">Hasil tidak ditemukan</h5>
             </div>
@@ -75,7 +87,12 @@ export default {
     name:'Search',
     data : () => ({
         search: "",
-        calons: []
+        calons: [],
+        searchRes:[],
+        cekRow:false,
+        exampleItems : [...Array(150).keys()].map(i => ({ id: (i+1), name: 'Nama ' + (i+1) })) ,
+        perPage: 9,
+        currentPage: 1,
     }),
     components:{
       Navbar,
@@ -86,36 +103,19 @@ export default {
     },
     computed: {
         isLoggedIn: function() {return localStorage.getItem("token") != null},
+        rows(){return this.searchRes.length},
         searchedCalons: function(){
-            let calons =this.calons
-            const search = this.search
-            
-            if(search.length){
-                return calons.filter((calon) => {
-                    return calon.nama.toLowerCase().match(this.search) 
-                })
-            }
-
-            else{
-                console.log('gaada hasil')
-            }
-
-            return calons
+            return this.calons.filter((calon) => {
+                return calon.nama.toLowerCase().match(this.search) 
+            })
         }
     },
     methods: {
+        searchh:function(){
+            this.searchRes = this.searchedCalons
+            this.cekRow = true
+        },
         getData(){
-            // // const search = this.$route.params.search;
-            // await axios.get(`${process.env.VUE_APP_API_URL}/calon/search/%${this.search}%`)
-            // .then((result)=>{
-            //     this.calons = result.data
-            //     var parsedobj = JSON.parse(JSON.stringify(result))
-            //     console.log(parsedobj)
-            // })
-            // .catch((error)=>{
-            //     console.log(error)
-            // })
-
             fetch(ALL_CALON_API)
             .then(response => response.json())
             .then(result => {
@@ -207,10 +207,97 @@ h1{
 }
 .btn-outline-orange, .btn-outline-blue{
     padding: 0.3rem;
-    min-width: 6rem;
+    min-width: 5rem;
     font-size: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.flex-item {
+  background: tomato;
+  width: calc(100% / 3.5);
+  padding: 5px;
+  height: auto;
+  margin-top: 10px;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+}
+ul.paginate-links.items li {
+  display: inline-block;
+  margin: 5px;
+}
+ul.paginate-links.items a {
+  cursor: pointer;
+}
+ul.paginate-links.items li.active a {
+  font-weight: bold;
+}
+ul.paginate-links.items li.next:before {
+  content: " | ";
+  margin-right: 13px;
+  color: #ddd;
+}
+ul.paginate-links.items li.disabled a {
+  color: #ccc;
+  cursor: no-drop;
 }
 p{
-    font-size: 95%;
+    font-size: 90%;
+}
+.input-group button{
+    border-radius: 10px;
+}
+.input-group button:hover, .input-group:focus{
+    border-radius: 10px;
+    border: 2px solid #D65A40; 
+    background-color: #D65A40;
+    color: white;
+}
+@media (max-width: 575.98px) { 
+    h5{
+        font-size: 90%;
+    }
+    h6{
+        font-size: 80%;
+    }
+    p{
+        font-size: 70%;
+    }
+    .card-img-overlay{
+        min-width: 40px;
+        min-height: 40px;
+    }
+    .card-img-top{ 
+        height: 200px;
+    }
+    .img-partai{
+        width: 20px;
+        height: 20px;  
+    }
+    .btn-outline-orange, .btn-outline-blue{
+        padding: 0.2rem 0.1rem 0.2rem 0.1rem;
+        min-width: 4rem;
+        min-height: 1rem;
+        font-size: 60%;
+            }
+    .btn-outline-orange{
+        border: 1px solid  #D65A40;
+    }
+    .btn-outline-blue{
+        border: 1px solid  #3E5D7A;
+    }
+}
+@media (max-width: 360px) { 
+    .img-partai{
+        width: 15px;
+        height: 15px;  
+    }
+    .btn-outline-orange, .btn-outline-blue{
+        padding: 0.1rem 0.05rem 0.1rem 0.05rem;
+        min-width: 4rem;
+        min-height: 1rem;
+        font-size: 60%;
+    }
 }
 </style>

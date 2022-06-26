@@ -364,8 +364,8 @@ p{
         height: 200px;
     }
     .img-partai{
-        width: 25px;
-        height: 25px;
+        width: 20px;
+        height: 20px;  
     }
     .btn-outline-orange, .btn-outline-blue{
         padding: 0.2rem 0.1rem 0.2rem 0.1rem;
@@ -378,6 +378,18 @@ p{
     }
     .btn-outline-blue{
         border: 1px solid  #3E5D7A;
+    }
+}
+@media (max-width: 360px) { 
+    .img-partai{
+        width: 15px;
+        height: 15px;  
+    }
+    .btn-outline-orange, .btn-outline-blue{
+        padding: 0.1rem 0.05rem 0.1rem 0.05rem;
+        min-width: 4rem;
+        min-height: 1rem;
+        font-size: 60%;
     }
 }
 </style>
