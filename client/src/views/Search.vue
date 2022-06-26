@@ -4,9 +4,11 @@
     <div class="content" style="padding:120px 0 70px 0">
         <div class="container">
             <h1 class="text-center mb-5">Siapa Calon Yang Ingin Anda Cari?</h1>
-            <div class="input-group">
-                <input type="search" class="p-3 w-100" placeholder="Ketik nama calon disini" v-model="search">
-            </div>
+            <form action="">
+                <div class="input-group">
+                    <input type="search" class="p-3 w-100" placeholder="Ketik nama calon disini" v-model="search">
+                </div>
+            </form>
 
             <!-- search result -->
             <h5 class="mt-3">Hasil pencarian dengan nama "{{search}}"</h5>
