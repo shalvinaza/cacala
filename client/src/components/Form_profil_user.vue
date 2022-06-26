@@ -28,7 +28,7 @@
                             <div class="input-group">
                                 <input v-if="showPassword" autocomplete="off" @keydown.enter.prevent="updateUserPass" minlength="8" type="text" v-model="password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
                                 <input v-else autocomplete="off" minlength="8" @keydown.enter.prevent="updateUserPass" type="password" v-model="password" v-bind:class="{'form-control':true, 'is-invalid' : !validPassword(password) && passwordBlured}" v-on:blur="passwordBlured = true" placeholder="Ketik kata sandi di sini">
-                                <button class="button input-group-text showPass" style="border-radius:0 10px 10px 0;" @click="toggleShow"><font-awesome-icon icon="fa-solid fa-eye" v-if="showPassword" /> <font-awesome-icon icon="fa-solid fa-eye-slash" v-else /></button>
+                                <a class="button input-group-text showPass" style="border-radius:0 10px 10px 0;" @click="toggleShow"><font-awesome-icon icon="fa-solid fa-eye" v-if="showPassword" /> <font-awesome-icon icon="fa-solid fa-eye-slash" v-else /></a>
                                 <div class="invalid-feedback">Password minimal 8 karakter</div>
                             </div>
                         </div>
@@ -37,7 +37,7 @@
                             <div class="input-group">
                                 <input v-if="showPassword2" @keydown.enter.prevent="updateUserPass" autocomplete="off" type="text" v-model="newPassword" v-bind:class="{'form-control':true, 'is-invalid' : !validConfirm(newPassword) && newPasswordBlured}" v-on:blur="newPasswordBlured = true" placeholder="Ketik ulang kata sandi di sini">
                                 <input v-else autocomplete="off" @keydown.enter.prevent="updateUserPass" minlength="8" type="password" v-model="newPassword" v-bind:class="{'form-control':true, 'is-invalid' : !validConfirm(newPassword) && newPasswordBlured}" v-on:blur="newPasswordBlured = true" placeholder="Ketik ulang kata sandi di sini">
-                                <button class="button input-group-text showPass" style="border-radius:0 10px 10px 0;" @click="toggleShow2"><font-awesome-icon icon="fa-solid fa-eye" v-if="showPassword2" /> <font-awesome-icon icon="fa-solid fa-eye-slash" v-else /></button>
+                                <a class="button input-group-text showPass" style="border-radius:0 10px 10px 0;" @click="toggleShow2"><font-awesome-icon icon="fa-solid fa-eye" v-if="showPassword2" /> <font-awesome-icon icon="fa-solid fa-eye-slash" v-else /></a>
                                 <div class="invalid-feedback">Password harus sama</div>
                             </div>
                         </div>

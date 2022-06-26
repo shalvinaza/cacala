@@ -110,8 +110,13 @@ router.put("/:id_post", upload.single("image"), async (req, res) => {
 
       if(!req.file){
          try{
-            foto = req.body.foto
-            id_foto = req.body.id_foto
+            if(post.id_foto){
+               foto = req.body.foto
+               id_foto = req.body.id_foto
+            } else {
+               foto = null
+               id_foto = null
+            }
          }catch(err){
             console.log(err)
          }

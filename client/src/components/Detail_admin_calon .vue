@@ -26,7 +26,7 @@
                             </div>
                         </div>
                         <div class="mt-4 pb-3 end-row-section">
-                            <h5 class="mb-3">Riwayat Pendidikan</h5>
+                            <h6 class="mb-3">Riwayat Pendidikan</h6>
                             <div class="mb-3" v-for="(pendidikan) in calon.riwayat_pendidikan" :key="pendidikan.id_pendidikan">
                                 <h6>{{pendidikan.nama_institusi}}</h6>
                                 <p class="mb-2">{{pendidikan.detail_pendidikan}}</p>
@@ -34,7 +34,7 @@
                             </div>
                         </div>
                         <div class="mt-4 pb-3">
-                            <h5 class="mb-3">Riwayat Pekerjaan</h5>
+                            <h6 class="mb-3">Riwayat Pekerjaan</h6>
                             <div v-for="(pekerjaan) in calon.riwayat_pekerjaan" :key="pekerjaan.id_pekerjaan">
                                 <h6>{{pekerjaan.nama_pekerjaan}}</h6>
                                 <p class="mb-2">{{pekerjaan.detail_pekerjaan}}</p>
@@ -126,8 +126,8 @@
                         <!-- <button type="button" class="btn bg-light-orange br-10 mb-3 d-md-block">Mulai siaran langsung</button> -->
                         <div class="card w-100 postingan p-3 mb-3">
                             <div class="card-body p-0">
-                                <h5 class="card-title text-center mb-4">Apa kabar tebaru dari Anda?</h5>
-                                <form @submit.prevent="addPost" enctype="multipart/form-data">
+                                <h6 class="card-title text-center mb-4">Apa kabar tebaru dari Anda?</h6>
+                                <form @submit.prevent="addPost" enctype="multipart/form-data" @change="toggleAlert">
                                     <div class="forms-inputs mb-4"> 
                                         <span>Judul unggahan</span> 
                                         <input class="w-100 p-3" autocomplete="off" type="text" v-model="form.judul" placeholder="Ketik judul di sini">
@@ -137,13 +137,16 @@
                                         <textarea class="w-100 p-3" autocomplete="off" v-model="form.teks" placeholder="Ketik teks di sini"></textarea>
                                     </div>
                                     <div class="d-flex align-items-center">
-                                        <span class="card-text icons me-3">
+                                        <span class="card-text flex-shrink-1 icons me-3">
                                             <input type="file" id="inputFoto" style="display:none" ref="foto" @change="selectImage()"/><font-awesome-icon icon="fa-solid fa-images" @click="addFoto()"/>
                                         </span>
-                                        <button type="submit" class="btn bg-light-orange br-10">Unggah</button> 
-                                    </div>
-                                    <div class="d-flex flex-column field">
-                                        <span v-if="form.foto" class="file-name">{{form.foto.name}}</span>
+                                        <div class="d-flex flex-shrink-2 field">
+                                            <span v-if="form.foto" class="file-name">{{form.foto.name}}</span>
+                                        </div>
+
+                                        <div class="d-flex flex-grow-1 justify-content-end">
+                                            <button type="submit" class="btn bg-light-orange br-10">Unggah</button> 
+                                        </div>
                                     </div>
       
                                 </form>                      
@@ -171,7 +174,9 @@
                                         <span class="card-text icons me-3">
                                             <input type="file" id="inputFoto2" style="display:none" ref="foto2" @change="selectImageUpdate()"/><font-awesome-icon icon="fa-solid fa-images" @click="addFotoUpdate()"/>
                                         </span>
-                                        <button type="submit" class="btn bg-light-orange br-10">Unggah</button> 
+                                        <div class="d-flex flex-grow-1 justify-content-end">
+                                            <button type="submit" class="btn bg-light-orange br-10">Unggah</button> 
+                                        </div>
                                     </div>
                                     <div class="d-flex flex-column field">
                                         <span v-if="formUpdate.file" class="file-name">{{formUpdate.file.name}}</span>
@@ -251,6 +256,8 @@
             </div>
 
         </div>
+
+        <Alert v-if="updated" :variantName="variant" :messageProps="pesanUpdate"/>
     </div>
 </template>
 
@@ -258,12 +265,15 @@
 import Popup from './Popup.vue'
 import Popup2 from './Berhasil.vue'
 import axios from 'axios'
+import Alert from './Pop_sukses.vue'
+
 
 export default {
     name :'Post_detail_calon',
     components:{
         Popup,
-        Popup2
+        Popup2,
+        Alert
     },
     data: function () {
         return {
@@ -289,7 +299,10 @@ export default {
              id_post:'',
              deviceWidth: window.innerWidth,
              interval: null,
-             followers: {}
+             followers: {},
+             pesanUpdate: '',
+             updated: false,
+             variant: ''
         }   
     },
     created(){
@@ -341,15 +354,21 @@ export default {
                 })
         },
         totalFollowers(){
-            const idd = this.calon.id
+            axios.defaults.headers.common["token"] = localStorage.token
             try{
-                axios.get(`${process.env.VUE_APP_API_URL}/user/totalFollowers/` + idd)
+                axios.get(`${process.env.VUE_APP_API_URL}/admin/totalFollowers/`)
                 .then(result => {
                     this.followers = result.data
                 })
             }catch(err){
                 console.log(err)
             }
+        },
+
+        toggleAlert(){
+            this.uploaded = false
+            this.message = ''
+            this.variant = ''
         },
 
         addFoto(){
@@ -398,9 +417,15 @@ export default {
                 this.form.judul =''
                 this.form.teks = ''
                 this.form.foto = ''
+                this.updated = true
+                this.variant = 'success'
+                this.pesanUpdate = 'Berhasil membuat unggahan baru'
                 // this.error = false
             }catch(err){
                 console.log(err)
+                this.updated = false
+                this.variant = 'danger'
+                this.pesanUpdate = 'Gagal membuat unggahan baru'
                 // this.error = true;
             }
         },
@@ -414,6 +439,9 @@ export default {
             })            
         },
         edit(post){
+            this.pesanUpdate = ''
+            this.updated = false
+            this.variant = ''
             this.id_post = post.id_post
             this.updateSubmit = true
             axios.get(`${process.env.VUE_APP_API_URL}/post/`+ post.id_post).then(() =>{
@@ -448,9 +476,16 @@ export default {
                     this.formUpdate.judul =''
                     this.formUpdate.teks = ''
                     this.formUpdate.file = ''
+                    this.updated = true
+                    this.pesanUpdate = 'Unggahan berhasil diubah'
+                    this.variant = 'success'
                 })
             } catch(err){
                 console.log(err)
+                this.updated = false
+                this.pesanUpdate = 'Unggahan gagal diubah'
+                this.variant = 'danger'
+
                 // this.error = true;
             }
         },
@@ -585,6 +620,9 @@ export default {
     min-width: 4rem;
 }
 @media (max-width: 991.98px) {
+    .bg-light-orange{
+        font-size: 70%;
+    }
     .profil-calon-detail{
         width: 130px;
         height: 130px;
@@ -646,6 +684,19 @@ export default {
     }
     .card-text-dum-tit{
         font-size: 80%;
+    }
+    .forms-inputs input {
+        padding-top: 5px;
+        height: 50px;
+        font-size: 90%;
+    }
+    textarea{
+        padding-top: 5px;
+        max-height: 70px;
+        font-size: 90%;
+    }
+    .postingan h6{
+        font-size: 90%;
     }
 } 
 @media (max-width: 360px){

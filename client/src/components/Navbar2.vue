@@ -2,16 +2,15 @@
     <div class="container-fluid bg-dark-blue nav-shadow">
       <nav class="container navbar navbar-expand-lg navbar-dark">
         <a class="navbar-brand extra-bold" style="letter-spacing: 0.45em;" href="/">CACALA</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon" style="color:white"></span>
-        </button>
+        </button> -->
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <div class="navbar-nav me-auto mb-2 mb-lg-0">
+            <!-- <div class="navbar-nav me-auto mb-2 mb-lg-0">
                 <router-link to="/detail_admin_calon" class="nav-item nav-link">Dasbor</router-link>
                 <router-link to="#" class="nav-item nav-link">Edit Akun</router-link>
-            </div>
-            <div class="d-flex align-items-center">
+            </div> -->
+            <div class="d-flex align-items-center flex-grow-1 justify-content-end">
               <span v-if="isLoggedIn">
                 <button class="btn bg-light-orange text-white br-10" type="button" @click="toggleShow()">Keluar</button>
               </span>
@@ -19,7 +18,6 @@
                 <button class="btn bg-light-orange text-white br-10" type="button" @click="goToLogin()">Masuk</button>
               </span>
             </div>
-        </div>
 
         <Popup v-if="openPopup" title="Apakah Anda yakin?" pesanPopup="Anda tidak dapat membuat, melihat, mengubah, maupun menghapus informasi kampanye setelah keluar">
           <div class="d-flex justify-content-end">
