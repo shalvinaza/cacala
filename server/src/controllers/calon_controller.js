@@ -3,7 +3,7 @@ const { pool } = require("../dbConfig")
 exports.selectAllCalon = async (req, res) => {
    try{
       const calon = await pool.query(
-         "select c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, j.jabatan_tujuan FROM calon c JOIN admins a on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan"
+         "select c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, a.username, j.jabatan_tujuan FROM calon c JOIN admins a on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan"
       )
 
       const length = Object.keys(calon.rows).length

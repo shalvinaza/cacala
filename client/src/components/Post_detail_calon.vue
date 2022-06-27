@@ -75,6 +75,7 @@
                                 </div>
                             </div>
                         </div>
+                        <p style="font-size:80%">Klik untuk melihat detail riwayat calon</p>
                     <!-- </div> -->
                 </button>
 

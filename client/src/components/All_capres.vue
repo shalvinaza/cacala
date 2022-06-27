@@ -1,40 +1,46 @@
 <template>
     <div class="container">
         <h1 class="text-center pb-4 mb-5">Pasangan Presiden dan Wakil Presiden</h1>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            <!-- <section v-if="no_data">
-                <div class="d-flex justify-content-center">
-                    <img src="../assets/images/no_data.jpg" style="max-width:100%;min-width:100%" alt="no data">
-                </div>
-            </section> -->
-                <div class="col" v-for="(calon,index) in calons" :key="calon.id_calon">
-                    <div class="card h-100">
-                    <input type="image" :src="calon.foto" class="card-img-top" alt="dpr 2" @click="goToDetail(calon)"/>
-                        <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
-                            <h5>{{index + 1}}</h5>
+        <div class="d-flex flex-column">
+        <div class="row row-cols-2 row-cols-lg-3 row-cols-md-2 g-2 g-md-3 g-lg-3">
+            <div class="col" v-for="calon in calons" :key="calon.id_calon">
+                <div class="card h-100">
+                <input type="image" :src="calon.foto" class="card-img-top" alt="dpr 2" @click="goToDetailPres(calon)"/>
+                    <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
+                        <h5>{{calon.no_urut}}</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <h6 class="card-title text-center">{{calon.nama}}</h6>
+                        <p class="card-subtitle text-center text-muted">Calon {{calon.jabatan_tujuan}}</p>
+                        <div class="d-flex align-items-start mt-2">
+                            <p class="col d-flex flex-shrink-1 flex-wrap flex-wrap card-title">Partai Koalisi</p>
+                            <div class="col d-flex flex-grow-1 flex-wrap justify-content-end align-items-start">
+                                <img v-for="(partai) in calon.partai" :key="partai.nama_partai" :src=partai.logo_partai class="img-partai m-1">
+                            </div>
                         </div>
-                        <div class="card-body p-4">
-                            <h5 class="card-title text-center mb-3">{{calon.nama}}</h5>
-                            <div class="row align-items-start mb-4">
-                                <p class="col-md-5 d-flex flex-wrap card-title">Partai Koalisi</p>
-                                <div class="col-md-7 d-flex flex-wrap justify-content-end">
-                                    <img v-for="(partai) in calon.partai" :key="partai.nama_partai" :src=partai.logo_partai class="img-partai m-1">
-                                </div>
+                        <div class="row align-items-start">
+                            <p class="col d-flex flex-wrap card-title">Daerah Pilih</p>
+                            <div class="col d-flex flex-wrap justify-content-end">
+                                <p class="d-flex flex-wrap justify-content-end">Indonesia</p>
                             </div>
-                            <div class="d-flex justify-content-center justify-content-between">
-                                <button class="btn btn-outline-orange" @click="goToDetailPres(calon)">Detail</button>
-                                <span v-if="isLoggedIn">
-                                    <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="!calon.status">Ikuti</button>
-                                <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="calon.status">Berhenti ikuti</button>
-                                </span>    
-                                <span v-else>
-                                    <button class="btn btn-outline-blue" @click="togglePopup()">Ikuti</button> 
-                                </span>                      
-                            </div>
+                        </div>    
+                    </div>
+                    <div class="card-footer mb-2">
+                        <div class="d-flex justify-content-center justify-content-between">
+                            <button class="btn btn-outline-orange" @click="goToDetailPres(calon)">Detail</button>
+                            <span v-if="isLoggedIn">
+                                <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="!calon.status">Ikuti</button>
+                            <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="calon.status">Berhenti ikuti</button>
+                            </span>    
+                            <span v-else>
+                                <button class="btn btn-outline-blue" @click="togglePopup()">Ikuti</button> 
+                            </span>                      
                         </div>
                     </div>
                 </div>
+            </div>
             
+        </div>
         </div>
         <Popup v-if="muncul" title="Anda belum masuk ke dalam sistem" pesanPopup="Apakah Anda ingin masuk?">
             <div class="d-flex justify-content-end">
@@ -156,15 +162,21 @@ h1{
     border-radius: 15px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border:none;
+    cursor: pointer;
     /* min-height: 35rem; */
 }
 .card-img-top{
-    border-radius: 15px 15px 0 0;   
+    border-radius: 15px 15px 0 0; 
+    height: 350px;   
 }
 .img-partai{
-    max-width: 22px;
-    max-height: 22px;
+    width: 30px;
+    height: 30px;
     border-radius: 15px;
+}
+.card-subtitle{
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #C2A49D;
 }
 .bg-light-orange-pop:hover,.btn-outline-orange2:hover{
     color:white;
@@ -196,5 +208,51 @@ h1{
     min-height: 50px;
     border-radius: 40px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+@media (max-width: 767.98px) { 
+    h5{
+        font-size: 90%;
+    }
+    h6{
+        font-size: 80%;
+    }
+    p{
+        font-size: 70%;
+    }
+    .card-img-overlay{
+        min-width: 40px;
+        min-height: 40px;
+    }
+    .card-img-top{ 
+        height: 200px;
+    }
+    .img-partai{
+        width: 20px;
+        height: 20px;  
+    }
+    .btn-outline-orange, .btn-outline-blue{
+        padding: 0.2rem 0.1rem 0.2rem 0.1rem;
+        min-width: 4rem;
+        min-height: 1rem;
+        font-size: 60%;
+            }
+    .btn-outline-orange{
+        border: 1px solid  #D65A40;
+    }
+    .btn-outline-blue{
+        border: 1px solid  #3E5D7A;
+    }
+}
+@media (max-width: 360px) { 
+    .img-partai{
+        width: 15px;
+        height: 15px;  
+    }
+    .btn-outline-orange, .btn-outline-blue{
+        padding: 0.1rem 0.05rem 0.1rem 0.05rem;
+        min-width: 3.5rem;
+        min-height: 1rem;
+        font-size: 50%;
+    }
 }
 </style>

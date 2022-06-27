@@ -50,7 +50,7 @@
                                 <div class="row align-items-start">
                                     <p class="col d-flex flex-wrap card-title">Daerah Pilih</p>
                                     <div class="col d-flex flex-wrap justify-content-end">
-                                        <p v-for="kta in calon.kota" :key="kta.id_dapil">{{kta.kota}}</p>
+                                        <p>Indonesia</p>
                                     </div>
                                 </div>     
                             </div>
