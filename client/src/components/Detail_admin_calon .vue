@@ -288,8 +288,8 @@ export default {
                  judul:'',
                  teks:'',
                  file: '',
-                 foto:'',
-                 id_foto:''
+                 foto:null,
+                 id_foto:null
              },
              updateSubmit: false,
              popupDel: false,
@@ -473,18 +473,31 @@ export default {
         async update(){
             const post_id = this.id_post
             const formFile = this.formUpdate.file
+            const id_foto = this.formUpdate.id_foto
 
             const formData = new FormData();
 
             formData.append('judul', this.formUpdate.judul);
             formData.append('teks', this.formUpdate.teks);
             
-            if(formFile !== ""){
-                formData.append('image', this.formUpdate.file);
+            // if(formFile !== ''){
+            //     formData.append('image', this.formUpdate.file);
+            // }
+            if(formFile == ''){
+                if(id_foto != null) {
+                    formData.append('foto', this.formUpdate.foto);
+                    formData.append('id_foto', this.formUpdate.id_foto);
+                }
+                else{
+                    formData.append('foto', null);
+                    formData.append('id_foto', null);
+                // }
+                // formData.append('foto', this.formUpdate.foto);
+                // formData.append('id_foto', this.formUpdate.id_foto);
+                }
             }
             else{
-                formData.append('foto', this.formUpdate.foto);
-                formData.append('id_foto', this.formUpdate.id_foto);
+                formData.append('image', this.formUpdate.file);
             }
 
             try {
@@ -495,6 +508,8 @@ export default {
                     this.formUpdate.judul =''
                     this.formUpdate.teks = ''
                     this.formUpdate.file = ''
+                    this.formUpdate.foto = null
+                    this.formUpdate.id_foto = null
                     this.updated = true
                     this.pesanUpdate = 'Unggahan berhasil diubah'
                     this.variant = 'success'

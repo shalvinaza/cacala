@@ -110,12 +110,14 @@ router.put("/:id_post", upload.single("image"), async (req, res) => {
 
       if(!req.file){
          try{
-            if(post.id_foto){
-               foto = req.body.foto
-               id_foto = req.body.id_foto
-            } else {
+            if(!post.id_foto){
                foto = null
                id_foto = null
+            } else {
+               foto = req.body.foto
+               id_foto = req.body.id_foto
+               // foto = req.body.foto
+               // id_foto = req.body.id_foto
             }
          }catch(err){
             console.log(err)
@@ -141,7 +143,7 @@ router.put("/:id_post", upload.single("image"), async (req, res) => {
       const { teks } = req.body
 
       post = await pool.query(
-         "UPDATE post SET judul = $1, teks = $2, foto = $3, id_foto = $4 WHERE id_post = $5", [
+         "UPDATE post SET judul = $1, teks = $2, foto = COALESCE (NULLIF($3, ''), foto), id_foto = COALESCE (NULLIF($4, ''), id_foto) WHERE id_post = $5", [
             judul, teks, foto, id_foto, id_post
          ]
       )
