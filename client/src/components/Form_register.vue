@@ -16,7 +16,7 @@
                     <div class="forms-inputs mb-4"> 
                         <span>Email</span> 
                         <input id="email_user" @focus="error=false" autocomplete="off" type="text" v-model="register.email" v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(register.email) && emailBlured || error===true}" v-on:blur="emailBlured = true" placeholder="Ketik email di sini">
-                        <div class="invalid-feedback">Email harus valid</div>
+                        <div class="invalid-feedback">Harus terdapat '@' dan '.' pada email</div>
                     </div>
                     <div class="forms-inputs mb-4"> 
                         <span>Kata Sandi</span>

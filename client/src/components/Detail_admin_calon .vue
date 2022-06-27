@@ -144,9 +144,10 @@
                                             <button type="submit" class="btn bg-light-orange br-10">Unggah</button> 
                                         </div>
                                     </div>
-                                    <div class="d-flex flex-row field mt-2">
-                                        <span v-if="form.foto" class="file-name">{{form.foto.name}}</span>
+                                    <div class="d-flex flex-row field mt-3" v-if="form.foto">
+                                        <span class="file-name">{{form.foto.name}}</span>
                                         <span v-if="errorImg" style="color:red" class="m-0">- {{messageImg}}</span>
+                                        <span class="d-flex justify-content-end flex-grow-1" @click="destroyImg()"><font-awesome-icon icon="fa-solid fa-circle-xmark" /></span>
                                     </div>
                                 </form>                      
                             </div>
@@ -177,8 +178,10 @@
                                             <button type="submit" class="btn bg-light-orange br-10">Unggah</button> 
                                         </div>
                                     </div>
-                                    <div class="d-flex flex-column field">
-                                        <span v-if="formUpdate.file" class="file-name">{{formUpdate.file.name}}</span>
+                                    <div class="d-flex flex-row field mt-3" v-if="formUpdate.file">
+                                        <span class="file-name">{{formUpdate.file.name}}</span>
+                                        <span v-if="errorImg" style="color:red" class="m-0">- {{messageImg}}</span>
+                                        <span class="d-flex justify-content-end flex-grow-1" @click="destroyImg2()"><font-awesome-icon icon="fa-solid fa-circle-xmark" /></span>
                                     </div>
                                 </form>  
                         </Popup>
@@ -340,6 +343,12 @@ export default {
         clearInterval(this.interval)
     },
     methods: {
+        destroyImg(){
+            this.form.foto = ''
+        },
+        destroyImg2(){
+            this.formUpdate.file = ''
+        },
         load(){
             const GET_POST_API_URL = `${process.env.VUE_APP_API_URL}/post/`
             axios.defaults.headers.common["token"] = localStorage.token
@@ -385,24 +394,25 @@ export default {
             if(this.message !== ''){
                 this.errorImg = true
                 this.messageImg = this.message
+                // this.form.foto = ''
                    console.log(this.message)
             }
         },
         addFotoUpdate(){
             document.getElementById('inputFoto2').click();
-            this.updated = false
-            this.variant = ''
-            this.pesanUpdate = ''
+            this.errorImg = false
+            this.message = ''
+            this.messageImg = ''
           },
         selectImageUpdate(){
             this.formUpdate.file = this.$refs.foto2.files[0];
             this.validateImage(this.formUpdate.file)
 
             if(this.message !== ''){
-                this.updated = true
-                this.pesanUpdate = this.message
-                this.variant = 'danger'
-                console.log(this.message)
+                this.errorImg = true
+                this.messageImg = this.message
+                // this.form.foto = ''
+                   console.log(this.message)
             }
         },
         validateImage:function(file){
