@@ -88,8 +88,8 @@
                 </div>
 
                 <div class="col" v-for="(item,index) in exampleItems.slice((currentPage-1)*perPage,(currentPage-1)*perPage+perPage)" :key="item.index" :per-page="perPage" :current-page="currentPage" >
-                    <div class="card h-100">
-                        <img type="image" src='../assets/images/pres.png' class="card-img-top" alt="dpr 2" @click="goToDetail(calon)"/>
+                    <div class="card h-100" v-if="filteredCalons.length">
+                         <img type="image" src='../assets/images/pres.png' class="card-img-top" alt="dpr 2" @click="goToDetailDummy()"/>
                         <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
                             <h5>{{index+4}}</h5>
                         </div>
@@ -111,7 +111,7 @@
                         </div>
                         <div class="card-footer mb-2">
                             <div class="d-flex justify-content-between">
-                                <router-link to="/" class="btn btn-outline-orange">Detail</router-link>
+                                <button class="btn btn-outline-orange" @click="goToDetailDummy()">Detail</button>
                                 <span v-if="isLoggedIn">
                                     <button class="btn btn-outline-blue">Ikuti</button>
                                 </span>       
@@ -232,6 +232,9 @@ export default {
         }
     },
     methods : {
+        goToDetailDummy(){
+            this.$router.push({ name: 'Detail_dummy'})
+        },
         togglePopup(){
             this.muncul = !this.muncul
         },

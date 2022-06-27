@@ -12,6 +12,8 @@ import Login_admin from '../views/Login_admin.vue'
 import Profil_user from '../views/Profil_user.vue'
 import Dasbor from '../views/Dasbor.vue'
 import Detail_calon from '../views/Detail_calon.vue'
+import Detail_pres from '../views/Detail_pres.vue'
+import Detail_dummy from '../views/Detail_dummy.vue'
 import Detail_admin_calon from '../views/Admin_calon.vue'
 import Search from '../views/Search.vue'
 
@@ -91,6 +93,16 @@ const routes = [
     path: '/search',
     name: 'Search',
     component: Search
+  },
+  {
+    path: '/detail_presiden',
+    name: 'Detail_pres',
+    component: Detail_pres
+  },
+  {
+    path: '/detail_dummy',
+    name: 'Detail_dummy',
+    component: Detail_dummy
   }
 ]
 

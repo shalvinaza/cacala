@@ -22,7 +22,7 @@
                                 </div>
                             </div>
                             <div class="d-flex justify-content-center justify-content-between">
-                                <button class="btn btn-outline-orange" @click="goToDetail(calon)">Detail</button>
+                                <button class="btn btn-outline-orange" @click="goToDetailPres(calon)">Detail</button>
                                 <span v-if="isLoggedIn">
                                     <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="!calon.status">Ikuti</button>
                                 <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="calon.status">Berhenti ikuti</button>
@@ -73,9 +73,9 @@ export default {
             this.muncul = !this.muncul
         },
 
-        goToDetail(calon){
+        goToDetailPres(calon){
             localStorage.setItem('id_calon', calon.id_calon)
-            this.$router.push({ name: 'Detail_calon', params: { id_admin: calon.id_admin}})
+            this.$router.push({ name: 'Detail_pres', params: { id_admin: calon.id_admin}})
         },
         fetchCapresCalons(){
             fetch(PRESIDEN_API_URL)
