@@ -26,7 +26,7 @@
         </div>
 
         <div :class="{'d-flex': deviceWidth > 1200, '' : deviceWidth < 1200 }">
-            <div class="flex-shrink-1 mt-3 me-5 d-none d-xl-block d-xxl-none">
+            <div class="flex-shrink-1 mt-3 me-5 d-none d-xl-block d-xxl-block">
                 <!-- filter -->
                 <div class="mt-3">
                     <h5 class="mt-3"><font-awesome-icon icon="fa-solid fa-filter" /> Filter</h5>
