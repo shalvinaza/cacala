@@ -10,7 +10,7 @@
                 <form class="form-data" @submit.prevent="loginAdmin">
                     <div class="forms-inputs mb-4"> 
                         <span>Nama</span> 
-                        <input autocomplete="off" @focus="error=false" type="text" v-model="login.username" v-bind:class="{'form-control':true, 'is-invalid' : !validUsername(login.username) && usernameBlured || error===true}" v-on:blur="usernameBlured = true" placeholder="Ketik nama di sini">
+                        <input autocomplete="off" @focus="error=false" @change="lowerCase" @keydown.space.prevent type="text" v-model="login.username" v-bind:class="{'form-control':true, 'is-invalid' : !validUsername(login.username) && usernameBlured || error===true}" v-on:blur="usernameBlured = true" placeholder="Ketik nama di sini">
                         <div class="invalid-feedback">Nama harus sesuai dengan database</div>
                     </div>
                     <div class="forms-inputs mb-4"> 
@@ -86,6 +86,9 @@ export default {
         },
         goToLoginUser(){
             this.$router.push('/login');
+        },
+        lowerCase(){
+            this.login.username = this.login.username.toLowerCase()
         },
         toggleShow() {
             this.showPassword = !this.showPassword;

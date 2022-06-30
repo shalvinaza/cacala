@@ -15,7 +15,7 @@
                     </div>
                     <div class="forms-inputs mb-4"> 
                         <span>Email</span> 
-                        <input id="email_user" @focus="error=false" autocomplete="off" type="text" v-model="register.email" v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(register.email) && emailBlured || error===true}" v-on:blur="emailBlured = true" placeholder="Ketik email di sini">
+                        <input id="email_user" @focus="error=false" @change="lowerCase" @keydown.space.prevent autocomplete="off" type="text" v-model="register.email" v-bind:class="{'form-control':true, 'is-invalid' : !validEmail(register.email) && emailBlured || error===true}" v-on:blur="emailBlured = true" placeholder="Ketik email di sini">
                         <div class="invalid-feedback">Harus terdapat '@' dan '.' pada email</div>
                     </div>
                     <div class="forms-inputs mb-4"> 
@@ -110,6 +110,9 @@ export default {
             if( this.validUname(this.register.username) && this.validEmail(this.register.email) && this.validPassword(this.register.password) && this.validConfirm(this.confirmPassword)){
                 this.valid = true;
                 }
+        },
+        lowerCase(){
+            this.register.email = this.register.email.toLowerCase()
         },
         validUname : function(uname) {
             if(uname.length > 0){
