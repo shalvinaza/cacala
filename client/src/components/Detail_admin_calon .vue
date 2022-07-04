@@ -130,11 +130,13 @@
                                 <form @submit.prevent="addPost" enctype="multipart/form-data" @change="toggleAlert">
                                     <div class="forms-inputs mb-4"> 
                                         <span>Judul unggahan</span> 
-                                        <input class="w-100 p-3" autocomplete="off" type="text" v-model="form.judul" placeholder="Ketik judul di sini">
+                                        <input v-bind:class="{'form-control w-100 p-3':true, 'is-invalid' : !validJudul(form.judul) && judulBlured}" autocomplete="off" type="text" v-model="form.judul" v-on:blur="judulBlured = true" placeholder="Ketik judul di sini">
+                                        <div class="invalid-feedback">Judul tidak boleh kosong</div>
                                     </div>
                                     <div class="forms-inputs mb-3"> 
                                         <span>Teks unggahan</span>
-                                        <textarea class="w-100 p-3" autocomplete="off" v-model="form.teks" placeholder="Ketik teks di sini"></textarea>
+                                        <textarea v-bind:class="{'form-control w-100 p-3':true, 'is-invalid' : !validTeks(form.teks) && teksBlured}" autocomplete="off" v-model="form.teks" v-on:blur="teksBlured = true" placeholder="Ketik teks di sini"></textarea>
+                                        <div class="invalid-feedback">Teks tidak boleh kosong</div>
                                     </div>
                                     <div class="d-flex align-items-center">
                                         <span class="card-text flex-shrink-1 icons me-3">
@@ -164,11 +166,13 @@
                                 <form @submit.prevent="update" enctype="multipart/form-data">
                                     <div class="forms-inputs mb-4"> 
                                         <span>Judul unggahan</span> 
-                                        <input class="w-100 p-3" autocomplete="off" type="text" v-model="formUpdate.judul" placeholder="Ketik judul di sini">
+                                        <input v-bind:class="{'form-control w-100 p-3':true, 'is-invalid' : !judulUpdate(formUpdate.judul) && judulUpdateBlured}" autocomplete="off" type="text" v-on:blur="judulUpdateBlured = true" v-model="formUpdate.judul" placeholder="Ketik judul di sini">
+                                        <div class="invalid-feedback">Judul tidak boleh kosong</div>
                                     </div>
                                     <div class="forms-inputs mb-3"> 
                                         <span>Teks unggahan</span>
-                                        <textarea class="w-100 p-3" autocomplete="off" v-model="formUpdate.teks" placeholder="Ketik teks di sini"></textarea>
+                                        <textarea v-bind:class="{'form-control w-100 p-3':true, 'is-invalid' : !teksUpdate(formUpdate.teks) && teksUpdateBlured}" autocomplete="off" v-on:blur="teksUpdateBlured = true" v-model="formUpdate.teks" placeholder="Ketik teks di sini"></textarea>
+                                        <div class="invalid-feedback">Teks tidak boleh kosong</div>
                                     </div>
                                     <div class="d-flex align-items-center">
                                         <span class="card-text icons me-3">
@@ -192,7 +196,7 @@
                                 <div class="card-body p-0">
                                     <h6 class="card-title text-center">{{post.judul}}</h6>
                                     <div class="d-flex end-row-section w-100 p-0 mb-3 pb-2">
-                                        <p class="card-text text-muted m-0 flex-grow-2 w-100" style=""><i class="far fa-calendar-alt"></i>  <small>{{post.waktu}}</small></p>
+                                        <p class="card-text text-muted m-0 flex-grow-2 w-100" style=""><i class="far fa-calendar-alt"></i>  <small>{{formatDate(post.waktu)}}</small></p>
                                         <span class="card-text icons me-2" @click="edit(post)" ><font-awesome-icon icon="fa-solid fa-pen-to-square" /></span>
                                         <span class="card-text icons" @click="toggleShow(post.id_post)"><font-awesome-icon icon="fa-solid fa-trash" /></span>
                                         <Popup2 v-if="popupDel" title="Apakah Anda yakin?" pesanPopup="Unggahan yang akan dihapus tidak dapat dikembalikan"> 
@@ -205,7 +209,7 @@
                                     <div class="d-flex justify-content-center">
                                         <img v-if="post.foto" :src="post.foto" class="img-poster-post mb-3" alt="...">     
                                     </div>
-                                    <p class="card-text">{{post.teks}}</p>
+                                    <p class="card-text p-3">{{post.teks}}</p>
                                 </div>
                             </div>
                         </span>
@@ -268,6 +272,7 @@ import Popup from './Popup.vue'
 import Popup2 from './Berhasil.vue'
 import axios from 'axios'
 import Alert from './Pop_sukses.vue'
+import moment from 'moment'
 
 
 export default {
@@ -306,7 +311,13 @@ export default {
              updated: false,
              variant: '',
              errorImg: false,
-             messageImg: ''
+             messageImg: '',
+             valid: false,
+             validUpdate: false,
+             judulBlured: false,
+             teksBlured: false,
+             judulUpdateBlured: false,
+             teksUpdateBlured: false
         }   
     },
     created(){
@@ -343,11 +354,49 @@ export default {
         clearInterval(this.interval)
     },
     methods: {
+        validate : function(){
+            this.judulBlured = true
+            this.teksBlured = true
+            if( this.validJudul(this.form.judul) && this.validTeks(this.form.teks)){
+                this.valid = true;
+                }
+        },
+        validJudul : function(judul) {
+            if(judul.length > 0){
+                return true;
+            }
+        },
+        validTeks : function(teks) {
+            if(teks.length > 0){
+                return true;
+            }
+        },
+        validateUpdate : function(){
+            this.judulUpdateBlured = true
+            this.teksUpdateBlured = true
+            if( this.judulUpdate(this.formUpdate.judul) && this.teksUpdate(this.formUpdate.teks)){
+                this.validUpdate = true;
+                }
+        },
+        judulUpdate : function(judul) {
+            if(judul.length > 0){
+                return true;
+            }
+        },
+        teksUpdate : function(teks) {
+            if(teks.length > 0){
+                return true;
+            }
+        },
         destroyImg(){
             this.form.foto = ''
         },
         destroyImg2(){
             this.formUpdate.file = ''
+        },
+        formatDate(date){
+            let tanggal = moment(date, 'YYYY-MM-DD HH:mm:ss').format('DD-MM-YYYY hh:mm:ss');
+            return tanggal;
         },
         load(){
             const GET_POST_API_URL = `${process.env.VUE_APP_API_URL}/post/`
@@ -428,31 +477,38 @@ export default {
 
             return this.message;
         },
-        async addPost(){
+        async addPost(e){
             const POST_POSTS_API_URL = `${process.env.VUE_APP_API_URL}/post/`
             axios.defaults.headers.common["token"] = localStorage.token
+            e.preventDefault()
+            this.validate()
+            if(this.valid){
 
-            const formData = new FormData();
+                const formData = new FormData();
 
-            formData.append('judul', this.form.judul);
-            formData.append('teks', this.form.teks);
-            formData.append('image', this.form.foto);
-            // _.forEach(this.form.foto, file => {
-            //     if(this.validateImage(file) === ""){
-            //         formData.append('foto', file);
-            //     }
-            // });
-            try {
-                await axios.post(POST_POSTS_API_URL, formData);
-                this.load()
-                this.form.judul =''
-                this.form.teks = ''
-                this.form.foto = ''
-                this.updated = true
-                this.variant = 'success'
-                this.pesanUpdate = 'Berhasil membuat unggahan baru'
-            }catch(err){
-                console.log(err)
+                formData.append('judul', this.form.judul);
+                formData.append('teks', this.form.teks);
+                formData.append('image', this.form.foto);
+                // _.forEach(this.form.foto, file => {
+                //     if(this.validateImage(file) === ""){
+                //         formData.append('foto', file);
+                //     }
+                // });
+                try {
+                    await axios.post(POST_POSTS_API_URL, formData);
+                    this.load()
+                    this.form.judul =''
+                    this.form.teks = ''
+                    this.form.foto = ''
+                    this.updated = true
+                    this.variant = 'success'
+                    this.pesanUpdate = 'Berhasil membuat unggahan baru'
+                    this.judulBlured = false
+                    this.teksBlured = false
+                    this.valid = false
+                }catch(err){
+                    console.log(err)
+                }
             }
         },
         del(){
@@ -480,57 +536,64 @@ export default {
                 this.formUpdate.id_foto = post.id_foto           
             })  
         },
-        async update(){
-            const post_id = this.id_post
-            const formFile = this.formUpdate.file
-            const id_foto = this.formUpdate.id_foto
+        async update(e){
+            e.preventDefault()
+            this.validateUpdate()
+            if(this.validUpdate){
+                const post_id = this.id_post
+                const formFile = this.formUpdate.file
+                const id_foto = this.formUpdate.id_foto
 
-            const formData = new FormData();
+                const formData = new FormData();
 
-            formData.append('judul', this.formUpdate.judul);
-            formData.append('teks', this.formUpdate.teks);
-            
-            // if(formFile !== ''){
-            //     formData.append('image', this.formUpdate.file);
-            // }
-            if(formFile == ''){
-                if(id_foto != null) {
-                    formData.append('foto', this.formUpdate.foto);
-                    formData.append('id_foto', this.formUpdate.id_foto);
+                formData.append('judul', this.formUpdate.judul);
+                formData.append('teks', this.formUpdate.teks);
+                
+                // if(formFile !== ''){
+                //     formData.append('image', this.formUpdate.file);
+                // }
+                if(formFile == ''){
+                    if(id_foto != null) {
+                        formData.append('foto', this.formUpdate.foto);
+                        formData.append('id_foto', this.formUpdate.id_foto);
+                    }
+                    else{
+                        formData.append('foto', null);
+                        formData.append('id_foto', null);
+                    // }
+                    // formData.append('foto', this.formUpdate.foto);
+                    // formData.append('id_foto', this.formUpdate.id_foto);
+                    }
                 }
                 else{
-                    formData.append('foto', null);
-                    formData.append('id_foto', null);
-                // }
-                // formData.append('foto', this.formUpdate.foto);
-                // formData.append('id_foto', this.formUpdate.id_foto);
+                    formData.append('image', this.formUpdate.file);
                 }
-            }
-            else{
-                formData.append('image', this.formUpdate.file);
-            }
 
-            try {
-                return axios.put(`${process.env.VUE_APP_API_URL}/post/` + post_id, formData)
-                .then(() =>{
-                    this.updateSubmit = false
-                    this.load()
-                    this.formUpdate.judul =''
-                    this.formUpdate.teks = ''
-                    this.formUpdate.file = ''
-                    this.formUpdate.foto = null
-                    this.formUpdate.id_foto = null
-                    this.updated = true
-                    this.pesanUpdate = 'Unggahan berhasil diubah'
-                    this.variant = 'success'
-                })
-            } catch(err){
-                console.log(err)
-                this.updated = false
-                this.pesanUpdate = 'Unggahan gagal diubah'
-                this.variant = 'danger'
+                try {
+                    return axios.put(`${process.env.VUE_APP_API_URL}/post/` + post_id, formData)
+                    .then(() =>{
+                        this.updateSubmit = false
+                        this.load()
+                        this.formUpdate.judul =''
+                        this.formUpdate.teks = ''
+                        this.formUpdate.file = ''
+                        this.formUpdate.foto = null
+                        this.formUpdate.id_foto = null
+                        this.updated = true
+                        this.pesanUpdate = 'Unggahan berhasil diubah'
+                        this.variant = 'success'
+                        this.judulUpdateBlured = false
+                        this.teksUpdateBlured = false
+                        this.validUpdate = false
+                    })
+                } catch(err){
+                    console.log(err)
+                    this.updated = false
+                    this.pesanUpdate = 'Unggahan gagal diubah'
+                    this.variant = 'danger'
 
-                // this.error = true;
+                    // this.error = true;
+                }
             }
         },
         toggleModal(){
@@ -605,7 +668,7 @@ export default {
     display: flex;
     justify-content: center;
     max-height: 800px;
-    max-width: 400px;
+    max-width: 500px;
 }
 .icons{
     color: grey;
@@ -757,7 +820,7 @@ export default {
         display: flex;
         justify-content: center;
         max-height: 350px;
-        max-width: 175px;
+        max-width: 200px;
     }
 }
 </style>

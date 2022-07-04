@@ -137,12 +137,12 @@
                                 <div class="card-body p-0">
                                     <h6 class="card-title text-center">{{post.judul}}</h6>
                                     <div class="d-flex end-row-section w-100 p-0 mb-3 pb-2">
-                                        <p class="card-text text-muted m-0 flex-grow-2 w-100" style=""><i class="far fa-calendar-alt"></i>  <small>{{post.waktu}}</small></p>
+                                        <p class="card-text text-muted m-0 flex-grow-2 w-100" style=""><i class="far fa-calendar-alt"></i>  <small>{{formatDate(post.waktu)}}</small></p>
                                     </div>
                                     <div class="d-flex justify-content-center">
                                         <img v-if="post.foto" :src="post.foto" class="img-poster-post mb-3" alt="...">     
                                     </div>
-                                    <p class="card-text">{{post.teks}}</p>
+                                    <p class="card-text p-3" >{{post.teks}}</p>
                                 </div>
                             </div>
                         </span>
@@ -198,6 +198,7 @@
 <script>
 import axios from 'axios'
 import Popup from './Berhasil.vue'
+import moment from 'moment'
 
 export default {
     name :'Post_detail_calon',
@@ -263,6 +264,10 @@ export default {
     methods: {
         togglePopup(){
             this.muncul = !this.muncul
+        },
+        formatDate(date){
+            let tanggal = moment(date, 'YYYY-MM-DD HH:mm:ss').format('DD-MM-YYYY hh:mm:ss');
+            return tanggal;
         },
         goToLogin(){
             this.$router.push('/login');

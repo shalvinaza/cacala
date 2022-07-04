@@ -10,7 +10,7 @@
                         <h5>{{calon.no_urut}}</h5>
                     </div>
                     <div class="card-body p-4">
-                        <h6 class="card-title text-center">{{calon.nama}}</h6>
+                        <h6 class="card-title text-center"><span>{{calon.nama}}</span> & {{calon.nama_wakil}}</h6>
                         <p class="card-subtitle text-center text-muted">Calon {{calon.jabatan_tujuan}}</p>
                         <div class="d-flex align-items-start mt-2">
                             <p class="col d-flex flex-shrink-1 flex-wrap flex-wrap card-title">Partai Koalisi</p>

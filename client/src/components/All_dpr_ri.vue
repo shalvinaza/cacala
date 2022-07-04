@@ -32,7 +32,7 @@
 
             <div class="flex-grow-1">
                 <div class="row row-cols-2 row-cols-lg-4 row-cols-md-3 g-2 g-md-3 g-lg-3 mt-3">
-                    <div class="col" v-for="calon in filteredCalons" :key="calon.id_calon">
+                    <div class="col" v-for="calon in filteredCalons.slice((currentPage-1)*perPage,(currentPage-1)*perPage+perPage)" :key="calon.id_calon" :per-page="perPage" :current-page="currentPage">
                         <div class="card h-100">
                             <input type="image" :src="calon.foto" class="card-img-top" alt="dpr 2" @click="goToDetail(calon)"/>
                             <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
@@ -70,11 +70,11 @@
                     </div>
 
                     <!-- dummy -->
-                    <div class="col" v-for="(item,index) in exampleItems.slice((currentPage-1)*perPage,(currentPage-1)*perPage+perPage)" :key="item.index" :per-page="perPage" :current-page="currentPage">
+                    <div class="col" v-for="item in exampleItems.slice((currentPage-1)*perPage,(currentPage-1)*perPage+perPage)" :key="item.index" :per-page="perPage" :current-page="2">
                             <div class="card h-100" v-if="filteredCalons.length">
                             <img type="image" src='../assets/images/pres.png' class="card-img-top" alt="dpr 2" @click="goToDetailDummy()"/>
                             <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
-                                <h5>{{index+4}}</h5>
+                                <h5>{{item.id+filteredCalons.length}}</h5>
                             </div>
                             <div class="card-body pt-3 pb-0">
                                 <h6 class="card-title text-center">{{item.name}}</h6>
@@ -150,7 +150,7 @@ export default {
         provinsi: [],
         checkPartai: [],
         exampleItems : [...Array(150).keys()].map(i => ({ id: (i+1), name: 'Nama ' + (i+1) })) ,
-        perPage: 9,
+        perPage: 8,
         currentPage: 1,
         deviceWidth: window.innerWidth,
         muncul: false
@@ -160,7 +160,12 @@ export default {
     },
     computed: {
         isLoggedIn: function() {return localStorage.getItem("token") != null},
-        rows(){return this.exampleItems.length},
+        rows(){
+            let sum1 = this.exampleItems.length
+            let sum2 = this.filteredCalons.length
+
+            return sum1 + sum2
+        },
         filteredCalons(){
             let calons = this.calons
             const checkPartai = this.checkPartai

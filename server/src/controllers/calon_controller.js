@@ -3,7 +3,7 @@ const { pool } = require("../dbConfig")
 exports.selectAllCalon = async (req, res) => {
    try{
       const calon = await pool.query(
-         "select c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, a.username, j.jabatan_tujuan FROM calon c JOIN admins a on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan"
+         "select c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, a.username, w.id_wakil, w.nama_wakil, j.jabatan_tujuan FROM calon c JOIN admins a on c.id_admin = a.id_admin JOIN wakil w ON w.id_calon = c.id_calon JOIN jabatan j on c.id_jabatan = j.id_jabatan"
       )
 
       const length = Object.keys(calon.rows).length
@@ -155,7 +155,7 @@ exports.selectCalonByUser = async (req, res) => {
    const {id_admin} = req.params
    try{
       const calon = await pool.query(
-         "select c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, j.jabatan_tujuan FROM calon c JOIN admins a ON c.id_admin = a.id_admin JOIN jabatan j ON c.id_jabatan = j.id_jabatan WHERE c.id_admin = $1", [
+         "select c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, w.id_wakil, w.nama_wakil, a.id_admin, j.jabatan_tujuan FROM calon c JOIN admins a ON c.id_admin = a.id_admin JOIN wakil w ON w.id_calon = c.id_calon JOIN jabatan j ON c.id_jabatan = j.id_jabatan WHERE c.id_admin = $1", [
          id_admin
       ])
 
@@ -243,7 +243,7 @@ exports.selectCalonByJabatan = async (req, res) => {
    const { id_jabatan } = req.params
    try{
       const calon = await pool.query(
-         "SELECT calon.id_calon, calon.nama, calon.foto, calon.slogan, calon.no_urut, admins.id_admin, jabatan.jabatan_tujuan FROM calon JOIN admins on calon.id_admin = admins.id_admin JOIN jabatan on calon.id_jabatan = jabatan.id_jabatan WHERE calon.id_jabatan = $1 ORDER BY no_urut;",[
+         "SELECT calon.id_calon, calon.nama, calon.foto, calon.slogan, calon.no_urut, wakil.id_wakil, wakil.nama_wakil, admins.id_admin, jabatan.jabatan_tujuan FROM calon JOIN wakil on calon.id_calon = wakil.id_calon JOIN admins on calon.id_admin = admins.id_admin JOIN jabatan on calon.id_jabatan = jabatan.id_jabatan WHERE calon.id_jabatan = $1 ORDER BY no_urut;",[
             id_jabatan
          ])
 
@@ -369,7 +369,7 @@ exports.addRiwayatPekerjaanCalon = async (req, res) => {
 exports.selectCalonByAdmin = async (req, res) => {
    try{
       const calon = await pool.query(
-         'select c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, j.jabatan_tujuan FROM admins a JOIN calon c on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan WHERE a.id_admin = $1;', [
+         'select c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, w.id_wakil, w.nama_wakil, a.id_admin, j.jabatan_tujuan FROM admins a JOIN calon c on c.id_admin = a.id_admin JOIN wakil w ON w.id_calon = c.id_calon JOIN jabatan j on c.id_jabatan = j.id_jabatan WHERE a.id_admin = $1;', [
          req.user
       ])
 
@@ -614,5 +614,100 @@ exports.selectForSearch = async (req, res) => {
          res.json(calon.rows)
    } catch(err) {
       res.json({ message: err })
+   }
+}
+
+exports.selectAllWakil = async (req, res) => {
+   try{
+      const wakil = await pool.query(
+         "SELECT w.id_wakil, w.id_calon, w.nama_wakil FROM wakil w WHERE w.id_wakil = ANY(@ids::uuid[]);"
+      )
+
+      res.json(wakil.rows)
+   } catch(err) {
+      console.log(err)
+   }
+}
+
+exports.addWakil = async (req, res) => {
+   try{
+      const { id_calon } = req.body
+      const { nama_wakil } = req.body
+
+      const wakil = await pool.query(
+         "INSERT INTO wakil(id_calon, nama_wakil) VALUES ($1, $2) RETURNING *",
+      [id_calon, nama_wakil])
+
+      res.json(wakil)
+   } catch (err){
+      console.error(err.message)
+   }
+}
+
+exports.updateWakil = async (req, res) => {
+   try{
+      const { id_wakil } = req.params
+      const { id_calon } = req.body
+      const { nama_wakil } = req.body
+
+      const update_wakil = await pool.query(
+         "UPDATE wakil SET id_calon = $1, nama_wakil = $2 WHERE id_wakil = $3",
+         [id_calon, nama_wakil, id_wakil]
+      )
+
+      res.json(update_wakil)
+   } catch(err){
+      console.error(err.message)
+   }
+}
+
+exports.deleteWakil = async (req, res) => {
+   try{
+      const { id_wakil } = req.params
+
+      const wakil = await pool.query(
+         "DELETE FROM wakil WHERE id_wakil = $1",
+         [id_wakil]
+      )
+
+      res.json("Wakil is deleted")
+   } catch(err){
+      res.json({ message: err })
+   }
+}
+
+exports.addRiwayatPendidikanWakil = async (req, res) => {
+   try{
+      const { id_wakil} = req.body
+      const { nama_institusi } = req.body
+      const { detail } = req.body
+      const { tahun_mulai } = req.body
+      const { tahun_selesai } = req.body
+
+      const wakil = await pool.query(
+         "INSERT INTO riwayat_pendidikan(id_wakil, nama_institusi, detail_pendidikan, tahun_mulai_pendidikan , tahun_selesai_pendidikan) VALUES($1, $2, $3, $4, $5) RETURNING *",
+      [id_wakil, nama_institusi, detail, tahun_mulai, tahun_selesai])
+
+      res.json(wakil)
+   } catch (err){
+      console.error(err.message)
+   }
+}
+
+exports.addRiwayatPekerjaanWakil = async (req, res) => {
+   try{
+      const { id_wakil } = req.body
+      const { nama_pekerjaan } = req.body
+      const { detail } = req.body
+      const { tahun_mulai } = req.body
+      const { tahun_selesai } = req.body
+
+      const wakil = await pool.query(
+         "INSERT INTO riwayat_pekerjaan(id_wakil, nama_pekerjaan, detail_pekerjaan, tahun_mulai_pekerjaan, tahun_selesai_pekerjaan) VALUES($1, $2, $3, $4, $5) RETURNING *",
+      [id_wakil, nama_pekerjaan, detail, tahun_mulai, tahun_selesai])
+
+      res.json(wakil)
+   } catch (err){
+      console.error(err.message)
    }
 }
