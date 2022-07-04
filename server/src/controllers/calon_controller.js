@@ -3,7 +3,7 @@ const { pool } = require("../dbConfig")
 exports.selectAllCalon = async (req, res) => {
    try{
       const calon = await pool.query(
-         "select c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, a.username, w.id_wakil, w.nama_wakil, j.jabatan_tujuan FROM calon c JOIN admins a on c.id_admin = a.id_admin JOIN wakil w ON w.id_calon = c.id_calon JOIN jabatan j on c.id_jabatan = j.id_jabatan"
+         "select c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, a.username, j.jabatan_tujuan FROM calon c JOIN admins a on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan"
       )
 
       const length = Object.keys(calon.rows).length
@@ -155,7 +155,7 @@ exports.selectCalonByUser = async (req, res) => {
    const {id_admin} = req.params
    try{
       const calon = await pool.query(
-         "select c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, w.id_wakil, w.nama_wakil, a.id_admin, j.jabatan_tujuan FROM calon c JOIN admins a ON c.id_admin = a.id_admin JOIN wakil w ON w.id_calon = c.id_calon JOIN jabatan j ON c.id_jabatan = j.id_jabatan WHERE c.id_admin = $1", [
+         "select c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, j.jabatan_tujuan FROM calon c JOIN admins a ON c.id_admin = a.id_admin JOIN jabatan j ON c.id_jabatan = j.id_jabatan WHERE c.id_admin = $1", [
          id_admin
       ])
 
@@ -243,7 +243,7 @@ exports.selectCalonByJabatan = async (req, res) => {
    const { id_jabatan } = req.params
    try{
       const calon = await pool.query(
-         "SELECT calon.id_calon, calon.nama, calon.foto, calon.slogan, calon.no_urut, wakil.id_wakil, wakil.nama_wakil, admins.id_admin, jabatan.jabatan_tujuan FROM calon JOIN wakil on calon.id_calon = wakil.id_calon JOIN admins on calon.id_admin = admins.id_admin JOIN jabatan on calon.id_jabatan = jabatan.id_jabatan WHERE calon.id_jabatan = $1 ORDER BY no_urut;",[
+         "SELECT calon.id_calon, calon.nama, calon.foto, calon.slogan, calon.no_urut, admins.id_admin, jabatan.jabatan_tujuan FROM calon JOIN admins on calon.id_admin = admins.id_admin JOIN jabatan on calon.id_jabatan = jabatan.id_jabatan WHERE calon.id_jabatan = $1 ORDER BY no_urut;",[
             id_jabatan
          ])
 
@@ -369,7 +369,7 @@ exports.addRiwayatPekerjaanCalon = async (req, res) => {
 exports.selectCalonByAdmin = async (req, res) => {
    try{
       const calon = await pool.query(
-         'select c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, w.id_wakil, w.nama_wakil, a.id_admin, j.jabatan_tujuan FROM admins a JOIN calon c on c.id_admin = a.id_admin JOIN wakil w ON w.id_calon = c.id_calon JOIN jabatan j on c.id_jabatan = j.id_jabatan WHERE a.id_admin = $1;', [
+         'select c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, j.jabatan_tujuan FROM admins a JOIN calon c on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan WHERE a.id_admin = $1;', [
          req.user
       ])
 

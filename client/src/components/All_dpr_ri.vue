@@ -32,7 +32,7 @@
 
             <div class="flex-grow-1">
                 <div class="row row-cols-2 row-cols-lg-4 row-cols-md-3 g-2 g-md-3 g-lg-3 mt-3">
-                    <div class="col" v-for="calon in filteredCalons.slice((currentPage-1)*perPage,(currentPage-1)*perPage+perPage)" :key="calon.id_calon" :per-page="perPage" :current-page="currentPage">
+                    <div class="col" v-for="calon in filteredCalons" :key="calon.id_calon">
                         <div class="card h-100">
                             <input type="image" :src="calon.foto" class="card-img-top" alt="dpr 2" @click="goToDetail(calon)"/>
                             <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">

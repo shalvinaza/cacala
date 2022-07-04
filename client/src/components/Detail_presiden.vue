@@ -46,7 +46,7 @@
                     <!-- dummy -->
                     <div :class="{'p-4 br-15' : deviceWidth >  991.98, 'p-0 br-15' : deviceWidth<  991.98 }" style="background: #EDEDE9; max-height:1430px">
                         <img src='../assets/images/pres.png' class="profil-calon-detail mb-4" alt="dpr 2">
-                        <h5 class="text-center" v-for="calon in calons" :key="calon.id_wakil">{{calon.nama_wakil}}</h5>
+                        <h5 class="text-center" v-for="calon in calons" :key="calon.id_wakil">Nama wakil</h5>
                         <p class="mb-4 text-center">Calon Presiden dan Wakil Presiden</p>
                         <div class="row align-items-start">
                             <h6 class="col">Partai</h6>
@@ -121,7 +121,7 @@
                         <div class="d-flex flex-row mt-4">
                             <img src='../assets/images/pres.png' class="profil-calon-small mb-4 align-self-center" alt="dpr 2">
                             <div class="flex-column flex-grow-1 ps-3">
-                                <h6 class="" v-for="calon in calons" :key="calon.id_wakil">{{calon.nama_wakil}}</h6>
+                                <h6 class="" v-for="calon in calons" :key="calon.id_wakil">Nama_wakil</h6>
                                 <p class=" m-0 mb-1 low-font txt-muted">Calon Wakil Presiden</p>
                                 <div class="row align-items-start m-0 mb-1 ">
                                     <p class="col d-flex justify-content-start low-font m-0 mb-1">Partai</p>
