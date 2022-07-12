@@ -41,7 +41,12 @@
                             </div>
                             <div class="card-footer mb-2">
                                 <div class="d-flex justify-content-between">
-                                    <button class="btn btn-outline-orange" @click="goToDetail(calon)">Detail</button>
+                                    <span v-if="isPresiden">
+                                        <button class="btn btn-outline-orange" @click="goToDetailPres(calon)">Detail</button>
+                                    </span>
+                                    <span v-if="!isPresiden">
+                                        <button class="btn btn-outline-orange" @click="goToDetail(calon)">Detail</button>
+                                    </span>
                                     <span v-if="isLoggedIn">
                                         <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="!calon.status">Ikuti</button>
                                         <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="calon.status">Berhenti ikuti</button>
@@ -137,6 +142,10 @@ export default {
         },
         togglePopup(){
             this.muncul = !this.muncul
+        },
+        goToDetailPres(calon){
+            localStorage.setItem('id_calon', calon.id_calon)
+            this.$router.push({ name: 'Detail_pres', params: { id_admin: calon.id_admin}})
         },
         getData(){
             fetch(ALL_CALON_API)
