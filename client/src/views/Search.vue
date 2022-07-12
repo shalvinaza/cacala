@@ -15,7 +15,7 @@
             <h5 class="mt-3">Hasil pencarian dengan nama "{{search}}"</h5>
             <div class="d-flex flex-column mt-4">
                 <div class="row row-cols-2 row-cols-lg-4 row-cols-md-3 g-2 g-md-3 g-lg-3 mt-3">
-                    <div class="col" v-for="calon in searchRes" :key="calon.id_calon">
+                    <div class="col" v-for="calon in searchRes.slice((currentPage-1)*perPage,(currentPage-1)*perPage+perPage)" :per-page="perPage" :current-page="currentPage" :key="calon.id_calon">
                         <div class="card h-100">
                             <input type="image" :src="calon.foto" class="card-img-top" alt="dpr 2" @click="goToDetail(calon)"/>
                             <div class="card-img-overlay m-3 d-flex align-items-center justify-content-center p-0">
@@ -41,12 +41,7 @@
                             </div>
                             <div class="card-footer mb-2">
                                 <div class="d-flex justify-content-between">
-                                    <span v-if="isPresiden">
-                                        <button class="btn btn-outline-orange" @click="goToDetailPres(calon)">Detail</button>
-                                    </span>
-                                    <span v-if="!isPresiden">
-                                        <button class="btn btn-outline-orange" @click="goToDetail(calon)">Detail</button>
-                                    </span>
+                                    <button class="btn btn-outline-orange" @click="goToDetail(calon)">Detail</button>
                                     <span v-if="isLoggedIn">
                                         <button class="btn btn-outline-blue" @click="followCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="!calon.status">Ikuti</button>
                                         <button class="btn btn-outline-blue" @click="unfollowCalon(calon.id_calon, calon.status), calon.status = !calon.status" v-show="calon.status">Berhenti ikuti</button>
@@ -105,11 +100,10 @@ export default {
         searchRes:[],
         cekRow:false,
         exampleItems : [...Array(150).keys()].map(i => ({ id: (i+1), name: 'Nama ' + (i+1) })) ,
-        perPage: 9,
+        perPage: 8,
         currentPage: 1,
         followed_calon:[],
-        muncul: false,
-        jabatan: 'Presiden dan Wakil Presiden'
+        muncul: false
     }),
     components:{
       Navbar,
@@ -126,13 +120,6 @@ export default {
             return this.calons.filter((calon) => {
                 return calon.nama.toLowerCase().match(this.search.toLowerCase()) 
             })
-        },
-        isPresiden: function(){
-            return this.calons.filter((calon) => {
-                if(calon.jabatan.match(this.jabatan)){
-                    return true
-                } 
-            })
         }
     },
     methods: {
@@ -142,10 +129,6 @@ export default {
         },
         togglePopup(){
             this.muncul = !this.muncul
-        },
-        goToDetailPres(calon){
-            localStorage.setItem('id_calon', calon.id_calon)
-            this.$router.push({ name: 'Detail_pres', params: { id_admin: calon.id_admin}})
         },
         getData(){
             fetch(ALL_CALON_API)
