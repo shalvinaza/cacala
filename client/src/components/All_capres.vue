@@ -54,7 +54,7 @@
 <script>
 import axios from 'axios'
 import Popup from './Berhasil.vue'
-const PRESIDEN_API_URL = `${process.env.VUE_APP_API_URL}/calon/jabatan/1470e05d-6f8d-476f-9d42-09ef4a23e5cc`
+const PRESIDEN_API_URL = `${process.env.VUE_APP_API_URL}/calon/presiden/1470e05d-6f8d-476f-9d42-09ef4a23e5cc`
 const FOLLOWED_CALON_API_URL = `${process.env.VUE_APP_API_URL}/user/followed`
 
 export default {

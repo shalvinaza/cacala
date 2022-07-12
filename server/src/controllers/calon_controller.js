@@ -492,91 +492,6 @@ exports.selectCalonDPRDProvByProv = async (req, res) => {
    }
 }
 
-// exports.selectCalonDPRDProvByKota = async (req, res) => {
-//    const { id_kota } = req.params
-//    try{
-//       const calon = await pool.query(
-//          "SELECT c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, j.jabatan_tujuan, k.kota, p.provinsi FROM calon c JOIN admins a on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan JOIN kota k on c.id_dapil_kota = k.id_kota JOIN provinsi p on k.id_provinsi = p.id_provinsi WHERE c.id_jabatan = 'aa0faabb-82e5-45bc-8b0a-c5795aa4c91a' AND c.id_dapil_kota = $1 ORDER BY no_urut;",[
-//             id_kota
-//          ])
-
-//          const length = Object.keys(calon.rows).length
-         
-//          for(let i=0; i<length; i++){
-//             id_calon = calon.rows[i].id_calon
-   
-//             partai = await pool.query(
-//                "select partai.nama_partai, partai.logo_partai FROM partai_calon JOIN calon ON partai_calon.id_calon = calon.id_calon JOIN partai ON partai_calon.id_partai = partai.id_partai WHERE partai_calon.id_calon = $1;",
-//                 [calon.rows[i].id_calon]
-//             )
-   
-//             j = 0
-//             calon.rows[i] = {...calon.rows[i], partai: partai.rows}
-//             calon.rows[i] = {...calon.rows[i], status: false}
-//          }
-      
-//          res.json(calon.rows)
-//    } catch(err) {
-//       res.json({ message: err })
-//    }
-// }
-
-// exports.selectCalonDPRRIByProv = async (req, res) => {
-//    const { id_provinsi } = req.params
-//    try{
-//       const calon = await pool.query(
-//          "SELECT c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, j.jabatan_tujuan, k.kota, p.provinsi FROM calon c JOIN admins a on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan JOIN kota k on c.id_dapil_kota = k.id_kota JOIN provinsi p on k.id_provinsi = p.id_provinsi WHERE c.id_jabatan = 'ab55ff16-0673-4c8b-a572-bf282f75d9cf' AND k.id_provinsi = $1 ORDER BY no_urut;",[
-//             id_provinsi
-//          ])
-
-//          const length = Object.keys(calon.rows).length
-         
-//          for(let i=0; i<length; i++){
-//             id_calon = calon.rows[i].id_calon
-   
-//             partai = await pool.query(
-//                "select partai.nama_partai, partai.logo_partai FROM partai_calon JOIN calon ON partai_calon.id_calon = calon.id_calon JOIN partai ON partai_calon.id_partai = partai.id_partai WHERE partai_calon.id_calon = $1;",
-//                 [calon.rows[i].id_calon]
-//             )
-   
-//             j = 0
-//             calon.rows[i] = {...calon.rows[i], partai: partai.rows}
-//             calon.rows[i] = {...calon.rows[i], status: false}
-//          }
-      
-//       res.json(calon.rows)
-//    } catch(err) {
-//       res.json({ message: err })
-//    }
-// }
-
-// exports.selectCalonDPDByProv = async (req, res) => {
-//    const { id_provinsi } = req.params
-//    try{
-//       const calon = await pool.query(
-//          "SELECT c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, j.jabatan_tujuan, k.kota, p.provinsi FROM calon c JOIN admins a on c.id_admin = a.id_admin JOIN jabatan j on c.id_jabatan = j.id_jabatan JOIN kota k on c.id_dapil_kota = k.id_kota JOIN provinsi p on k.id_provinsi = p.id_provinsi WHERE c.id_jabatan = '51978294-1f8a-4c8c-acbf-f3cc013c16d3' AND k.id_provinsi = $1 ORDER BY no_urut",[
-//             id_provinsi
-//          ])
-
-//          const length = Object.keys(calon.rows).length
-         
-//          for(let i=0; i<length; i++){
-//             id_calon = calon.rows[i].id_calon
-   
-//             partai = await pool.query(
-//                "select partai.nama_partai, partai.logo_partai FROM partai_calon JOIN calon ON partai_calon.id_calon = calon.id_calon JOIN partai ON partai_calon.id_partai = partai.id_partai WHERE partai_calon.id_calon = $1;",
-//                 [calon.rows[i].id_calon]
-//             )
-   
-//             calon.rows[i] = {...calon.rows[i], partai: partai.rows}
-//             calon.rows[i] = {...calon.rows[i], status: false}
-//          }
-      
-//          res.json(calon.rows)
-//    } catch(err) {
-//       res.json({ message: err })
-//    }
-// }
 exports.selectForSearch = async (req, res) => {
    var search = req.params.str
    try{
@@ -626,6 +541,94 @@ exports.selectAllWakil = async (req, res) => {
       res.json(wakil.rows)
    } catch(err) {
       console.log(err)
+   }
+}
+
+exports.selectCalonPresiden= async (req, res) => {
+   const { id_jabatan } = req.params
+   try{
+      const calon = await pool.query(
+         "SELECT calon.id_calon, calon.nama, calon.foto, calon.slogan, calon.no_urut, admins.id_admin, wakil.id_wakil, wakil.nama_wakil, jabatan.jabatan_tujuan FROM calon JOIN admins on calon.id_admin = admins.id_admin JOIN wakil ON calon.id_calon = wakil.id_calon JOIN jabatan on calon.id_jabatan = jabatan.id_jabatan WHERE calon.id_jabatan = $1 ORDER BY no_urut;",[
+            id_jabatan
+         ])
+
+         const length = Object.keys(calon.rows).length
+         
+         for(let i=0; i<length; i++){
+            id_calon = calon.rows[i].id_calon
+   
+            partai = await pool.query(
+               "select partai.nama_partai, partai.logo_partai FROM partai_calon JOIN calon ON partai_calon.id_calon = calon.id_calon JOIN partai ON partai_calon.id_partai = partai.id_partai WHERE partai_calon.id_calon = $1;",
+                [calon.rows[i].id_calon]
+            )
+
+            kota = await pool.query(
+               "select kota.*, provinsi.provinsi FROM dapil_calon dapil JOIN calon ON dapil.id_calon = calon.id_calon JOIN kota ON dapil.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil.id_calon = $1;",
+                [calon.rows[i].id_calon]
+            )
+   
+            kecamatan = await pool.query(
+               "select kecamatan.* FROM dapil_calon dapil JOIN calon ON dapil.id_calon = calon.id_calon JOIN kecamatan ON dapil.id_kecamatan = kecamatan.id_kecamatan WHERE dapil.id_calon = $1;",
+                [calon.rows[i].id_calon]
+            )
+   
+            j = 0
+            calon.rows[i] = {...calon.rows[i], partai: partai.rows, kota: kota.rows, kecamatan:kecamatan.rows}
+            calon.rows[i] = {...calon.rows[i], status: false}
+         }
+      
+         res.json(calon.rows)
+   } catch(err) {
+      res.json({ message: err })
+   }
+}
+
+exports.selectPresByUser = async (req, res) => {
+   const {id_admin} = req.params
+   try{
+      const calon = await pool.query(
+         "select c.id_calon, c.nama, c.foto, c.slogan, c.no_urut, a.id_admin, w.id_wakil, w.nama_wakil, j.jabatan_tujuan FROM calon c JOIN admins a ON c.id_admin = a.id_admin JOIN wakil w ON w.id_calon = c.id_calon JOIN jabatan j ON c.id_jabatan = j.id_jabatan WHERE c.id_admin = $1", [
+         id_admin
+      ])
+
+      const length = Object.keys(calon.rows).length
+      
+      for(let i=0; i<length; i++){
+         // id_calon = calon.rows[i].id_calon
+
+         partai = await pool.query(
+            "select partai.nama_partai, partai.logo_partai FROM partai_calon JOIN calon ON partai_calon.id_calon = calon.id_calon JOIN partai ON partai_calon.id_partai = partai.id_partai WHERE partai_calon.id_calon = $1;",
+             [calon.rows[i].id_calon]
+         )
+
+         kota = await pool.query(
+            "select kota.*, provinsi.provinsi FROM dapil_calon dapil JOIN calon ON dapil.id_calon = calon.id_calon JOIN kota ON dapil.id_kota = kota.id_kota JOIN provinsi ON kota.id_provinsi = provinsi.id_provinsi WHERE dapil.id_calon = $1;",
+             [calon.rows[i].id_calon]
+         )
+
+         kecamatan = await pool.query(
+            "select kecamatan.* FROM dapil_calon dapil JOIN calon ON dapil.id_calon = calon.id_calon JOIN kecamatan ON dapil.id_kecamatan = kecamatan.id_kecamatan WHERE dapil.id_calon = $1;",
+             [calon.rows[i].id_calon]
+         )
+
+         pendidikan = await pool.query(
+            "select pen.* FROM riwayat_pendidikan pen JOIN calon c ON pen.id_calon = c.id_calon WHERE pen.id_calon = $1",
+            [calon.rows[i].id_calon]
+         )
+
+         pekerjaan = await pool.query(
+            "select pek.* FROM riwayat_pekerjaan pek JOIN calon c ON pek.id_calon = c.id_calon WHERE pek.id_calon = $1",
+            [calon.rows[i].id_calon]
+         )
+
+         j = 0
+         calon.rows[i] = {...calon.rows[i], partai: partai.rows, kota: kota.rows, kecamatan:kecamatan.rows, riwayat_pendidikan: pendidikan.rows, riwayat_pekerjaan: pekerjaan.rows}
+         calon.rows[i] = {...calon.rows[i], status: false}
+      }
+
+      res.json(calon.rows)
+   } catch(err) {
+      res.json({ message: err })
    }
 }
 
