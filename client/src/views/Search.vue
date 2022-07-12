@@ -103,7 +103,8 @@ export default {
         perPage: 9,
         currentPage: 1,
         followed_calon:[],
-        muncul: false
+        muncul: false,
+        jabatan: 'Presiden dan Wakil Presiden'
     }),
     components:{
       Navbar,
@@ -119,6 +120,13 @@ export default {
         searchedCalons: function(){
             return this.calons.filter((calon) => {
                 return calon.nama.toLowerCase().match(this.search.toLowerCase()) 
+            })
+        },
+        isPresiden: function(){
+            return this.calons.filter((calon) => {
+                if(calon.jabatan.match(this.jabatan)){
+                    return true
+                } 
             })
         }
     },
