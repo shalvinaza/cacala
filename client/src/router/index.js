@@ -16,6 +16,7 @@ import Detail_pres from '../views/Detail_pres.vue'
 import Detail_dummy from '../views/Detail_dummy.vue'
 import Detail_admin_calon from '../views/Admin_calon.vue'
 import Search from '../views/Search.vue'
+import Edit_calon from '../views/Edit_calon.vue'
 
 Vue.use(createRouter)
 
@@ -103,6 +104,11 @@ const routes = [
     path: '/detail_dummy',
     name: 'Detail_dummy',
     component: Detail_dummy
+  },
+  {
+    path: '/edit_calon',
+    name: 'Edit_calon',
+    component: Edit_calon
   }
 ]
 

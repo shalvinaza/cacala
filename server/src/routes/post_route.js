@@ -98,7 +98,7 @@ router.put("/:id_post", upload.single("image"), async (req, res) => {
 
       try{
          var post = await pool.query(
-            "select * from post where id_post = $1", [
+            "select * from post where id_post = $1;", [
             id_post
          ])
       } catch(err) {

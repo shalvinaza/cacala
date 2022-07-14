@@ -47,45 +47,54 @@ exports.selectAllCalon = async (req, res) => {
    }
 }
 
-exports.addCalon = async (req, res) => {
-   try{
-      const { id_admin } = req.body
-      const { id_jabatan } = req.body
-      const { nama } = req.body
-      const { foto } = req.body
-      const { slogan } = req.body
-      const { no_urut } = req.body
+// exports.addCalon = async (req, res) => {
+//    try{
+//       const { id_admin } = req.body
+//       const { id_jabatan } = req.body
+//       const { nama } = req.body
+//       // const { foto } = req.body
+//       const { slogan } = req.body
+//       const { no_urut } = req.body
+//       let foto = null
+//       let id_foto = null
 
-      const calon = await pool.query(
-         "INSERT INTO Calon(id_admin, id_jabatan, nama, foto, slogan, no_urut) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-      [id_admin, id_jabatan, nama, foto, slogan, no_urut])
+//       if(req.file){
+//          const fotoCalon = await cloudinary.uploader.upload(req.file.path)
+//          foto = fotoCalon.secure_url
+//          id_foto = fotoCalon.public_id
+//          console.log(req.file)
+//       }
 
-      res.json(calon)
-   } catch (err){
-      console.error(err.message)
-   }
-}
+//       const calon = await pool.query(
+//          "INSERT INTO Calon(id_admin, id_jabatan, nama, foto, slogan, no_urut) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+//       [id_admin, id_jabatan, nama, foto, slogan, no_urut])
 
-exports.updateCalon = async (req, res) => {
-   try{
-      const { id_calon } = req.params
-      const { id_admin } = req.body
-      const { id_jabatan } = req.body
-      const { nama } = req.body
-      const { foto } = req.body
-      const { slogan } = req.body
-      const { no_urut } = req.body
+//       res.json(calon)
+//    } catch (err){
+//       console.error(err.message)
+//    }
+// }
 
-      const update_calon = await pool.query(
-         "UPDATE calon SET id_admin = $1, id_jabatan = $2, nama = $3, foto = $4, slogan = $5, no_urut = $6 WHERE id_calon = $7",
-         [id_admin, id_jabatan, nama, foto, slogan, no_urut, id_calon]
-      )
+// exports.updateCalon = async (req, res) => {
+//    try{
+//       const { id_calon } = req.params
+//       const { id_admin } = req.body
+//       const { id_jabatan } = req.body
+//       const { nama } = req.body
+//       const { foto } = req.body
+//       const { slogan } = req.body
+//       const { no_urut } = req.body
 
-      res.json(update_calon)
-   } catch(err){
-      console.error(err.message)
-   }
-}
+//       const update_calon = await pool.query(
+//          "UPDATE calon SET id_admin = $1, id_jabatan = $2, nama = $3, foto = $4, slogan = $5, no_urut = $6 WHERE id_calon = $7",
+//          [id_admin, id_jabatan, nama, foto, slogan, no_urut, id_calon]
+//       )
+
+//       res.json(update_calon)
+//    } catch(err){
+//       console.error(err.message)
+//    }
+// }
 
 exports.deleteCalon = async (req, res) => {
    try{
@@ -535,12 +544,12 @@ exports.selectForSearch = async (req, res) => {
 exports.selectAllWakil = async (req, res) => {
    try{
       const wakil = await pool.query(
-         "SELECT w.id_wakil, w.id_calon, w.nama_wakil FROM wakil w WHERE w.id_wakil = ANY(@ids::uuid[]);"
+         "SELECT * FROM wakil;"
       )
 
       res.json(wakil.rows)
-   } catch(err) {
-      console.log(err)
+   } catch(err){
+      res.json({ message: err })
    }
 }
 
@@ -712,5 +721,103 @@ exports.addRiwayatPekerjaanWakil = async (req, res) => {
       res.json(wakil)
    } catch (err){
       console.error(err.message)
+   }
+}
+
+exports.updateRiwayatPekerjaan = async (req, res) => {
+   try{
+      const { id_pekerjaan } = req.params
+      const { nama_pekerjaan } = req.body
+      const { detail } = req.body
+      const { tahun_mulai } = req.body
+      const { tahun_selesai } = req.body
+
+      const update_pekerjaan = await pool.query(
+         "UPDATE riwayat_pekerjaan SET nama_pekerjaan = COALESCE (NULLIF($1, ''), nama_pekerjaan), detail_pekerjaan = COALESCE (NULLIF($2, ''), detail_pekerjaan), tahun_mulai_pekerjaan = COALESCE (NULLIF($3, ''), tahun_mulai_pekerjaan), tahun_selesai_pekerjaan = COALESCE (NULLIF($4, ''), tahun_selesai_pekerjaan) WHERE id_pekerjaan = $5 RETURNING *;",
+         [nama_pekerjaan, detail, tahun_mulai, tahun_selesai, id_pekerjaan]
+      )
+
+      res.json(update_pekerjaan.rows)
+   } catch(err){
+      console.log(err)
+   }
+}
+
+exports.updateRiwayatPendidikan = async (req, res) => {
+   try{
+      const { id_pendidikan } = req.params
+      const { nama_institusi } = req.body
+      const { detail } = req.body
+      const { tahun_mulai } = req.body
+      const { tahun_selesai } = req.body
+
+      const update_pendidikan = await pool.query(
+         "UPDATE riwayat_pendidikan SET nama_institusi = COALESCE (NULLIF($1, ''), nama_institusi), detail_pendidikan = COALESCE (NULLIF($2, ''), detail_pendidikan), tahun_mulai_pendidikan = COALESCE (NULLIF($3, ''), tahun_mulai_pendidikan), tahun_selesai_pendidikan = COALESCE (NULLIF($4, ''), tahun_selesai_pendidikan) WHERE id_pendidikan = $5 RETURNING *;",
+         [nama_institusi, detail, tahun_mulai, tahun_selesai, id_pendidikan]
+      )
+
+      res.json(update_pendidikan.rows)
+   } catch(err){
+      console.log(err)
+   }
+}
+
+exports.deleteRiwayatPekerjaan = async (req, res) => {
+   try{
+      const { id_pekerjaan } = req.params
+
+      const riwayat_pekerjaan = await pool.query(
+         "DELETE FROM riwayat_pekerjaan WHERE id_pekerjaan = $1",
+         [id_pekerjaan]
+      )
+
+      res.json("Riwayat pekerjaan berhasil dihapus")
+   } catch(err){
+      res.json({ message: err })
+   }
+}
+
+exports.deleteRiwayatPendidikan = async (req, res) => {
+   try{
+      const { id_pendidikan } = req.params
+
+      const riwayat_pendidikan = await pool.query(
+         "DELETE FROM riwayat_pendidikan WHERE id_pendidikan = $1",
+         [id_pendidikan]
+      )
+
+      res.json("Riwayat pendidikan berhasil dihapus")
+   } catch(err){
+      res.json({ message: err })
+   }
+}
+
+exports.deletePosters = async (req, res) => {
+   try{
+      const { id_posters } = req.params
+
+      const posters = await pool.query(
+         "DELETE FROM posters WHERE id_posters = $1",
+         [id_posters]
+      )
+
+      res.json("Poster dan slogan berhasil dihapus")
+   } catch(err){
+      res.json({ message: err })
+   }
+}
+
+
+exports.selectPostersById = async (req, res) => {
+   const {id_calon} = req.params
+   try{
+      const posters = await pool.query(
+         "select * from posters WHERE id_calon = $1;", [
+            id_calon
+      ])
+
+      res.json(posters.rows[0])
+   } catch(err) {
+      res.json({ message: err })
    }
 }

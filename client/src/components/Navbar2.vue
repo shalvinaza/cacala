@@ -6,10 +6,10 @@
           <span class="navbar-toggler-icon" style="color:white"></span>
         </button> -->
 
-            <!-- <div class="navbar-nav me-auto mb-2 mb-lg-0">
+            <div class="navbar-nav me-auto mb-2 mb-lg-0">
                 <router-link to="/detail_admin_calon" class="nav-item nav-link">Dasbor</router-link>
-                <router-link to="#" class="nav-item nav-link">Edit Akun</router-link>
-            </div> -->
+                <router-link to="/edit_calon" class="nav-item nav-link">Edit Akun</router-link>
+            </div>
             <div class="d-flex align-items-center flex-grow-1 justify-content-end">
               <span v-if="isLoggedIn">
                 <button class="btn bg-light-orange text-white br-10" type="button" @click="toggleShow()">Keluar</button>

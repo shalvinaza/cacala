@@ -5,6 +5,14 @@
                 <div class="left-col d-flex justify-content-center" v-for="(calon) in calon" :key="calon.id_admin">
                     <div :class="{'p-4 br-15' : deviceWidth >  991.98, 'p-0 br-15' : deviceWidth<  991.98 }" style="background: #EDEDE9;">
                         <img :src="calon.foto" class="profil-calon-detail mb-4" alt="dpr 2">
+                        <button class="d-flex align-items-center btn bg-light-orange br-10 mb-4" style="margin:auto"><font-awesome-icon icon="fa-solid fa-pen-to-square" class="me-2"/>edit profil</button>
+                        <!-- <div class="card" style="background-color:transparent; border:none">
+                            <img :src="calon.foto" class="profil-calon-detail mb-4" alt="dpr 2">
+                            <form class="card-img-overlay edit-foto me-2">
+                                <input type="file" id="inputFoto" style="display:none" ref="fotoCalon" @change="selectFotoCalon()"/>
+                                <font-awesome-icon icon="fa-solid fa-pen-to-square" @click="addFotoCalon()"/>
+                            </form>
+                        </div> -->
                         <h5 class="text-center">{{calon.nama}}</h5>
                         <p class="mb-4 text-center">Calon {{calon.jabatan_tujuan}}</p>
                         <div class="row align-items-start">
@@ -162,6 +170,7 @@
                             <div class="message-body mb-3">{{message}}</div>
                         </div>  -->
 
+                        <!-- edit post -->
                         <Popup v-if="updateSubmit" title="Edit Postingan" @toggle-modal="toggleModal">
                                 <form @submit.prevent="update" enctype="multipart/form-data">
                                     <div class="forms-inputs mb-4"> 
@@ -298,6 +307,11 @@ export default {
                  file: '',
                  foto:null,
                  id_foto:null
+             },
+             calonUpdate : {
+                file: '',
+                foto: null,
+                id_foto: null
              },
              updateSubmit: false,
              popupDel: false,
@@ -657,6 +671,27 @@ export default {
     color: white;
     min-height: 50px;
     background: rgba(0, 0, 0, 0.61);
+}
+.edit-foto{
+    top: unset;
+    left: unset;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    z-index: 10;
+    background-color: grey;
+    color: white;
+    border-radius: 50%;
+    margin-bottom: 20%;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.edit-foto:hover{
+    background-color: #D65A40;
+    color: white; 
 }
 .postingan{
     min-height: 200px;
