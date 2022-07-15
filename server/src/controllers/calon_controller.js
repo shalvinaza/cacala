@@ -402,6 +402,11 @@ exports.selectCalonByAdmin = async (req, res) => {
              [calon.rows[i].id_calon]
          )
 
+         posters = await pool.query(
+            "select posters.* FROM posters WHERE id_calon = $1;",
+             [calon.rows[i].id_calon]
+         )
+
          pendidikan = await pool.query(
             "select pen.* FROM riwayat_pendidikan pen JOIN calon c ON pen.id_calon = c.id_calon WHERE pen.id_calon = $1",
             [id_calon]
@@ -413,7 +418,7 @@ exports.selectCalonByAdmin = async (req, res) => {
          )
  
          j = 0
-         calon.rows[i] = {...calon.rows[i], partai: partai.rows, kota: kota.rows, kecamatan:kecamatan.rows, riwayat_pendidikan: pendidikan.rows, riwayat_pekerjaan: pekerjaan.rows}
+         calon.rows[i] = {...calon.rows[i], partai: partai.rows, kota: kota.rows, kecamatan:kecamatan.rows, posters:posters.rows, riwayat_pendidikan: pendidikan.rows, riwayat_pekerjaan: pekerjaan.rows}
          calon.rows[i] = {...calon.rows[i], status: false}
       }
 

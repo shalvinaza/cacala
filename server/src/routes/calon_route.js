@@ -196,7 +196,7 @@ router.post("/posters", upload.single("imgPoster"), async(req,res, next) => {
          }
 
         const posters = await pool.query(
-            "INSERT INTO posters(id_calon, poster, id_poster, slogan) VALUES ($1, $2, $3, $4) RETURNING *",
+            "INSERT INTO posters(id_calon, poster, id_poster, slogan_calon) VALUES ($1, $2, $3, $4) RETURNING *",
         [id_calon, poster, id_poster, slogan])
     
         res.json(posters)
@@ -254,7 +254,7 @@ router.put("/pos/:id_posters", upload.single("imgPoster"), async (req, res, next
         const { slogan } = req.body
 
         posters = await pool.query(
-           "UPDATE posters SET poster = COALESCE (NULLIF($1, ''), poster), id_poster = COALESCE (NULLIF($2, ''), id_poster), slogan = COALESCE (NULLIF($3, ''), slogan) WHERE id_posters = $4 RETURNING *;",
+           "UPDATE posters SET poster = COALESCE (NULLIF($1, ''), poster), id_poster = COALESCE (NULLIF($2, ''), id_poster), slogan_calon = COALESCE (NULLIF($3, ''), slogan_calon) WHERE id_posters = $4 RETURNING *;",
            [poster, id_poster, slogan, id_posters]
         )
   
