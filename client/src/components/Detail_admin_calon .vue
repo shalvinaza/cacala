@@ -5,14 +5,6 @@
                 <div class="left-col d-flex justify-content-center" v-for="(calon) in calon" :key="calon.id_admin">
                     <div :class="{'p-4 br-15' : deviceWidth >  991.98, 'p-0 br-15' : deviceWidth<  991.98 }" style="background: #EDEDE9;">
                         <img :src="calon.foto" class="profil-calon-detail mb-4" alt="dpr 2">
-                        <button class="d-flex align-items-center btn bg-light-orange br-10 mb-4" style="margin:auto"><font-awesome-icon icon="fa-solid fa-pen-to-square" class="me-2"/>edit profil</button>
-                        <!-- <div class="card" style="background-color:transparent; border:none">
-                            <img :src="calon.foto" class="profil-calon-detail mb-4" alt="dpr 2">
-                            <form class="card-img-overlay edit-foto me-2">
-                                <input type="file" id="inputFoto" style="display:none" ref="fotoCalon" @change="selectFotoCalon()"/>
-                                <font-awesome-icon icon="fa-solid fa-pen-to-square" @click="addFotoCalon()"/>
-                            </form>
-                        </div> -->
                         <h5 class="text-center">{{calon.nama}}</h5>
                         <p class="mb-4 text-center">Calon {{calon.jabatan_tujuan}}</p>
                         <div class="row align-items-start">
@@ -461,6 +453,25 @@ export default {
                    console.log(this.message)
             }
         },
+
+        addFotoCalon(){
+            document.getElementById('inputFoto').click();
+            this.errorImg = false
+            this.message = ''
+            this.messageImg = ''
+        },
+        selectImageCalon(){
+            this.form.foto = this.$refs.foto.files[0];
+            this.validateImage(this.form.foto)
+
+            if(this.message !== ''){
+                this.errorImg = true
+                this.messageImg = this.message
+                // this.form.foto = ''
+                   console.log(this.message)
+            }
+        },
+
         addFotoUpdate(){
             document.getElementById('inputFoto2').click();
             this.errorImg = false

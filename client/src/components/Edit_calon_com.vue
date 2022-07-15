@@ -6,10 +6,9 @@
             </div>
             <div class="flex-row d-block flex-wrap">
                 <div class="form-data mb-3">
-                    <form @submit.prevent="updateCalon">              
+                    <form @submit.prevent="updateCalon" enctype="multipart/form-data">              
                         <div class="d-flex flex-column">
                             <h6 class="bold mb-3">Ubah foto calon</h6>
-                            <img :src="calon.foto" alt="">
                             <div class="d-flex flex-column mb-3">
                                 <div>
                                     <input type="file" id="inputFoto" style="display:none" ref="updateFoto" @change="selectImage()"/>
@@ -34,7 +33,7 @@
                     <h6 class="bold mb-3">Riwayat pekerjaan calon</h6>
                     <button class="btn bg-light-orange br-10" @click="changePekerjaan = false"><font-awesome-icon icon="fa-solid fa-plus" class="me-2" />Tambah Data</button>
                     <button class="btn bg-light-orange br-10 ms-3" @click="changePekerjaan = true"><font-awesome-icon icon="fa-solid fa-pen-to-square" class="me-2"/>Ubah Data</button>
-                    <form @submit.prevent="updatePekerjaan" class="mt-4" v-show="!changePekerjaan">              
+                    <form @submit.prevent="addPekerjaan" class="mt-4" v-show="!changePekerjaan">              
                         <div class="forms-inputs mb-4">  
                             <span>Nama pekerjaan</span> 
                             <input id="nama_pekerjaan" autocomplete="off" type="text" v-model="pekerjaan.nama_pekerjaan" v-bind:class="{'form-control':true, 'is-invalid' : !validIsi(pekerjaan.nama_pekerjaan) && isiBlured}" v-on:blur="isiBlured = true" @keydown.enter.prevent placeholder="Ketik nama pekerjaan disini">
@@ -47,12 +46,12 @@
                         </div>
                         <div class="forms-inputs mb-4">  
                             <span>Tahun mulai pekerjaan</span> 
-                            <input id="nama_pekerjaan" autocomplete="off" type="text" v-model="pekerjaan.tahun_mulai" v-bind:class="{'form-control':true, 'is-invalid' : !validIsi(pekerjaan.tahun_mulai) && isiBlured}" v-on:blur="isiBlured = true" @keydown.enter.prevent placeholder="Ketik tahun mulai pekerjaan disini">
+                            <input id="nama_pekerjaan" autocomplete="off" type="number" min="1970" max="2022" v-model="pekerjaan.tahun_mulai" v-bind:class="{'form-control':true, 'is-invalid' : !validIsi(pekerjaan.tahun_mulai) && isiBlured}" v-on:blur="isiBlured = true" @keydown.enter.prevent placeholder="Ketik tahun mulai pekerjaan disini">
                             <div class="invalid-feedback">Tahun mulai pekerjaan tidak boleh kosong</div>
                         </div>
                         <div class="forms-inputs mb-4">  
                             <span>Tahun selesai pekerjaan</span> 
-                            <input id="nama_pekerjaan" autocomplete="off" type="text" v-model="pekerjaan.tahun_selesai" v-bind:class="{'form-control':true, 'is-invalid' : !validIsi(pekerjaan.tahun_selesai) && isiBlured}" v-on:blur="isiBlured = true" @keydown.enter.prevent placeholder="Ketik tahun selesai pekerjaan disini">
+                            <input id="nama_pekerjaan" autocomplete="off" type="number" min="1970" max="2022" v-model="pekerjaan.tahun_selesai" v-bind:class="{'form-control':true, 'is-invalid' : !validIsi(pekerjaan.tahun_selesai) && isiBlured}" v-on:blur="isiBlured = true" @keydown.enter.prevent placeholder="Ketik tahun selesai pekerjaan disini">
                             <div class="invalid-feedback">Tahun selesai tidak boleh kosong</div>
                         </div>
                         <div class="mb-3 d-flex justify-content-end"> 
@@ -62,31 +61,29 @@
                     <table class="table" v-show="changePekerjaan">
                         <thead>
                             <tr>
-                            <th scope="col">No.</th>
                             <th scope="col">Nama pekerjaan</th>
                             <th scope="col">Detail</th>
                             <th scope="col">Tahun mulai</th>
-                            <th scope   ="col">Tahun selesai</th>
+                            <th scope="col">Tahun selesai</th>
                             <th scope="col">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            </tr>
-                            <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                            </tr>
-                            <tr>
-                            <th scope="row">3</th>
-                            <td colspan="2">Larry the Bird</td>
-                            <td>@twitter</td>
+                        <tbody v-for="calon in calon" :key="calon.id_calon">
+                            <tr v-for="pkr in calon.riwayat_pekerjaan" :key="pkr.id_pekerjaan">
+                                <td>{{pkr.nama_pekerjaan}}</td>
+                                <td>{{pkr.detail_pekerjaan}}</td>
+                                <td>{{pkr.tahun_mulai_pekerjaan}}</td>
+                                <td>{{pkr.tahun_selesai_pekerjaan}}</td>
+                                <td>                                        
+                                    <span class="card-text icons me-2" @click="editPek(pkr)"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></span>
+                                    <span class="card-text icons" @click="toggleDelPek(pkr.id_pekerjaan)"><font-awesome-icon icon="fa-solid fa-trash" /></span>
+                                </td>
+                                <Popup2 v-if="popupDel" title="Apakah Anda yakin?" pesanPopup="Riwayat pekerjaan yang akan dihapus tidak dapat dikembalikan"> 
+                                    <div class="d-flex justify-content-end">
+                                        <button class="bg-light-orange2 me-2 br-10" @click="toggleDelPek(pkr.id_pekerjaan)">Tidak</button>
+                                        <button class="btn-outline-orange2" @click="delPekerjaan()">Iya</button>
+                                    </div>
+                                </Popup2>
                             </tr>
                         </tbody>
                     </table>
@@ -95,7 +92,7 @@
                     <h6 class="bold mb-3">Riwayat pendidikan calon</h6>
                     <button class="btn bg-light-orange br-10" @click="changePendidikan = false"><font-awesome-icon icon="fa-solid fa-plus" class="me-2" />Tambah Data</button>
                     <button class="btn bg-light-orange br-10 ms-3" @click="changePendidikan = true"><font-awesome-icon icon="fa-solid fa-pen-to-square" class="me-2"/>Ubah Data</button>
-                    <form @submit.prevent="updatePendidikan" class="mt-4" v-show="!changePendidikan">              
+                    <form @submit.prevent="addPendidikan" class="mt-4" v-show="!changePendidikan">              
                         <div class="forms-inputs mb-4">  
                             <span>Nama institusi</span> 
                             <input id="nama_institusi" autocomplete="off" type="text" v-model="pendidikan.nama_institusi" v-bind:class="{'form-control':true, 'is-invalid' : !validIsi(pendidikan.nama_institusi) && isiBlured}" v-on:blur="isiBlured = true" @keydown.enter.prevent placeholder="Ketik nama institusi disini">
@@ -123,7 +120,6 @@
                     <table class="table" v-show="changePendidikan">
                         <thead>
                             <tr>
-                            <th scope="col">No.</th>
                             <th scope="col">Nama pekerjaan</th>
                             <th scope="col">Detail</th>
                             <th scope="col">Tahun mulai</th>
@@ -131,23 +127,22 @@
                             <th scope="col">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            </tr>
-                            <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                            </tr>
-                            <tr>
-                            <th scope="row">3</th>
-                            <td colspan="2">Larry the Bird</td>
-                            <td>@twitter</td>
+                        <tbody v-for="calon in calon" :key="calon.nama">
+                            <tr v-for="pen in calon.riwayat_pendidikan" :key="pen.id_pendidikan">
+                                <td>{{pen.nama_institusi}}</td>
+                                <td>{{pen.detail_pendidikan}}</td>
+                                <td>{{pen.tahun_mulai_pendidikan}}</td>
+                                <td>{{pen.tahun_selesai_pendidikan}}</td>
+                                <td>                                        
+                                    <span class="card-text icons me-2" @click="editPen(pen)"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></span>
+                                    <span class="card-text icons" @click="toggleDelPen(pen.id_pendidikan)"><font-awesome-icon icon="fa-solid fa-trash" /></span>
+                                </td>
+                                <Popup2 v-if="popupDel2" title="Apakah Anda yakin?" pesanPopup="Riwayat pendidikan yang akan dihapus tidak dapat dikembalikan"> 
+                                    <div class="d-flex justify-content-end">
+                                        <button class="bg-light-orange2 me-2 br-10" @click="toggleDelPen(pen.id_pendidikan)">Tidak</button>
+                                        <button class="btn-outline-orange2" @click="delPendidikan()">Iya</button>
+                                    </div>
+                                </Popup2>
                             </tr>
                         </tbody>
                     </table>
@@ -171,15 +166,63 @@
 
 
             </div>
-            <!-- <div class="mb-4">
-                <span>Ingin menghapus akun?</span> <a style="color:#D65A40;cursor:pointer" @click="toggleDel()">Hapus akun</a>
-            </div>
-            <Popup v-if="popupDel" title="Apakah Anda yakin?" pesanPopup="Akun yang sudah dihapus tidak dapat dikembalikan tanpa registasi ulang"> 
-                <div class="d-flex justify-content-end">
-                    <button class="bg-light-orange2 me-2 br-10" @click="toggleDel()">Tidak</button>
-                    <button class="btn-outline-orange2" @click="del()">Iya</button>
-                </div>
-            </Popup> -->
+
+            <Popup v-if="pekUpdate" title="Edit Postingan" @toggle-modal="toggleModal">
+                <form @submit.prevent="updateRiwPekerjaan" class="mt-4">              
+                    <div class="forms-inputs mb-4">  
+                        <span>Nama pekerjaan</span> 
+                        <input id="nama_pekerjaan" autocomplete="off" type="text" v-model="updatePekerjaan.nama_pekerjaan" v-bind:class="{'form-control':true, 'is-invalid' : !validIsi(updatePekerjaan.nama_pekerjaan) && isiBlured}" v-on:blur="isiBlured = true" @keydown.enter.prevent placeholder="Ketik nama pekerjaan disini">
+                        <div class="invalid-feedback">Nama pekerjaan tidak boleh kosong</div>
+                    </div>
+                    <div class="forms-inputs mb-4">  
+                        <span>Detail pekerjaan</span> 
+                        <input id="nama_pekerjaan" autocomplete="off" type="text" v-model="updatePekerjaan.detail" v-bind:class="{'form-control':true, 'is-invalid' : !validIsi(updatePekerjaan.detail) && isiBlured}" v-on:blur="isiBlured = true" @keydown.enter.prevent placeholder="Ketik detail pekerjaan disini">
+                        <div class="invalid-feedback">Detail pekerjaan tidak boleh kosong</div>
+                    </div>
+                    <div class="forms-inputs mb-4">  
+                        <span>Tahun mulai pekerjaan</span> 
+                        <input id="nama_pekerjaan" autocomplete="off" type="number" min="1970" max="2022" v-model="updatePekerjaan.tahun_mulai" v-bind:class="{'form-control':true, 'is-invalid' : !validIsi(updatePekerjaan.tahun_mulai) && isiBlured}" v-on:blur="isiBlured = true" @keydown.enter.prevent placeholder="Ketik tahun mulai pekerjaan disini">
+                        <div class="invalid-feedback">Tahun mulai pekerjaan tidak boleh kosong</div>
+                    </div>
+                    <div class="forms-inputs mb-4">  
+                        <span>Tahun selesai pekerjaan</span> 
+                        <input id="nama_pekerjaan" autocomplete="off" type="number" min="1970" max="2022" v-model="updatePekerjaan.tahun_selesai" v-bind:class="{'form-control':true, 'is-invalid' : !validIsi(updatePekerjaan.tahun_selesai) && isiBlured}" v-on:blur="isiBlured = true" @keydown.enter.prevent placeholder="Ketik tahun selesai pekerjaan disini">
+                        <div class="invalid-feedback">Tahun selesai tidak boleh kosong</div>
+                    </div>
+                    <div class="mb-3 d-flex justify-content-end"> 
+                        <button type="submit" class="btn bg-light-orange br-10">Unggah riwayat pekerjaan</button>
+                    </div>
+                </form>
+            </Popup>
+
+            <Popup v-if="penUpdate" title="Edit Postingan" @toggle-modal="toggleModal2">
+                <form @submit.prevent="updateRiwPendidikan" class="mt-4">              
+                    <div class="forms-inputs mb-4">  
+                        <span>Nama institusi</span> 
+                        <input id="nama_institusi" autocomplete="off" type="text" v-model="updatePendidikan.nama_institusi" v-bind:class="{'form-control':true, 'is-invalid' : !validIsi(updatePendidikan.nama_institusi) && isiBlured}" v-on:blur="isiBlured = true" @keydown.enter.prevent placeholder="Ketik nama institusi disini">
+                        <div class="invalid-feedback">Nama institusi tidak boleh kosong</div>
+                    </div>
+                    <div class="forms-inputs mb-4">  
+                        <span>Detail pendidikan</span> 
+                        <input id="detail_pendidikan" autocomplete="off" type="text" v-model="updatePendidikan.detail" v-bind:class="{'form-control':true, 'is-invalid' : !validIsi(updatePendidikan.detail) && isiBlured}" v-on:blur="isiBlured = true" @keydown.enter.prevent placeholder="Ketik detail pendidikan disini">
+                        <div class="invalid-feedback">Detail pendidikan tidak boleh kosong</div>
+                    </div>
+                    <div class="forms-inputs mb-4">  
+                        <span>Tahun mulai pendidikan</span> 
+                        <input id="mulai_pendidikan" autocomplete="off" type="text" v-model="updatePendidikan.tahun_mulai" v-bind:class="{'form-control':true, 'is-invalid' : !validIsi(updatePendidikan.tahun_mulai) && isiBlured}" v-on:blur="isiBlured = true" @keydown.enter.prevent placeholder="Ketik tahun mulai pendidikan disini">
+                        <div class="invalid-feedback">Tahun mulai pendidikan tidak boleh kosong</div>
+                    </div>
+                    <div class="forms-inputs mb-4">  
+                        <span>Tahun selesai pendidikan</span> 
+                        <input id="selesai_pendidikan" autocomplete="off" type="text" v-model="updatePendidikan.tahun_selesai" v-bind:class="{'form-control':true, 'is-invalid' : !validIsi(updatePendidikan.tahun_selesai) && isiBlured}" v-on:blur="isiBlured = true" @keydown.enter.prevent placeholder="Ketik tahun selesai pendidikan disini">
+                        <div class="invalid-feedback">Tahun selesai pendidikan boleh kosong</div>
+                    </div>
+                    <div class="mb-3 d-flex justify-content-end"> 
+                        <button type="submit" class="btn bg-light-orange br-10">Unggah riwayat pendidikan</button>
+                    </div>
+                </form>
+            </Popup>
+
             <Alert v-if="updated" :variantName="variant" :messageProps="pesanUpdate"/>
         </div>
   </div>
@@ -187,25 +230,24 @@
 
 <script>
 import axios from 'axios'
-// import Popup from './Berhasil.vue'
+import Popup from './Popup.vue'
+import Popup2 from './Berhasil.vue'
 import Alert from './Pop_sukses.vue'
 
 export default {
     name:'Edit_calon_com',
     components: {
-        // Popup,
+        Popup,
+        Popup2,
         Alert
     },
     data: function () {
         return {
-            calon: {
-                id_calon: '',
-                foto: '',
-                id_foto: '',
-            },
+            calon: {},
             file: '',
             isiBlured: false,
             pekerjaan: {
+                id_calon: '',
                 nama_pekerjaan:'',
                 detail: '',
                 tahun_mulai: '',
@@ -218,12 +260,14 @@ export default {
                 tahun_selesai: ''
             },
             updatePekerjaan: {
+                id_pekerjaan: '',
                 nama_pekerjaan:'',
                 detail: '',
                 tahun_mulai: '',
                 tahun_selesai: ''
             },
             updatePendidikan: {
+                id_pendidikan:'',
                 nama_institusi:'',
                 detail: '',
                 tahun_mulai: '',
@@ -249,24 +293,72 @@ export default {
             message:'',
             variant:'',
             updated: false,
-            pesanUpdate: ''
+            pesanUpdate: '',
+            pekUpdate: false,
+            penUpdate: false,
+            id_pek: '',
+            id_pen:'',
+            popupDel: false,
+            popupDel2: false
         }
     },
-    mounted(){
-        const headers = { token: localStorage.token }
-        const CALON_API_URL = `${process.env.VUE_APP_API_URL}/calon/admin`
-        fetch(CALON_API_URL, { headers })
-            .then(response => response.json())
-            .then(result => {
-                this.calon = result
-                var parsedobj = JSON.parse(JSON.stringify(result))
-                console.log(parsedobj)
-            })
+    created(){
         window.onresize = () => {
             this.deviceWidth = window.innerWidth
         }
+        this.loadCalon()
+    },
+    mounted(){
+        this.edit
+    },
+    computed:{
+        idd: function () {
+            const calon = this.calon
+            let idyes = ''
+            for(var i = 0; i < calon.length; i++){
+                idyes = this.calon[i].id_calon
+            }
+            return idyes
+        },
+        updateFoto: function () {
+            const calon = this.calon
+            let foto = ''
+            for(var i = 0; i < calon.length; i++){
+                foto = this.calon[i].foto
+            }
+            return foto
+        },
+        updateIdFoto: function () {
+            const calon = this.calon
+            let id_foto = ''
+            for(var i = 0; i < calon.length; i++){
+                id_foto = this.calon[i].id_foto
+            }
+            return id_foto
+        }
     },
     methods:{
+        loadCalon(){
+            const CALON_API_URL = `${process.env.VUE_APP_API_URL}/calon/admin`
+            axios.defaults.headers.common["token"] = localStorage.token
+            try {
+                axios.get(CALON_API_URL)
+                .then(result => {
+                    this.calon = result.data
+                    localStorage.setItem('id_calon', result.data.id_calon)
+                    var parsedobj = JSON.parse(JSON.stringify(result))
+                    console.log(parsedobj)
+                })
+            } catch(err){
+                console.log(err)
+            }
+        },
+        toggleModal(){
+            this.pekUpdate = !this.pekUpdate;  
+        },
+        toggleModal2(){
+            this.penUpdate = !this.penUpdate;  
+        },
         validate : function(){
             this.isiBlured = true;
             if(this.validIsi(this.user.username)){
@@ -298,7 +390,7 @@ export default {
             return this.message;
         },
         selectImage(){
-            this.file = this.$refs.updateFoto.files[0];
+            this.file = this.$refs.updateFoto.files[0]
             this.urlFile = URL.createObjectURL(this.file)
             this.validateImage(this.file)
 
@@ -311,16 +403,16 @@ export default {
 
         updateCalon(e){
             e.preventDefault()
-            const id_calon = this.calon.id_calon
+            const id_calon = this.idd
             const imgCalon = this.file
-            const foto = this.calon.foto
+            const foto = this.updateFoto
 
             const formData = new FormData();
             
             if(imgCalon == ''){
                 if(foto != null) {
-                    formData.append('foto', this.calon.foto);
-                    formData.append('id_foto', this.calon.id_foto);
+                    formData.append('foto', this.updateFoto);
+                    formData.append('id_foto', this.updateIdFoto);
                 }
                 else{
                     formData.append('foto', null);
@@ -335,22 +427,208 @@ export default {
                 return axios.put(`${process.env.VUE_APP_API_URL}/calon/` + id_calon, formData)
                 .then(() =>{
                     this.file = ''
-                    this.calon.foto = ''
-                    this.calon.id_foto = ''
+                    this.updateFoto = ''
+                    this.updateIdFoto = ''
                     this.updated = true
-                    this.pesanUpdate = 'Unggahan berhasil diubah'
+                    this.pesanUpdate = 'Foto berhasil diubah'
                     this.variant = 'success'
                 })
             } catch(err){
                 console.log(err)
                 this.updated = false
-                this.pesanUpdate = 'Unggahan gagal diubah'
+                this.pesanUpdate = 'Foto gagal diubah'
                 this.variant = 'danger'
+                this.message = err.response.data
 
                 // this.error = true;
             }
         },
         
+        addPekerjaan(e){
+            e.preventDefault()
+            const ADD_JOB_API = `${process.env.VUE_APP_API_URL}/calon/riwayat-pekerjaan`
+            try{
+                axios.post(ADD_JOB_API, {
+                    id_calon: this.idd,
+                    nama_pekerjaan: this.pekerjaan.nama_pekerjaan,
+                    detail: this.pekerjaan.detail,
+                    tahun_mulai: this.pekerjaan.tahun_mulai,
+                    tahun_selesai: this.pekerjaan.tahun_selesai
+                })
+                .then(()=>{
+                    this.loadCalon()
+                    this.changePekerjaan =  true
+                    this.pekerjaan.nama_pekerjaan = ''
+                    this.pekerjaan.detail = ''
+                    this.pekerjaan.tahun_mulai = ''
+                    this.pekerjaan.tahun_selesai = ''
+                    this.updated = true
+                    this.variant = 'success'
+                    this.pesanUpdate = 'Riwayat pekerjaan berhasil ditambah'
+                })
+            } catch(err){
+                console.log(err)
+                this.updated = false
+                this.pesanUpdate = 'Riwayat pekerjaan gagal diubah'
+                this.variant = 'danger'
+            }
+        },
+
+        toggleDelPek(id){
+            this.id_pek = id;
+            this.popupDel = !this.popupDel;
+            this.updated = false
+            this.pesanUpdate = ''
+            this.variant = ''
+        },
+
+        delPekerjaan(){
+            const id_pekerjaan = this.id_pek;
+            axios.delete(`${process.env.VUE_APP_API_URL}/calon/pek/`+ id_pekerjaan).then(() =>{
+                this.popupDel = false
+                this.loadCalon()
+                this.changePekerjaan = true
+                this.updated = true
+                this.pesanUpdate = 'Riwayat pekerjaan berhasil dihapus'
+                this.variant = 'success'
+            })            
+        },
+
+        editPek(pek){
+            this.pesanUpdate = ''
+            this.updated = false
+            this.variant = ''
+            // this.id_pekerjaan = pek.id_pekerjaan
+            this.pekUpdate = true
+            this.updatePekerjaan.id_pekerjaan = pek.id_pekerjaan
+            this.updatePekerjaan.nama_pekerjaan = pek.nama_pekerjaan
+            this.updatePekerjaan.detail = pek.detail_pekerjaan  
+            this.updatePekerjaan.tahun_mulai = pek.tahun_mulai_pekerjaan
+            this.updatePekerjaan.tahun_selesai = pek.tahun_selesai_pekerjaan           
+        },
+
+        updateRiwPekerjaan(e){
+            const id_pek = this.updatePekerjaan.id_pekerjaan
+            const UPDATE_PEKERJAAN_API = `${process.env.VUE_APP_API_URL}/calon/update-pek/` + id_pek
+            e.preventDefault()
+            try{
+                axios.put(UPDATE_PEKERJAAN_API, {
+                    id_pekerjaan: this.updatePekerjaan.id_pekerjaan,
+                    nama_pekerjaan: this.updatePekerjaan.nama_pekerjaan,
+                    detail: this.updatePekerjaan.detail,
+                    tahun_mulai: this.updatePekerjaan.tahun_mulai,
+                    tahun_selesai: this.updatePekerjaan.tahun_selesai
+                })
+                .then(()=>{
+                    this.pekUpdate = false
+                    this.loadCalon()
+                    this.changePekerjaan = true
+                    this.updated = true
+                    this.pesanUpdate = 'Riwayat pekerjaan berhasil diubah'
+                    this.variant = 'success'
+                    this.updatePekerjaan.id_pekerjaan = ''
+                    this.updatePekerjaan.nama_pekerjaan = ''
+                    this.updatePekerjaan.detail = ''
+                    this.updatePekerjaan.tahun_mulai = ''
+                    this.updatePekerjaan.tahun_selesai = ''
+                })
+            }catch(err){
+                console.log(err)
+            }
+        },
+
+        addPendidikan(e){
+            e.preventDefault()
+            const ADD_JOB_API = `${process.env.VUE_APP_API_URL}/calon/riwayat-pendidikan`
+            try{
+                axios.post(ADD_JOB_API, {
+                    id_calon: this.idd,
+                    nama_institusi: this.pendidikan.nama_institusi,
+                    detail: this.pendidikan.detail,
+                    tahun_mulai: this.pendidikan.tahun_mulai,
+                    tahun_selesai: this.pendidikan.tahun_selesai
+                })
+                .then(()=>{
+                    this.loadCalon()
+                    this.changePendidikan =  true
+                    this.pendidikan.nama_pekerjaan = ''
+                    this.pendidikan.detail = ''
+                    this.pendidikan.tahun_mulai = ''
+                    this.pendidikan.tahun_selesai = ''
+                    this.updated = true
+                    this.variant = 'success'
+                    this.pesanUpdate = 'Riwayat pendidikan berhasil ditambah'
+                })
+            } catch(err){
+                console.log(err)
+                this.updated = false
+                this.pesanUpdate = 'Riwayat pendidikan gagal diubah'
+                this.variant = 'danger'
+            }
+        },
+
+        toggleDelPen(id){
+            this.id_pen = id;
+            this.popupDel2 = !this.popupDel2;
+            this.updated = false
+            this.pesanUpdate = ''
+            this.variant = ''
+        },
+
+        delPendidikan(){
+            const id_pendidikan = this.id_pen;
+            axios.delete(`${process.env.VUE_APP_API_URL}/calon/pen/`+ id_pendidikan).then(() =>{
+                this.popupDel = false
+                this.loadCalon()
+                this.changePendidikan = true
+                this.updated = true
+                this.pesanUpdate = 'Riwayat pendidikan berhasil dihapus'
+                this.variant = 'success'
+            })            
+        },
+
+        editPen(pen){
+            this.pesanUpdate = ''
+            this.updated = false
+            this.variant = ''
+            // this.id_pekerjaan = pek.id_pekerjaan
+            this.penUpdate = true
+            this.updatePendidikan.id_pendidikan = pen.id_pendidikan
+            this.updatePendidikan.nama_institusi = pen.nama_institusi
+            this.updatePendidikan.detail = pen.detail_pendidikan  
+            this.updatePendidikan.tahun_mulai = pen.tahun_mulai_pendidikan
+            this.updatePendidikan.tahun_selesai = pen.tahun_selesai_pendidikan           
+        },
+
+        updateRiwPendidikan(e){
+            const id_pen = this.updatePendidikan.id_pendidikan
+            const UPDATE_PENDIDIKAN_API = `${process.env.VUE_APP_API_URL}/calon/update-pen/` + id_pen
+            e.preventDefault()
+            try{
+                axios.put(UPDATE_PENDIDIKAN_API, {
+                    id_pendidikan: this.updatePendidikan.id_pendidikan,
+                    nama_institusi: this.updatePendidikan.nama_institusi,
+                    detail: this.updatePendidikan.detail,
+                    tahun_mulai: this.updatePendidikan.tahun_mulai,
+                    tahun_selesai: this.updatePendidikan.tahun_selesai
+                })
+                .then(()=>{
+                    this.penUpdate = false
+                    this.loadCalon()
+                    this.changePendidikan = true
+                    this.updated = true
+                    this.pesanUpdate = 'Riwayat pendidikan berhasil diubah'
+                    this.variant = 'success'
+                    this.updatePendidikan.id_pendidikan = ''
+                    this.updatePendidikan.nama_institusi = ''
+                    this.updatePendidikan.detail = ''
+                    this.updatePendidikan.tahun_mulai = ''
+                    this.updatePendidikan.tahun_selesai = ''
+                })
+            }catch(err){
+                console.log(err)
+            }
+        },
 
     }
 }
