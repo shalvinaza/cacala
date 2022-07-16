@@ -148,14 +148,29 @@
                     </table>
                 </div>
                 <div class="form-data mb-3 mt-5">
-                    <form @submit.prevent="updatePoster">              
+                    <form @submit.prevent="updatePosters" enctype="multipart/form-data">              
                         <div class="d-flex flex-column">
                             <h6 class="bold mb-3">Ubah poster calon</h6>
+                            <div class="forms-inputs mb-4">  
+                                <span>Slogan</span> 
+                                <input id="slogan" autocomplete="off" type="text" v-model="posters.slogan" v-bind:class="{'form-control':true, 'is-invalid' : !validIsi(posters.slogan) && isiBlured}" v-on:blur="isiBlured = true" @keydown.enter.prevent placeholder="Ketik slogan disini">
+                                <div class="invalid-feedback">Slogan boleh kosong</div>
+                            </div>
                             <div class="d-flex align-items-center mb-3">
-                                <input type="file" id="inputPoster" style="display:none" ref="updatePoster" @change="selectPoster()"/>
-                                <button class="btn bg-light-orange br-10" @click="addPoster()">Pilih poster</button>
-                                <span class="ms-2">Nama file</span>
-                                <span class="ms-2" style="color:red">- error message</span>
+                                <div class="d-flex flex-column mb-3">
+                                <div>
+                                    <input type="file" id="inputPoster" style="display:none" ref="updatePoster" @change="selectPoster()"/>
+                                    <button class="btn bg-light-orange br-10" @click="addPoster()">Pilih poster</button>
+                                    <span class="ms-2" v-if="filePoster">{{filePoster.name}}</span>
+                                    <span class="ms-2" v-if="errorImg" style="color:red">- {{message}}</span>
+                                </div>
+                                <div v-if="filePoster" class="mt-3 d-flex flex-wrap">
+                                    <div class="fotoBorder d-flex flex-row">
+                                        <img :src="urlPoster" alt="preview foto" style="width:250px; height:250px">
+                                        <span @click="filePoster=''; errorImg = false"><font-awesome-icon icon="fa-solid fa-xmark" class="ms-2"/></span>
+                                    </div>
+                                </div>
+                            </div>
                             </div>
                         </div>
                         <div class="mb-3 d-flex justify-content-end"> 
@@ -274,8 +289,6 @@ export default {
                 tahun_selesai: ''
             },
             posters: {
-                poster: null,
-                id_poster: null,
                 slogan:''
             },
             filePoster: '',
@@ -335,6 +348,28 @@ export default {
                 id_foto = this.calon[i].id_foto
             }
             return id_foto
+        },
+        id_posters: function(){
+            const calon = this.calon
+            let id_poster = ''
+            for(var i = 0; i < calon.length; i++){
+                const posters = this.calon[i].posters
+                for(var j = 0; j < posters.length; j++){
+                    id_poster = posters[j].id_posters
+                }
+            }
+            return id_poster
+        },
+        posterr: function(){
+            const calon = this.calon
+            let poster = ''
+            for(var i = 0; i < calon.length; i++){
+                const posters = this.calon[i].posters
+                for(var j = 0; j < posters.length; j++){
+                    poster = posters[j].poster
+                }
+            }
+            return poster
         }
     },
     methods:{
@@ -578,7 +613,7 @@ export default {
         delPendidikan(){
             const id_pendidikan = this.id_pen;
             axios.delete(`${process.env.VUE_APP_API_URL}/calon/pen/`+ id_pendidikan).then(() =>{
-                this.popupDel = false
+                this.popupDel2 = false
                 this.loadCalon()
                 this.changePendidikan = true
                 this.updated = true
@@ -627,6 +662,71 @@ export default {
                 })
             }catch(err){
                 console.log(err)
+            }
+        },
+
+        addPoster(){
+            document.getElementById('inputPoster').click();
+            this.errorImg = false
+            this.message = ''
+            this.messageImg = ''
+        },
+
+        selectPoster(){
+            this.filePoster = this.$refs.updatePoster.files[0]
+            this.urlPoster = URL.createObjectURL(this.filePoster)
+            this.validateImage(this.filePoster)
+
+            if(this.message !== ''){
+                this.errorImg = true
+                // this.form.foto = ''
+                   console.log(this.message)
+            }
+        },   
+        
+        updatePosters(e){
+            e.preventDefault()
+            const id_poster = this.id_posters
+            const newPoster = this.filePoster
+            const oldPoster = this.posterr
+
+            const formData = new FormData();
+
+            formData.append('slogan', this.posters.slogan);
+            
+            if(newPoster == ''){
+                if(oldPoster != null) {
+                    formData.append('poster', this.posterr);
+                    formData.append('id_poster', this.id_poster);
+                }
+                else{
+                    formData.append('poster', null);
+                    formData.append('id_poster', null);
+                }
+            }
+            else{
+                formData.append('imgPoster', this.filePoster);
+            }
+
+            try {
+                return axios.put(`${process.env.VUE_APP_API_URL}/calon/pos/` + id_poster, formData)
+                .then(() =>{
+                    this.filePoster = ''
+                    this.posterr = ''
+                    this.id_poster = ''
+                    this.posters.slogan = ''
+                    this.updated = true
+                    this.pesanUpdate = 'Poster berhasil diubah'
+                    this.variant = 'success'
+                })
+            } catch(err){
+                console.log(err)
+                this.updated = false
+                this.pesanUpdate = 'Poster gagal diubah'
+                this.variant = 'danger'
+                this.message = err.response.data
+
+                // this.error = true;
             }
         },
 

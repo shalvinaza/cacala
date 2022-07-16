@@ -7,6 +7,7 @@
                         <img :src="calon.foto" class="profil-calon-detail mb-4" alt="dpr 2">
                         <h5 class="text-center">{{calon.nama}}</h5>
                         <p class="mb-4 text-center">Calon {{calon.jabatan_tujuan}}</p>
+                        <!-- <p v-for="poster in calon.posters" :key="poster.id_posters">{{poster.slogan_calon}} yeye</p> -->
                         <div class="row align-items-start">
                             <h6 class="col">Partai</h6>
                             <div class="col d-flex flex-wrap justify-content-end">
@@ -108,10 +109,18 @@
             <div class="flex-grow-1 right-col">
                 <div class="row">
                 <!-- poster dan slogan -->
-                    <div class="card text-white poster-calon mb-2 text-center">
-                        <img src="../assets/images/poster.jpg" class="poster-calon" alt="dpr 2">
-                        <div class="card-img-overlay d-flex justify-content-start poster-caption">
-                            <p class="card-text w-100" v-for="calon in calon" :key="calon.id_calon">{{calon.slogan}}</p>
+                    <div class="card text-white poster-calon mb-2 text-center" v-for="calon in calon" :key="calon.no_urut">
+                        <div v-if="calon.posters != ''">
+                            <img v-for="poster in calon.posters" :key="poster.id_poster" :src="poster.poster" class="poster-calon w-100" alt="dpr 2">
+                            <div class="card-img-overlay d-flex justify-content-start poster-caption">
+                                <p class="card-text w-100" v-for="poster in calon.posters" :key="poster.id_posters">{{poster.slogan_calon}}</p>
+                            </div>
+                        </div>
+                        <div v-else>
+                            <img src="../assets/images/poster.jpg" class="poster-calon w-100" alt="dpr 2">
+                            <div class="card-img-overlay d-flex justify-content-start poster-caption">
+                                <p class="card-text w-100">{{calon.slogan}}</p>
+                            </div>
                         </div>
                     </div>
                     <div :class="{'p-4' : deviceWidth >  991.98, 'p-2' : deviceWidth<  991.98 }">
