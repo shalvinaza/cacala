@@ -5,7 +5,7 @@ const bcryptPassword = require("../utils/bcryptPassword")
 
 exports.register = async (req, res) => {
    try{
-      const { username, password } = req.body
+      const { username, password, role } = req.body
 
       const admin = await pool.query("SELECT * FROM admins WHERE username = $1", [
          username
@@ -17,8 +17,8 @@ exports.register = async (req, res) => {
 
       const bcryptPass = await bcryptPassword(password)
 
-      const newAdmin = await pool.query("INSERT INTO admins (username, password) VALUES ($1, $2) RETURNING *",
-         [username, bcryptPass]
+      const newAdmin = await pool.query("INSERT INTO admins (username, password, role) VALUES ($1, $2, $3) RETURNING *",
+         [username, bcryptPass, role]
       )
 
       res.json(newAdmin)
@@ -50,8 +50,10 @@ exports.login = async (req, res) => {
       }
 
       const token = jwtGenerator(admin.rows[0].id_admin)
+      const role = admin.rows[0].role
+      admin.rows[0] = {role: role, token: token}
 
-      res.json({ token })
+      res.json(admin.rows[0])
    } catch (err){
       console.err(err.message)
       res.status(500).send("Server Error")
@@ -85,11 +87,12 @@ exports.updateAdmin = async (req, res) => {
       const { id } = req.params
       const { username } = req.body
       const { password } = req.body
+      const { role } = req.body
 
       const bcryptPass = await bcryptPassword(password)
 
-      const admin = await pool.query("UPDATE admins SET username = $1, password = $2 WHERE id_admin = $3", [
-         username, bcryptPass, id
+      const admin = await pool.query("UPDATE admins SET username =  COALESCE (NULLIF($1, ''), username), password =  COALESCE (NULLIF($2, ''), password), role =  COALESCE (NULLIF($3, ''), role) WHERE id_admin = $4", [
+         username, bcryptPass, role, id
       ])
 
       res.json("Data admin berhasil diubah")

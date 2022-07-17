@@ -1,11 +1,8 @@
 <template>
     <div class="container-fluid bg-dark-blue nav-shadow">
-      <nav class="container navbar navbar-expand-lg navbar-dark">
-        <a class="navbar-brand extra-bold" style="letter-spacing: 0.45em;" href="/">CACALA</a>
-        <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon" style="color:white"></span>
-        </button> -->
 
+      <nav class="container navbar navbar-expand-lg navbar-dark" v-if="isAdmin">
+        <a class="navbar-brand extra-bold" style="letter-spacing: 0.45em;" href="/">CACALA</a>
             <div class="navbar-nav me-auto mb-2 mb-lg-0">
                 <router-link to="/detail_admin_calon" class="nav-item nav-link">Dasbor</router-link>
                 <router-link to="/edit_calon" class="nav-item nav-link">Edit Akun</router-link>
@@ -18,7 +15,6 @@
                 <button class="btn bg-light-orange text-white br-10" type="button" @click="goToLogin()">Masuk</button>
               </span>
             </div>
-
         <Popup v-if="openPopup" title="Apakah Anda yakin?" pesanPopup="Anda tidak dapat membuat, melihat, mengubah, maupun menghapus informasi kampanye setelah keluar">
           <div class="d-flex justify-content-end">
             <button class="bg-light-orange me-2 br-10" @click="toggleShow()">Tidak</button>
@@ -26,6 +22,38 @@
           </div>
         </Popup>
       </nav>
+
+      <nav class="container navbar navbar-expand-lg navbar-dark" v-if="isSuperAdmin">
+        <a class="navbar-brand extra-bold" style="letter-spacing: 0.45em;" href="/">CACALA</a>
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="/jabatan">Jabatan</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="/partai">Partai</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="/dapil">Daerah pilih</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="/calon">Calon</a>
+              </li>              
+            </ul>
+            <div class="d-flex align-items-center flex-grow-1 justify-content-end">
+              <span v-if="isLoggedIn">
+                <button class="btn bg-light-orange text-white br-10" type="button" @click="toggleShow()">Keluar</button>
+              </span>
+              <span v-else>
+                <button class="btn bg-light-orange text-white br-10" type="button" @click="goToLogin()">Masuk</button>
+              </span>
+            </div>
+        <Popup v-if="openPopup" title="Apakah Anda yakin?" pesanPopup="Anda tidak dapat membuat, melihat, mengubah, maupun menghapus informasi kampanye setelah keluar">
+          <div class="d-flex justify-content-end">
+            <button class="bg-light-orange me-2 br-10" @click="toggleShow()">Tidak</button>
+            <button class="btn-outline-orange" @click="logUserOut()">Iya</button>
+          </div>
+        </Popup>
+      </nav>    
 
     </div>
 </template>
@@ -43,7 +71,13 @@ export default {
     Popup
   },
   computed: {
-    isLoggedIn: function() {return localStorage.getItem("token") != null}
+    isLoggedIn: function() {return localStorage.getItem("token") != null},
+    isAdmin: function(){
+      return localStorage.getItem('admin') != null
+    },
+    isSuperAdmin: function(){
+      return localStorage.getItem('superAdmin') != null
+    }
   },
   methods:{
     goToLogin(){
@@ -54,6 +88,8 @@ export default {
     },
     logUserOut(){
       localStorage.removeItem('token')
+      localStorage.removeItem('admin')
+      localStorage.removeItem('superAdmin')
       this.$router.push('/login_admin')
     },
     goToSearch(){

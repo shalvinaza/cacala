@@ -182,7 +182,7 @@
 
             </div>
 
-            <Popup v-if="pekUpdate" title="Edit Postingan" @toggle-modal="toggleModal">
+            <Popup v-if="pekUpdate" title="Edit Riwayat Pekerjaan" @toggle-modal="toggleModal">
                 <form @submit.prevent="updateRiwPekerjaan" class="mt-4">              
                     <div class="forms-inputs mb-4">  
                         <span>Nama pekerjaan</span> 
@@ -210,7 +210,7 @@
                 </form>
             </Popup>
 
-            <Popup v-if="penUpdate" title="Edit Postingan" @toggle-modal="toggleModal2">
+            <Popup v-if="penUpdate" title="Edit Riwayat Pendidikan" @toggle-modal="toggleModal2">
                 <form @submit.prevent="updateRiwPendidikan" class="mt-4">              
                     <div class="forms-inputs mb-4">  
                         <span>Nama institusi</span> 

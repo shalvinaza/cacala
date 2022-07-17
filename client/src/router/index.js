@@ -17,6 +17,11 @@ import Detail_dummy from '../views/Detail_dummy.vue'
 import Detail_admin_calon from '../views/Admin_calon.vue'
 import Search from '../views/Search.vue'
 import Edit_calon from '../views/Edit_calon.vue'
+import Super_admin from '../views/super_admin.vue'
+import Jabatan from '../views/Jabatan_view.vue'
+import Partai from '../views/partai_view.vue'
+import Dapil from '../views/dapil_view.vue'
+import Calon from '../views/calon_view.vue'
 
 Vue.use(createRouter)
 
@@ -24,7 +29,8 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    beforeEnter: guardMyroute
   },
   {
     path: '/presiden',
@@ -61,22 +67,24 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login,
-    meta: {guest: true}
+    meta: {guest: true, requiresAuth:false}
   },
   {
     path: '/register',
     name: 'Register',
-    component: Register
+    component: Register,
   },
   {
     path: '/login_admin',
     name: 'Login_admin',
-    component: Login_admin
+    component: Login_admin,
+    meta: {admin: false, superAdmin:false}
   },
   {
     path: '/profil_user',
     name: 'Profil_user',
-    component: Profil_user
+    component: Profil_user,
+    meta: {requiresAuth: true}
   },
   {
     path: '/detail_calon/:id_admin',
@@ -108,7 +116,38 @@ const routes = [
   {
     path: '/edit_calon',
     name: 'Edit_calon',
-    component: Edit_calon
+    component: Edit_calon,
+    meta: {admin: true}
+  },
+  {
+    path: '/super_admin',
+    name: 'Super_admin',
+    component: Super_admin,
+    meta: {superAdmin: true}
+  },
+  {
+    path: '/jabatan',
+    name: 'Jabatan',
+    component: Jabatan,
+    meta: {superAdmin: true}
+  },
+  {
+    path: '/partai',
+    name: 'Partai',
+    component: Partai,
+    meta: {superAdmin: true}
+  },
+  {
+    path: '/dapil',
+    name: 'Dapil',
+    component: Dapil,
+    meta: {superAdmin: true}
+  },
+  {
+    path: '/calon',
+    name: 'Calon',
+    component: Calon,
+    meta: {superAdmin: true}
   }
 ]
 
@@ -144,4 +183,35 @@ router.beforeEach((to, from, next) => {
   }
 })
 
+function guardMyroute(to, from, next)
+{
+ var isAdmin= false;
+ var isSuperAdmin = false;
+  if(localStorage.getItem('admin'))
+    isAdmin = true;
+  else
+    isAdmin= false;
+  
+  if(localStorage.getItem('superAdmin'))
+    isSuperAdmin = true
+  else
+    isSuperAdmin = false
+
+  if(isAdmin) 
+  {
+    next({
+      path:"/detail_admin_calon"
+    });
+  } 
+  if(isSuperAdmin)
+  {
+    next({
+      path:"/super_admin"
+    });
+  } 
+  else
+  {
+    next();
+  }
+}
 export default router

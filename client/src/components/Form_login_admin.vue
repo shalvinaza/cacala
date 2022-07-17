@@ -102,8 +102,16 @@ export default {
                     .then(response => {
                         localStorage.setItem('token',response.data.token)
                         localStorage.setItem('sukses', this.showAlert)
+                        localStorage.setItem('superAdmin', response.data.role)
+                        console.log(response)
 
-                    if (localStorage.getItem('token') != null){
+                    if (localStorage.getItem('token') != null && localStorage.getItem('superAdmin') === 'super'){
+                        this.error = false
+                        this.$emit('loggedIn')
+                        this.$router.push('/super_admin')
+                    }    
+
+                    else if (localStorage.getItem('token') != null){
                         this.error = false
                         this.$emit('loggedIn')
                         this.$router.push('/detail_admin_calon')

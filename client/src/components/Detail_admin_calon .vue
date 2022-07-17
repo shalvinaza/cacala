@@ -223,6 +223,7 @@
                                 </div>
                             </div>
                         </span>
+                        
                         <div class="card w-100 postingan p-3 mb-3">
                             <div class="card-body p-0">
                                 <h6 class="card-title text-center  card-text-dum-tit">Judul Post</h6>
@@ -345,6 +346,7 @@ export default {
             .then(response => response.json())
             .then(result => {
                 this.calon = result
+                localStorage.setItem('admin', this.calon[0].id_admin)
                 var parsedobj = JSON.parse(JSON.stringify(result))
                 console.log(parsedobj)
             })
@@ -363,7 +365,7 @@ export default {
                 tot = 0
             }
             return tot
-        },
+        }
     },
     beforeDestroy(){
         clearInterval(this.interval)
