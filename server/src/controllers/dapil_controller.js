@@ -56,6 +56,7 @@ exports.deleteProvinsi = async (req, res) => {
 		res.json("Provinsi is deleted")
 	} catch (err) {
 		res.json({ message: err })
+		console.log(err)
 	}
 }
 
@@ -77,7 +78,7 @@ exports.selectProvinsiById = async (req, res) => {
 exports.selectAllKota = async (req, res) => {
 	try{
 		const kota = await pool.query(
-			"SELECT * from kota, provinsi where kota.id_provinsi = provinsi.id_provinsi ORDER BY kota"
+			"SELECT * from kota, provinsi where kota.id_provinsi = provinsi.id_provinsi ORDER BY provinsi"
 		)
 
 		res.json(kota.rows)
@@ -168,7 +169,7 @@ exports.selectKotaByIdProvinsi = async (req, res) => {
 exports.selectAllKecamatan = async (req, res) => {
 	try{
 		const kecamatan = await pool.query(
-			"SELECT * from kecamatan, kota where kecamatan.id_kota = kota.id_kota ORDER BY kecamatan"
+			"SELECT * from kecamatan, kota where kecamatan.id_kota = kota.id_kota ORDER BY kota"
 		)
 
 		res.json(kecamatan.rows)
@@ -215,7 +216,7 @@ exports.deleteKecamatan = async (req, res) => {
 		const { id_kecamatan } = req.params
 
 		const kecamatan = await pool.query(
-			"DELETE FROM kecmatan WHERE id_kecamatan = $1", [
+			"DELETE FROM kecamatan WHERE id_kecamatan = $1", [
 				id_kecamatan
 			]
 		)
@@ -223,6 +224,7 @@ exports.deleteKecamatan = async (req, res) => {
 		res.json("Kecamatan is deleted")
 	} catch (err) {
 		res.json({ message: err })
+		console.log(err)
 	}
 }
 
