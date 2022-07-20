@@ -36,6 +36,9 @@
                 <a class="nav-link" aria-current="page" href="/dapil">Daerah pilih</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link" aria-current="page" href="/admin_baru">Admin</a>
+              </li>  
+              <li class="nav-item">
                 <a class="nav-link" aria-current="page" href="/calon">Calon</a>
               </li>              
             </ul>
@@ -76,7 +79,7 @@ export default {
       return localStorage.getItem('admin') != null
     },
     isSuperAdmin: function(){
-      return localStorage.getItem('superAdmin') != null
+      return localStorage.getItem('superAdmin') === 'super'
     }
   },
   methods:{

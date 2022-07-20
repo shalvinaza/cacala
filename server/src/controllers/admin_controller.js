@@ -12,7 +12,7 @@ exports.register = async (req, res) => {
       ])
 
       if(admin.rows.length !== 0){
-         return res.status(401).send("Admin already exists")
+         return res.status(401).send("Admin sudah terdaftar")
       }
 
       const bcryptPass = await bcryptPassword(password)
@@ -64,6 +64,19 @@ exports.selectAllAdmins = async (req, res) => {
    try{
       const admins = await pool.query("SELECT * FROM admins")
 
+      const length = Object.keys(admins.rows).length
+
+      for(let i=0; i<length; i++){
+         id_admin = admins.rows[i].id_admin
+
+         calon = await pool.query(
+            "select calon.nama FROM calon JOIN admins ON calon.id_admin = admins.id_admin WHERE calon.id_admin = $1;",
+             [id_admin]
+         )
+
+         admins.rows[i] = {...admins.rows[i], calon: calon.rows, chosen: false}
+      }
+
       res.json(admins.rows)
    } catch (err){
       res.json({message: err})
@@ -98,6 +111,23 @@ exports.updateAdmin = async (req, res) => {
       res.json("Data admin berhasil diubah")
    } catch (err) {
       res.json({ message: err })
+   }
+}
+
+exports.deleteAdmin = async (req, res) => {
+   try{
+      const { id_admin } = req.params
+
+      const admin = await pool.query(
+         "DELETE FROM admins WHERE id_admin = $1;", [
+           id_admin
+         ]
+      )
+
+      res.json("Admin berhasil dihapus")
+   } catch (err) {
+      res.json({ message: err })
+      console.log(err)
    }
 }
 

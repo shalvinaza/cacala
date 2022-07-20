@@ -30,7 +30,7 @@
                             <td>{{jab.jabatan_tujuan}}</td>
                             <td>                                        
                                 <span class="card-text icons me-2" @click="editJab(jab)"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></span>
-                                <span class="card-text icons" @click="toggleDelJab(jab.id_jabatan)"><font-awesome-icon icon="fa-solid fa-trash" /></span>
+                                <span aclass="card-text icons" @click="toggleDelJab(jab.id_jabatan)"><font-awesome-icon icon="fa-solid fa-trash" /></span>
                             </td>
                             <Popup2 v-if="popupDel" title="Apakah Anda yakin?" pesanPopup="Jabatan yang akan dihapus tidak dapat dikembalikan"> 
                                 <div class="d-flex justify-content-end">

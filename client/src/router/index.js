@@ -22,6 +22,7 @@ import Jabatan from '../views/Jabatan_view.vue'
 import Partai from '../views/partai_view.vue'
 import Dapil from '../views/dapil_view.vue'
 import Calon from '../views/calon_view.vue'
+import New_admin from '../views/new_admin_view.vue'
 
 Vue.use(createRouter)
 
@@ -147,6 +148,12 @@ const routes = [
     path: '/calon',
     name: 'Calon',
     component: Calon,
+    meta: {superAdmin: true}
+  },
+  {
+    path: '/admin_baru',
+    name: 'New_admin',
+    component: New_admin,
     meta: {superAdmin: true}
   }
 ]

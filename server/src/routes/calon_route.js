@@ -59,7 +59,7 @@ router.post("/", upload.single("imgCalon"), async (req, res, next) => {
         const { id_jabatan } = req.body
         const { nama } = req.body
         // const { foto } = req.body
-        const { slogan } = req.body
+        // const { slogan } = req.body
         const { no_urut } = req.body
         let foto = null
         let id_foto = null
@@ -72,8 +72,8 @@ router.post("/", upload.single("imgCalon"), async (req, res, next) => {
          }
    
          const calon = await pool.query(
-            "INSERT INTO Calon(id_admin, id_jabatan, nama, foto, slogan, no_urut) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-         [id_admin, id_jabatan, nama, foto, id_foto, slogan, no_urut])
+            "INSERT INTO Calon(id_admin, id_jabatan, nama, foto, id_foto, no_urut) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+         [id_admin, id_jabatan, nama, foto, id_foto, no_urut])
    
          res.json(calon.rows)
     }catch(err){
@@ -112,8 +112,8 @@ router.put("/:id_calon", upload.single("imgCalon"), async (req, res, next) => {
         } 
         else {
             try{
-                if(calon.foto){
-                    // await cloudinary.uploader.destroy(calon.id_foto)
+                if(calon.foto && calon.id_foto){
+                    await cloudinary.uploader.destroy(calon.id_foto)
                     var fotoCalon = await cloudinary.uploader.upload(req.file.path)
                 }
                 else{
@@ -127,16 +127,16 @@ router.put("/:id_calon", upload.single("imgCalon"), async (req, res, next) => {
             }
         }
 
-        // const { id_admin } = req.body
-        // const { id_jabatan } = req.body
+        const { id_admin } = req.body
+        const { id_jabatan } = req.body
         const { nama } = req.body
         // const { foto } = req.body
         const { slogan } = req.body
         const { no_urut } = req.body
 
         calon = await pool.query(
-           "UPDATE calon SET nama = COALESCE (NULLIF($1, ''), nama), foto = COALESCE (NULLIF($2, ''), foto), id_foto = COALESCE (NULLIF($3, ''), id_foto), slogan = COALESCE (NULLIF($4, ''), slogan), no_urut = COALESCE (NULLIF($5, ''), no_urut) WHERE id_calon = $6 RETURNING *;",
-           [nama, foto, id_foto, slogan, no_urut, id_calon]
+           "UPDATE calon SET id_admin = COALESCE (NULLIF($1, ''), id_admin), id_jabatan = COALESCE (NULLIF($2, ''), id_jabatan), nama = COALESCE (NULLIF($3, ''), nama), foto = COALESCE (NULLIF($4, ''), foto), id_foto = COALESCE (NULLIF($5, ''), id_foto), slogan = COALESCE (NULLIF($6, ''), slogan), no_urut = COALESCE (NULLIF($7, ''), no_urut) WHERE id_calon = $8 RETURNING *;",
+           [id_admin, id_jabatan, nama, foto, id_foto, slogan, no_urut, id_calon]
         )
   
         res.json(calon.rows)
@@ -148,12 +148,34 @@ router.put("/:id_calon", upload.single("imgCalon"), async (req, res, next) => {
 
 
 router.put("/wakil/:id_wakil", controller.updateWakil)
-router.delete("/:id_calon", controller.deleteCalon)
+router.delete("/:id_calon", async (req, res) => {
+    try{
+        const { id_calon } = req.params
+        const { id_foto } = req.body
+
+        if(id_foto){
+            await cloudinary.uploader.destroy(id_foto)
+         }
+  
+        const calon = await pool.query(
+           "DELETE FROM calon WHERE id_calon = $1", [
+             id_calon
+           ]
+        )
+  
+        res.json("Calon berhasil dihapus")
+     } catch (err) {
+        res.json({ message: err })
+        console.log(err)
+     }
+})
 router.delete("/wakil/:id_wakil", controller.deleteWakil)
 
 
 router.get("/kota/:id_kota", controller.selectCalonByKota)
 router.get("/jabatan/:id_jabatan", controller.selectCalonByJabatan)
+router.get("/prov/:id_jabatan", controller.selectDprdProvAdmin)
+router.get("/kab/:id_jabatan", controller.selectCalonDPRDKotaAdmin)
 router.get("/pos/:id_calon", controller.selectPostersById)
 router.delete("/pos/:id_posters", controller.deletePosters)
 

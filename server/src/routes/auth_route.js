@@ -11,5 +11,6 @@ router.post("/users/login", validInfo, userCont.login)
 router.post("/admins/login", adminCont.login)
 router.post("/admins/register", adminCont.register)
 router.get("/admins/", adminCont.selectAllAdmins)
+router.delete("/admins/:id_admin", adminCont.deleteAdmin)
 
 module.exports = router

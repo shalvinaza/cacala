@@ -46,6 +46,8 @@ export default {
     .popup-inner{
         background: white;
         border-radius: 15px;
+        margin-top: 300px;
+        margin-bottom: 50px;
     }
 }
 .fa-times{
