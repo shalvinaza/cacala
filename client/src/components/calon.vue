@@ -497,7 +497,7 @@ export default {
             kecUp: false
         }
     },
-    created(){
+    mounted(){
         window.onresize = () => {
             this.deviceWidth = window.innerWidth
         }
@@ -511,9 +511,6 @@ export default {
         this.loadPartai()
         this.loadKota()
         this.loadKecamatan()
-    },
-    mounted(){
-        this.edit
     },
     computed:{
         // idCal:function (){
