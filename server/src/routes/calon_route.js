@@ -135,7 +135,7 @@ router.put("/:id_calon", upload.single("imgCalon"), async (req, res, next) => {
         const { no_urut } = req.body
 
         calon = await pool.query(
-           "UPDATE calon SET id_admin = COALESCE (NULLIF($1, ''), id_admin), id_jabatan = COALESCE (NULLIF($2, ''), id_jabatan), nama = COALESCE (NULLIF($3, ''), nama), foto = COALESCE (NULLIF($4, ''), foto), id_foto = COALESCE (NULLIF($5, ''), id_foto), slogan = COALESCE (NULLIF($6, ''), slogan), no_urut = COALESCE (NULLIF($7, ''), no_urut) WHERE id_calon = $8 RETURNING *;",
+           "UPDATE calon SET id_admin = $1, id_jabatan = $2, nama = COALESCE (NULLIF($3, ''), nama), foto = COALESCE (NULLIF($4, ''), foto), id_foto = COALESCE (NULLIF($5, ''), id_foto), slogan = COALESCE (NULLIF($6, ''), slogan), no_urut = COALESCE (NULLIF($7, ''), no_urut) WHERE id_calon = $8 RETURNING *;",
            [id_admin, id_jabatan, nama, foto, id_foto, slogan, no_urut, id_calon]
         )
   

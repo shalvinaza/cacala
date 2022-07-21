@@ -76,7 +76,11 @@ export default {
   computed: {
     isLoggedIn: function() {return localStorage.getItem("token") != null},
     isAdmin: function(){
-      return localStorage.getItem('admin') != null
+      let cek =  false
+      if(localStorage.getItem('superAdmin') != 'super'){
+         cek = true
+      }
+      return cek
     },
     isSuperAdmin: function(){
       return localStorage.getItem('superAdmin') === 'super'
@@ -91,7 +95,7 @@ export default {
     },
     logUserOut(){
       localStorage.removeItem('token')
-      localStorage.removeItem('admin')
+      // localStorage.removeItem('admin')
       localStorage.removeItem('superAdmin')
       this.$router.push('/login_admin')
     },

@@ -4,7 +4,7 @@
             <div class="flex-row justify-content-center text-center">
                 <h5 class="bold justify-content-start mb-4 mt-4">Daftar Calon</h5>
             </div>
-            <div class="form-data mb-4 mt-5">
+            <div class="form-data mb-4 mt-5" v-show="!addMore">
                 <h6 class="bold mb-3">Tambah Calon</h6>
                 <form @submit.prevent="addCalon" class="mt-4"> 
                     <div class="d-flex flex-row">
@@ -64,7 +64,7 @@
                 </form>
             </div>
 
-            <div class="form-data mb-4 mt-5">
+            <div class="form-data mb-4 mt-5" v-show="addMore">
                 <h6 class="bold mb-3">Tambah Detail</h6>
                 <form @submit.prevent="addDetail" class="mt-4">             
                     <div class="dropdown mb-4">
@@ -115,10 +115,16 @@
                 </form>
             </div>
 
-            <h1>{{idNewCal}} hai</h1>
-            <h1>{{cekProv}} prov</h1>
-            <h1>{{cekKab}} kab</h1>
+            <div>
+                <h6 class="bold">Lihat Calon : </h6>
+                <button type="button" class="btn bg-light-orange br-10" @click="presMuncul">Calon Presiden</button>
+                <button type="button" class="btn bg-light-orange br-10 ms-2" @click="dprMuncul">Calon DPR RI</button>
+                <button type="button" class="btn bg-light-orange br-10 ms-2" @click="dpdMuncul">Calon DPD RI</button>
+                <button type="button" class="btn bg-light-orange br-10 ms-2" @click="dpdrdPMuncul">Calon DPRD Provinsi</button>
+                <button type="button" class="btn bg-light-orange br-10 ms-2" @click="dpdrKPMuncul">Calon DPRD Kabupaten/Kota</button>
+            </div>
 
+            <div v-show="showPres">
             <h6 class="bold mt-4 p-0">Calon Presiden</h6>
             <table class="table mt-3" id="calonPresiden">
                 <thead>
@@ -138,7 +144,7 @@
                         <td>{{pres.nama}}</td>
                         <td><img :src="pres.foto" alt="" style="width:70px; height: 70px"></td>
                         <td>
-                            <span v-for="par in pres.partai" :key="par.id_partai" class="d-flex"> {{par.nama_partai}}</span>
+                            <span v-for="(par, index) in pres.partai" :key="index" class="d-flex"> {{par.nama_partai}} - {{par}}</span>
                         </td>
                         <td>                                        
                             <span class="card-text icons me-2" @click="editCalon(pres)"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></span>
@@ -153,7 +159,9 @@
                     </tr>
                 </tbody>
             </table>
-
+            </div>
+            
+            <div v-show="showDpr"> 
             <h6 class="bold mt-4 p-0">Calon DPR RI</h6>
             <table class="table mt-3" id="calonDpr">
                 <thead>
@@ -173,7 +181,7 @@
                         <td>{{dpr.nama}}</td>
                         <td><img :src="dpr.foto" alt="" style="width:70px; height: 70px"></td>
                         <td>
-                            <span v-for="par in dpr.partai" :key="par.id_partai" class="d-flex"> {{par.nama_partai}}</span>
+                            <span v-for="par in dpr.partai" :key="par.nama_partai" class="d-flex"> {{par.nama_partai}}</span>
                         </td>
                         <td>                                        
                             <span class="card-text icons me-2" @click="editCalon(dpr)"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></span>
@@ -188,7 +196,9 @@
                     </tr>
                 </tbody>
             </table>  
+            </div>
 
+            <div v-show="showDpd">
             <h6 class="bold mt-4 p-0">Calon DPD RI</h6>
             <table class="table mt-3" id="calonDpd">
                 <thead>
@@ -208,7 +218,7 @@
                         <td>{{dpd.nama}}</td>
                         <td><img :src="dpd.foto" alt="" style="width:70px; height: 70px"></td>
                         <td>
-                            <span v-for="par in dpd.partai" :key="par.id_partai" class="d-flex"> {{par.nama_partai}}</span>
+                            <span v-for="par in dpd.partai" :key="par.logo_partai" class="d-flex"> {{par.nama_partai}}</span>
                         </td>
                         <td>                                        
                             <span class="card-text icons me-2" @click="editCalon(dpd)"><font-awesome-icon icon="fa-solid fa-pen-to-square" /></span>
@@ -222,8 +232,10 @@
                         </Popup2>
                     </tr>
                 </tbody>
-            </table>       
+            </table>  
+            </div>     
 
+            <div v-show="showDProv">
             <h6 class="bold mt-4 p-0">Calon DPRD Provinsi</h6>
             <table class="table mt-3" id="calonDpd">
                 <thead>
@@ -265,7 +277,9 @@
                     </tr>
                 </tbody>
             </table>  
+            </div>
 
+            <div v-show="showDKab">
             <h6 class="bold mt-4 p-0">Calon DPRD Kabupaten/Kota</h6>
             <table class="table mt-3" id="calonDpd">
                 <thead>
@@ -306,7 +320,8 @@
                         </Popup2>
                     </tr>
                 </tbody>
-            </table>                 
+            </table>    
+            </div>             
 
             <Popup v-if="calonUpdate" title="Edit Calon" @toggle-modal="toggleModal" style="overflow-y:scroll; padding-top:70px">
                 <form @submit.prevent="updateCalonn" class="mt-4"> 
@@ -347,11 +362,12 @@
                         <input id="namaUp" autocomplete="off" type="text" v-model="updateCalon.nama" v-bind:class="{'form-control':true, 'is-invalid' : !validasiNama2(updateCalon.nama) && isiBlured}" v-on:blur="isiBlured = true" @keydown.enter.prevent placeholder="Ketik nama calon disini">
                         <div class="invalid-feedback">Nama calon tidak boleh kosong</div>
                     </div>
+                    <p>{{updateCalon.id_dapil}} dap - {{updateCalon.id_partai_calon}} par</p>
                     <div class="d-flex flex-column mb-4">
                         <div>
                             <input type="file" id="inputFotoUp" style="display:none" ref="fotoCalonUp" @change="selectImageUp()"/>
-                            <button class="btn bg-light-orange br-10" @click="addFotoUp()">Pilih foto</button>
-                            <span class="ms-2" v-if="updateCalon.foto">{{updateCalon.foto.name}}</span>
+                            <button type="button" class="btn bg-light-orange br-10" @click="addFotoUp()">Pilih foto</button>
+                            <span class="ms-2" v-if="updateCalon.fotoUpdate">{{updateCalon.fotoUpdate.name}}</span>
                             <span class="ms-2" v-if="errorImg" style="color:red">- {{message}}</span>
                         </div>
                         <div v-if="updateCalon.fotoUpdate" class="mt-3 d-flex flex-wrap">
@@ -436,6 +452,12 @@ export default {
     },
     data: function () {
         return {
+            showPres: false,
+            showDpr: false,
+            showDpd: false,
+            showDProv: false,
+            showDKab: false,
+            addMore: false,
             presiden: [],
             dpdri: [],
             dprri: [],
@@ -466,8 +488,10 @@ export default {
                 fotoUpdate: '',
                 foto: '',
                 id_foto:'',
-                id_kota: '',
-                id_kecamatan: ''
+                id_kota: null,
+                id_kecamatan: null,
+                id_dapil:'',
+                id_partai_calon:''
             },
             admins: [],
             jabatan: [],
@@ -494,18 +518,17 @@ export default {
             namaParUp: [],
             namaDapilUp: [],
             kotaUp: false,
-            kecUp: false
+            kecUp: false,
+            errorImg: false,
+            message:''
         }
     },
     mounted(){
-        window.onresize = () => {
-            this.deviceWidth = window.innerWidth
-        }
-        this.loadPresiden()
-        this.loadDpr()
-        this.loadDpd()
-        this.loadDprdProv()
-        this.loadDprdKab()
+        // this.loadPresiden()
+        // this.loadDpr()
+        // this.loadDpd()
+        // this.loadDprdProv()
+        // this.loadDprdKab()
         this.loadAdmin()
         this.loadJabatan()
         this.loadPartai()
@@ -513,22 +536,11 @@ export default {
         this.loadKecamatan()
     },
     computed:{
-        // idCal:function (){
-        //     return localStorage.getItem('id_cal')
+        // filterKota:function(){
+        //     return this.kota.filter((kta)=>{
+        //         return kta.provinsi.match(this.curProv)
+        //     })
         // },
-        idKec:function (){
-            const kec = this.kecamatan
-            let idyes = ''
-            for(var i = 0; i < kec.length; i++){
-                idyes = this.kecamatan[i].id_kecamatan
-            }
-            return idyes
-        },
-        filterKota:function(){
-            return this.kota.filter((kta)=>{
-                return kta.provinsi.match(this.curProv)
-            })
-        },
         cekDrop: function(){
             let cek = false
             if(this.calon.id_admin != '' && this.calon.id_jabatan != ''){
@@ -581,10 +593,47 @@ export default {
         }
         
     },
-    destroyed(){
-        localStorage.removeItem('id_cal')
-    },
     methods:{
+        presMuncul(){
+            this.showPres = true
+            this.showDpr = false
+            this.showDpd = false
+            this.showDProv = false
+            this.showDKab = false
+            this.loadPresiden()
+        },
+        dprMuncul(){
+            this.showPres = false
+            this.showDpr = true
+            this.showDpd = false
+            this.showDProv = false
+            this.showDKab = false
+            this.loadDpr()
+        },
+        dpdMuncul(){
+            this.showPres = false
+            this.showDpr = false
+            this.showDpd = true
+            this.showDProv = false
+            this.showDKab = false
+            this.loadDpd()
+        },
+        dpdrdPMuncul(){
+            this.showPres = false
+            this.showDpr = false
+            this.showDpd = false
+            this.showDProv = true
+            this.showDKab = false
+            this.loadDprdProv()
+        },
+        dpdrKPMuncul(){
+            this.showPres = false
+            this.showDpr = false
+            this.showDpd = false
+            this.showDProv = false
+            this.showDKab = true
+            this.loadDprdKab()
+        },
         loadPresiden(){
             const PRES_API_URL = `${process.env.VUE_APP_API_URL}/calon/jabatan/1470e05d-6f8d-476f-9d42-09ef4a23e5cc`
             try {
@@ -687,9 +736,9 @@ export default {
             }
         },
         loadPartai(){
-            const JABATAN_API_URL = `${process.env.VUE_APP_API_URL}/partai`
+            const PARTAI_API_URL = `${process.env.VUE_APP_API_URL}/partai`
             try {
-                axios.get(JABATAN_API_URL)
+                axios.get(PARTAI_API_URL)
                 .then(result => {
                     this.partai = result.data
                     var parsedobj = JSON.parse(JSON.stringify(result))
@@ -763,11 +812,11 @@ export default {
         },
 
         addPartai: function(){
-            const PARTAI_API = `${process.env.VUE_APP_API_URL}/partai/calon`
+            const ADD_PARTAI_API = `${process.env.VUE_APP_API_URL}/partai/calon`
             // e.preventDefault()
             if(this.addPartaii.id_partai != ''){
                 try{
-                    axios.post(PARTAI_API, {
+                    axios.post(ADD_PARTAI_API, {
                         id_calon: this.idNewCal,
                         id_partai: this.addPartaii.id_partai
                     })
@@ -782,18 +831,18 @@ export default {
         },
 
         addDapil: function(){
-            const DAPIL_API = `${process.env.VUE_APP_API_URL}/dapil/addKota`
+            const ADD_DAPIL_API = `${process.env.VUE_APP_API_URL}/dapil/addKota`
             // e.preventDefault()
             if(this.dapil.id_kota != null || this.dapil.id_kecamatan !== null){
                 try{
-                    axios.post(DAPIL_API, {
+                    axios.post(ADD_DAPIL_API, {
                         id_calon: this.idNewCal,
                         id_kota: this.dapil.id_kota,
                         id_kecamatan: this.dapil.id_kecamatan
                     })
                     .then(()=>{
-                        this.dapil.id_kota = ''
-                        this.dapil.id_kecamatan = ''
+                        this.dapil.id_kota = null
+                        this.dapil.id_kecamatan = null
                         this.namaDapil = ''
                     })
                 } catch(err){
@@ -836,7 +885,7 @@ export default {
         }, 
 
         async addCalon(e){
-            const POSTS_API_URL = `${process.env.VUE_APP_API_URL}/calon/`
+            const POST_CALON_API_URL = `${process.env.VUE_APP_API_URL}/calon/`
             e.preventDefault()
             this.validate()
             if(this.valid){
@@ -850,12 +899,13 @@ export default {
                 formData.append('imgCalon', this.calon.foto);
 
                 try {
-                    await axios.post(POSTS_API_URL, formData)
+                    await axios.post(POST_CALON_API_URL, formData)
                     .then((result) =>{
                         var parsedobj = JSON.parse(JSON.stringify(result.data))
                         console.log(parsedobj)
                         this.idNewCal = result.data[0].id_calon
                         this.resultJabatan = result.data[0].id_jabatan
+                        this.addMore = true
                     })
                     this.updated = true
                     this.variant = 'success'
@@ -885,13 +935,14 @@ export default {
                     this.updated = true
                     this.variant = 'success'
                     this.pesanUpdate = 'Detail calon berhasil ditambahkan'
+                    this.addMore = false
                 })
             } else{
-                const PARTAI_API = `${process.env.VUE_APP_API_URL}/partai/calon`
+                const DETAIL_PARTAI_API = `${process.env.VUE_APP_API_URL}/partai/calon`
                 // e.preventDefault()
                 if(this.calon.id_partai != ''){
                     try{
-                        axios.post(PARTAI_API, {
+                        axios.post(DETAIL_PARTAI_API, {
                             id_calon: this.idNewCal,
                             id_partai: this.addPartaii.id_partai
                         })
@@ -904,6 +955,7 @@ export default {
                             this.pesanUpdate = 'Detail calon berhasil ditambahkan' 
                             this.addPartaii.id_partai = ''
                             this.namaPartai = ''
+                            this.addMore = false
                         })
                     } catch(err){
                         console.log(err)
@@ -947,25 +999,31 @@ export default {
             this.updateCalon.nama = calon.nama
             this.updateCalon.foto = calon.foto
             this.updateCalon.id_foto = calon.id_foto
-            this.updateCalon.id_partai = calon.id_partai 
+            this.updateCalon.id_partai = calon.partai[0].id_partai 
+            this.updateCalon.id_partai_calon = calon.partai[0].id_partai_calon
             this.namaAdmin = calon.admin
             this.namaJabatan = calon.jabatan_tujuan
             this.namaParUp = calon.partai
-            // const lenKota = calon.kota
-            // const lenKec = calon.kecamatan
-            if(calon.kota != undefined){
+            const lenKota = calon.kota
+            const lenKec = calon.kecamatan
+            if(lenKota.length){
                 const kota = calon.kota
                 this.kotaUp = true
                 this.kecUp = false
-                this.updateCalon.id_kota = kota.id_kota
+                this.updateCalon.id_kota = kota[0].id_kota
+                this.updateCalon.id_dapil = calon.kota[0].id_dapil
                 this.namaDapilUp = calon.kota
             }    
-            else{
+            else if(lenKota.length === 0 && lenKec.length){
                 const kecamatan = calon.kecamatan
                 this.kecUp = true
                 this.kotaUp = false
-                this.updateCalon.id_kecamatan = kecamatan.id_kecamatan
+                this.updateCalon.id_kecamatan = kecamatan[0].id_kecamatan
+                this.updateCalon.id_dapil = calon.kecamatan[0].id_dapil
                 this.namaDapilUp = calon.kecamatan
+            } else {
+                this.kecUp = false
+                this.kotaUp = false
             }
         },
 
@@ -988,25 +1046,66 @@ export default {
             }
         }, 
 
-        updateCalonn(e){
-            e.preventDefault()
+        updatePartai: function(){
+            // const UPDATE_PARTAI_API = `${process.env.VUE_APP_API_URL}/partai/update/`
+            const id  = this.updateCalon.id_partai_calon
+            if(this.updateCalon.id_partai != ''){
+                try{
+                    axios.put(`${process.env.VUE_APP_API_URL}/partai/update/`+ id, {
+                        id_partai: this.updateCalon.id_partai
+                    })
+                    .then(()=>{
+                        this.updateCalon.id_partai = ''
+                        this.updateCalon.id_partai_calon = ''
+                        this.namaPartai = ''
+                        this.namaParUp = []
+                    })
+                } catch(err){
+                    console.log(err)
+                }
+            }
+        },
+
+        updateDapil: function(){
+            // const UPDATE_DAPIL_API = `${process.env.VUE_APP_API_URL}/dapil/update/`
+            const id = this.updateCalon.id_dapil
+            if(this.updateCalon.id_kota != null || this.updateCalon.id_kecamatan !== null){
+                try{
+                    axios.put(`${process.env.VUE_APP_API_URL}/dapil/update/`+ id, {
+                        id_kota: this.updateCalon.id_kota,
+                        id_kecamatan: this.updateCalon.id_kecamatan
+                    })
+                    .then(()=>{
+                        this.updateCalon.id_kota = null
+                        this.updateCalon.id_kecamatan = null
+                        this.namaDapil = ''
+                        this.namaDapilUp = []
+                        this.updateCalon.id_dapil = ''
+                    })
+                } catch(err){
+                    console.log(err)
+                }
+            }
+        },
+
+        updateDetCalon: function(){
             this.validateUpdate()
             if(this.validUpdate){
                 const id_calon = this.updateCalon.id_calon
                 const imgCalon = this.updateCalon.fotoUpdate
-                const foto = this.updateFoto.foto
+                const foto = this.updateCalon.foto
 
                 const formData = new FormData();
 
-                formData.append('id_admin', this.updateFoto.id_admin);
-                formData.append('id_jabatan', this.updateFoto.id_jabatan);
-                formData.append('nama', this.updateFoto.nama);
-                formData.append('no_urut', this.updateFoto.no_urut);
+                formData.append('id_admin', this.updateCalon.id_admin);
+                formData.append('id_jabatan', this.updateCalon.id_jabatan);
+                formData.append('nama', this.updateCalon.nama);
+                formData.append('no_urut', this.updateCalon.no_urut);
                 
                 if(imgCalon == ''){
                     if(foto != null) {
-                        formData.append('foto', this.updateFoto.foto);
-                        formData.append('id_foto', this.updateFoto.id_foto);
+                        formData.append('foto', this.updateCalon.foto);
+                        formData.append('id_foto', this.updateCalon.id_foto);
                     }
                     else{
                         formData.append('foto', null);
@@ -1020,22 +1119,36 @@ export default {
                 try {
                     return axios.put(`${process.env.VUE_APP_API_URL}/calon/` + id_calon, formData)
                     .then(() =>{
-                        this.file = ''
-                        this.updateFoto = ''
-                        this.updateIdFoto = ''
-                        this.updated = true
-                        this.pesanUpdate = 'Foto berhasil diubah'
-                        this.variant = 'success'
+                        this.updateCalon.id_calon = ''
+                        this.updateCalon.id_admin = ''
+                        this.updateCalon.id_jabatan = ''
+                        this.updateCalon.nama = ''
+                        this.updateCalon.no_urut = ''
+                        this.updateCalon.fotoUpdate = ''
+                        this.updateCalon.foto = ''
+                        this.updateCalon.id_foto = ''
+                        this.namaAdmin = ''
+                        this.namaJabatan = ''
                     })
                 } catch(err){
                     console.log(err)
-                    this.updated = false
-                    this.pesanUpdate = 'Foto gagal diubah'
-                    this.variant = 'danger'
-                    this.message = err.response.data
-
-                    // this.error = true;
                 }
+            }
+        },
+
+        updateCalonn(e){
+            e.preventDefault()
+            try{
+                Promise.all([this.updatePartai(), this.updateDapil(), this.updateDetCalon()])
+                .then(() => {
+                    this.$router.go()
+                    this.updated = true
+                    this.calonUpdate = false
+                    this.variant = 'success'
+                    this.pesanUpdate = 'Detail calon berhasil diubah'
+                })
+            } catch(err){
+                console.log(err)
             }
         },
 

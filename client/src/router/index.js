@@ -194,7 +194,7 @@ function guardMyroute(to, from, next)
 {
  var isAdmin= false;
  var isSuperAdmin = false;
-  if(localStorage.getItem('admin'))
+  if(localStorage.getItem('superAdmin') != 'super')
     isAdmin = true;
   else
     isAdmin= false;

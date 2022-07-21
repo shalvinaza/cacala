@@ -91,3 +91,38 @@ exports.deletePartai = async (req, res) => {
         console.error(err.message)
      }
   }
+
+  exports.updatePartaiCalon = async (req, res) => {
+	try{
+		const { id_partai_calon } = req.params
+		const { id_partai } = req.body
+
+
+		const update_partai = await pool.query(
+			"UPDATE partai_calon SET id_partai = $1 WHERE id_partai_calon = $2",
+			[id_partai, id_partai_calon]
+		)
+
+		res.json("Partai calon berhasil diperbarui")
+	} catch(err) {
+		console.error(err.message)
+		console.log(err)
+	}
+}
+
+exports.deletePartaiCalon = async (req, res) => {
+	try{
+		const { id_partai_calon } = req.params
+
+		const partai_calon = await pool.query(
+			"DELETE FROM partai_calon WHERE id_partai_calon = $1;", [
+				id_partai_calon
+			]
+		)
+
+		res.json("Partai calon berhasil dihapus")
+	} catch (err) {
+		res.json({ message: err })
+		console.log(err)
+	}
+}

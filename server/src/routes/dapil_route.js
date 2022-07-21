@@ -24,6 +24,9 @@ router.get("/kecamatan/kota/:id_kota", controller.selectKecamatanByIdKota)
 router.get("/kota/:id_calon", controller.selectKotaCalon)
 router.get("/kecamatan/:id_calon", controller.selectKecamatanCalon)
 router.post("/addKota", controller.addKotaToDapil)
+router.put("/update/:id_dapil", controller.updateDapilCalon)
+router.delete("/delete/:id_dapil", controller.deleteDapilCalon)
+
 router.post("/addKecamatan", controller.addKecamatanToDapil)
 router.get("/calon/:id_calon", controller.selectDapilCalon)
 

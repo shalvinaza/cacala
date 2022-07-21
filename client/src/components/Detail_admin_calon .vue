@@ -119,7 +119,7 @@
                         <div v-else>
                             <img src="../assets/images/poster.jpg" class="poster-calon w-100" alt="dpr 2">
                             <div class="card-img-overlay d-flex justify-content-start poster-caption">
-                                <p class="card-text w-100">{{calon.slogan}}</p>
+                                <p class="card-text w-100">Slogan calon</p>
                             </div>
                         </div>
                     </div>
@@ -346,7 +346,7 @@ export default {
             .then(response => response.json())
             .then(result => {
                 this.calon = result
-                localStorage.setItem('admin', this.calon[0].id_admin)
+                // localStorage.setItem('admin', this.calon[0].id_admin)
                 var parsedobj = JSON.parse(JSON.stringify(result))
                 console.log(parsedobj)
             })

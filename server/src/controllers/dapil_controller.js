@@ -275,6 +275,43 @@ exports.addKotaToDapil = async (req, res) => {
 	}
  }
 
+ exports.updateDapilCalon = async (req, res) => {
+	try{
+		const { id_dapil } = req.params
+		// const { id_calon } = req.body
+		const { id_kota } = req.body
+		const { id_kecamatan } = req.body
+
+
+		const update_dapil = await pool.query(
+			"UPDATE dapil_calon SET id_kota = $1, id_kecamatan = $2 WHERE id_dapil = $3",
+			[id_kota, id_kecamatan, id_dapil]
+		)
+
+		res.json("Daerah pilih berhasil diperbarui")
+	} catch(err) {
+		console.error(err.message)
+		console.log(err)
+	}
+}
+
+exports.deleteDapilCalon = async (req, res) => {
+	try{
+		const { id_dapil } = req.params
+
+		const provinsi = await pool.query(
+			"DELETE FROM dapil_calon WHERE id_dapil = $1", [
+				id_dapil
+			]
+		)
+
+		res.json("Daerah pilih berhasil dihapus")
+	} catch (err) {
+		res.json({ message: err })
+		console.log(err)
+	}
+}
+
  exports.addKecamatanToDapil = async (req, res) => {
 	try{
 	   const { id_calon } = req.body

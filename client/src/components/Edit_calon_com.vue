@@ -12,7 +12,7 @@
                             <div class="d-flex flex-column mb-3">
                                 <div>
                                     <input type="file" id="inputFoto" style="display:none" ref="updateFoto" @change="selectImage()"/>
-                                    <button class="btn bg-light-orange br-10" @click="addFoto()">Pilih foto</button>
+                                    <button type="button" class="btn bg-light-orange br-10" @click="addFoto()">Pilih foto</button>
                                     <span class="ms-2" v-if="file">{{file.name}}</span>
                                     <span class="ms-2" v-if="errorImg" style="color:red">- {{message}}</span>
                                 </div>
@@ -31,8 +31,8 @@
                 </div>
                 <div class="form-data mb-4 mt-5">
                     <h6 class="bold mb-3">Riwayat pekerjaan calon</h6>
-                    <button class="btn bg-light-orange br-10" @click="changePekerjaan = false"><font-awesome-icon icon="fa-solid fa-plus" class="me-2" />Tambah Data</button>
-                    <button class="btn bg-light-orange br-10 ms-3" @click="changePekerjaan = true"><font-awesome-icon icon="fa-solid fa-pen-to-square" class="me-2"/>Ubah Data</button>
+                    <button type="button" class="btn bg-light-orange br-10" @click="changePekerjaan = false"><font-awesome-icon icon="fa-solid fa-plus" class="me-2" />Tambah Data</button>
+                    <button type="button" class="btn bg-light-orange br-10 ms-3" @click="changePekerjaan = true"><font-awesome-icon icon="fa-solid fa-pen-to-square" class="me-2"/>Ubah Data</button>
                     <form @submit.prevent="addPekerjaan" class="mt-4" v-show="!changePekerjaan">              
                         <div class="forms-inputs mb-4">  
                             <span>Nama pekerjaan</span> 
@@ -80,8 +80,8 @@
                                 </td>
                                 <Popup2 v-if="popupDel" title="Apakah Anda yakin?" pesanPopup="Riwayat pekerjaan yang akan dihapus tidak dapat dikembalikan"> 
                                     <div class="d-flex justify-content-end">
-                                        <button class="bg-light-orange2 me-2 br-10" @click="toggleDelPek(pkr.id_pekerjaan)">Tidak</button>
-                                        <button class="btn-outline-orange2" @click="delPekerjaan()">Iya</button>
+                                        <button type="button" class="bg-light-orange2 me-2 br-10" @click="toggleDelPek(pkr.id_pekerjaan)">Tidak</button>
+                                        <button type="button" class="btn-outline-orange2" @click="delPekerjaan()">Iya</button>
                                     </div>
                                 </Popup2>
                             </tr>
@@ -160,7 +160,7 @@
                                 <div class="d-flex flex-column mb-3">
                                 <div>
                                     <input type="file" id="inputPoster" style="display:none" ref="updatePoster" @change="selectPoster()"/>
-                                    <button class="btn bg-light-orange br-10" @click="addPoster()">Pilih poster</button>
+                                    <button type="button" class="btn bg-light-orange br-10" @click="addPoster()">Pilih poster</button>
                                     <span class="ms-2" v-if="filePoster">{{filePoster.name}}</span>
                                     <span class="ms-2" v-if="errorImg" style="color:red">- {{message}}</span>
                                 </div>
@@ -333,6 +333,22 @@ export default {
             }
             return idyes
         },
+        idAdmin: function () {
+            const calon = this.calon
+            let idyes = ''
+            for(var i = 0; i < calon.length; i++){
+                idyes = this.calon[i].id_admin
+            }
+            return idyes
+        },
+        idJabatan: function () {
+            const calon = this.calon
+            let idyes = ''
+            for(var i = 0; i < calon.length; i++){
+                idyes = this.calon[i].id_jabatan
+            }
+            return idyes
+        },
         updateFoto: function () {
             const calon = this.calon
             let foto = ''
@@ -443,6 +459,9 @@ export default {
             const foto = this.updateFoto
 
             const formData = new FormData();
+
+            formData.append('id_admin', this.idAdmin);
+            formData.append('id_jabatan', this.idJabatan);
             
             if(imgCalon == ''){
                 if(foto != null) {
@@ -464,6 +483,10 @@ export default {
                     this.file = ''
                     this.updateFoto = ''
                     this.updateIdFoto = ''
+                    this.idAdmin = ''
+                    this.idJabatan = ''
+                    this.isiBlured = false
+                    this.valid = false
                     this.updated = true
                     this.pesanUpdate = 'Foto berhasil diubah'
                     this.variant = 'success'
@@ -497,6 +520,8 @@ export default {
                     this.pekerjaan.detail = ''
                     this.pekerjaan.tahun_mulai = ''
                     this.pekerjaan.tahun_selesai = ''
+                    this.isiBlured = false
+                    this.valid = false
                     this.updated = true
                     this.variant = 'success'
                     this.pesanUpdate = 'Riwayat pekerjaan berhasil ditambah'
@@ -590,6 +615,8 @@ export default {
                     this.pendidikan.detail = ''
                     this.pendidikan.tahun_mulai = ''
                     this.pendidikan.tahun_selesai = ''
+                    this.isiBlured = false
+                    this.valid = false
                     this.updated = true
                     this.variant = 'success'
                     this.pesanUpdate = 'Riwayat pendidikan berhasil ditambah'
@@ -652,6 +679,8 @@ export default {
                     this.loadCalon()
                     this.changePendidikan = true
                     this.updated = true
+                    this.isiBlured = false
+                    this.valid = false
                     this.pesanUpdate = 'Riwayat pendidikan berhasil diubah'
                     this.variant = 'success'
                     this.updatePendidikan.id_pendidikan = ''
@@ -715,6 +744,8 @@ export default {
                     this.posterr = ''
                     this.id_poster = ''
                     this.posters.slogan = ''
+                    this.isiBlured = false
+                    this.valid = false
                     this.updated = true
                     this.pesanUpdate = 'Poster berhasil diubah'
                     this.variant = 'success'

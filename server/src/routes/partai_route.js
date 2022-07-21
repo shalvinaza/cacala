@@ -131,8 +131,9 @@ router.put("/:id_partai", upload.single('imgPartai'), async (req, res) => {
 
 router.delete("/:id_partai", controller.deletePartai)
 
-
 router.get("/calon/:id_calon", controller.selectPartaiCalon)
 router.post("/calon", controller.addPartaiToCalon)
+router.put("/update/:id_partai_calon", controller.updatePartaiCalon)
+router.delete("/del/:id_partai_calon", controller.deletePartaiCalon)
 
 module.exports = router
